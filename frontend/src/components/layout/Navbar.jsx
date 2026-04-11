@@ -29,10 +29,10 @@ function Navbar() {
 
         {/* navlinks */}
         <ul className="hidden md:flex items-center gap-8 text-[13px] font-bold tracking-[0.2em] text-white/80 uppercase">
-          <li className="hover:text-amber-500 cursor-pointer transition-colors"><Link to='/'>Home</Link></li>
-          <li className="hover:text-amber-500 cursor-pointer transition-colors"><Link to='/destinations'>Destinations</Link></li>
-          <li className="hover:text-amber-500 cursor-pointer transition-colors"><Link to='/experience'>Experience</Link></li>
-          <li className="hover:text-amber-500 cursor-pointer transition-colors"><Link to='/about'>About</Link></li>
+          <li className="hover:text-[#8B1A1A] cursor-pointer transition-colors"><Link to='/'>Home</Link></li>
+          <li className="hover:text-[#8B1A1A] cursor-pointer transition-colors"><Link to='/destinations'>Destinations</Link></li>
+          <li className="hover:text-[#8B1A1A] cursor-pointer transition-colors"><Link to='/experience'>Experience</Link></li>
+          <li className="hover:text-[#8B1A1A] cursor-pointer transition-colors"><Link to='/about'>About</Link></li>
         </ul>
 
         {/* ACTIONS */}
