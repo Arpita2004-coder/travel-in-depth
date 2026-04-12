@@ -3,8 +3,9 @@ import { BrowserRouter,Route,Routes } from "react-router-dom";
 import HomePage from "../pages/HomePage";
 import NotFoundPage from "../pages/NotFoundPage";
 import DestinationPage from "../pages/DestinationPage"
-import LoginPage from "../pages/LoginPage"
-
+import LoginPage from "../pages/LoginPage";
+import SignUpPage from "../pages/SignUpPage";
+import ForgotPage from "../pages/ForgotPage";
 
 import AdminLoginPage from "../pages/admin/AdminLoginPage";
 import AdminDashboardPage from "../pages/admin/AdminDashboardPage";
@@ -53,6 +54,8 @@ const AppRouter=()=>{
       />
         <Route path="/destinations" element={<DestinationPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/forgot-password" element={<ForgotPage />} />
         {/* 404 Page for error*/}
         <Route path="*" element={<NotFoundPage />} />
         </Routes>
