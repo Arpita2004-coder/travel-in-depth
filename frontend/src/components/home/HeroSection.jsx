@@ -10,6 +10,7 @@ function HeroSection() {
         return ()=>clearInterval(interval);
     },[vid.length]);
     return (
+        <>
         <div className='relative w-full h-screen overflow-hidden '>
             {vid.map((videoPath, index) => (
                 <video
@@ -36,12 +37,15 @@ function HeroSection() {
         </p>
         <button className='tracking-[0.2em] mt-10 px-10 py-4 rounded-full h-15 font-medium text-[10px] font-black uppercase text-sm md:text-lg text-black rounded-lg bg-white/65 hover:bg-amber-400/45 hover:scale-105  hover:text-white transition-all duration-300 active:scale-95 transform '>Explore Now</button>
                   
-    </div><div className="absolute bottom-1 left-1/2 -translate-x-1/2 z-20 animate-bounce">
+    </div>
+    <div className="absolute bottom-1 left-1/2 -translate-x-1/2 z-20 animate-bounce">
         <div className="w-[6px] h-12 bg-gradient-to-b from-white to-transparent"></div>
                    </div>
                    </div>
             
         </div>
+
+        </>
         
     )
 }

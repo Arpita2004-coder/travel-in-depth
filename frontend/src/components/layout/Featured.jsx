@@ -44,8 +44,13 @@ const features=[{
 function Featured() {
 
     return (
-        <>
+        <><div className="w-full h-1.5 flex mt-0">
+  <div className="flex-1 bg-[#FF6B1A]"></div> {/* Saffron */}
+  <div className="flex-1 bg-white"></div>       {/* White */}
+  <div className="flex-1 bg-[#138808]"></div>   {/* Green */}
+</div>
         <div className='text-center mb-16 px-6 pt-16'>
+          
   <p className='text-[#FF6B1A] font-bold tracking-widest text-base  uppercase mb-3'>
     Why Choose Us
   </p>
@@ -75,6 +80,7 @@ function Featured() {
 
 </div>))}
     </div>
+    
     </>
     
     )

@@ -6,12 +6,12 @@ import Featured from './components/layout/Featured';
 import Stats from './components/stats/Stats';
 export default function App() {
   return (
-    <div className="min-h-screen bg-color: #FAFAFA;">
+    <div className="min-h-screen bg-color: #FAFAFA min-h-screen font-montserrat">
       <Navbar />
       <AppRouter />
       <Featured />
       <Stats/>
-       <Footer />
+      <Footer />
     </div>
   );
 }
