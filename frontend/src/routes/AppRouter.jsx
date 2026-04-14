@@ -12,6 +12,7 @@ import AdminDashboardPage from "../pages/admin/AdminDashboardPage";
 import AdminPlacesPage from "../pages/admin/AdminPlacesPage";
 import AdminPlaceFormPage from "../pages/admin/AdminPlaceFormPage";
 import ProtectedRoute from "../routes/ProtectedRoute"
+import CityPage from "../pages/CityPage";
 
 const AppRouter=()=>{
     return (
@@ -53,6 +54,7 @@ const AppRouter=()=>{
         }
       />
         <Route path="/destinations" element={<DestinationPage />} />
+        <Route path="/destinations/:slug" element={<CityPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/forgot-password" element={<ForgotPage />} />
