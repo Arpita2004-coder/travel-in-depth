@@ -1,5 +1,6 @@
 import { useState,useContext } from "react";
 import { CityContext } from "../context/CityContext";
+import {Link} from "react-router-dom";
 // ─── CITY DATA (replace with API later) ───────────────────────────────────────
 
 
@@ -147,7 +148,6 @@ function IndiaMap({ activeRegion, onRegionClick, cities, onCityHover, hoveredCit
 
 // ─── CITY CARD ────────────────────────────────────────────────────────────────
 function CityCard({ city, isHighlighted }) {
-    
   const [hovered, setHovered] = useState(false);
   const badge = regionColors[city.region];
 
@@ -161,9 +161,10 @@ function CityCard({ city, isHighlighted }) {
         }`}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      onClick={() => window.location.href = `/destinations/${city.slug}`}
+     
     >
       {/* Image */}
+       <Link to={`/destinations/${city.slug}`}>
       <div className="relative h-48 overflow-hidden">
         <img
           src={city.image}
@@ -215,6 +216,7 @@ function CityCard({ city, isHighlighted }) {
         </div>
 
         {/* CTA Button */}
+       
         <button className="w-full py-2.5 rounded-xl text-sm font-bold text-white
           bg-gradient-to-r from-[#FF6B1A] to-[#C94F00]
           hover:from-[#C94F00] hover:to-[#8B1A1A]
@@ -224,7 +226,7 @@ function CityCard({ city, isHighlighted }) {
           <span className="transition-transform duration-300 group-hover/btn:translate-x-1">→</span>
         </button>
       </div>
-
+ </Link>
       {/* Bottom decorative line */}
       <div className={`absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-[#FF6B1A] via-[#F5A623] to-[#138808] transition-opacity duration-300 ${hovered ? "opacity-100" : "opacity-0"}`} />
     </div>
