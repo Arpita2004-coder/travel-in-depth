@@ -45,7 +45,7 @@ function HeroSection() {
             {/* Overlay Content */}
             <div className='inset-0 absolute z-10'>
                 <div className='flex flex-col justify-center items-center h-full z-20'>
-                    <h1 className="text-4xl md:text-7xl font-black text-white/65 uppercase tracking-tighter max-w-5xl leading-[1]">
+                 <h1 className="text-4xl md:text-7xl font-black text-white/65 uppercase tracking-tighter max-w-5xl leading-[1]">
                         Lose Yourself in the <br />
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400/65 to-amber-600/65 italic p-4">
                             Journey
