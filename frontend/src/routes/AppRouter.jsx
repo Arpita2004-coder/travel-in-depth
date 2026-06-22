@@ -1,5 +1,5 @@
-import React from "react"
-import { BrowserRouter,Route,Routes } from "react-router-dom";
+import React, { useEffect } from "react";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import HomePage from "../pages/HomePage";
 import NotFoundPage from "../pages/NotFoundPage";
 import DestinationPage from "../pages/DestinationPage"
@@ -13,9 +13,25 @@ import AdminPlacesPage from "../pages/admin/AdminPlacesPage";
 import AdminPlaceFormPage from "../pages/admin/AdminPlaceFormPage";
 import ProtectedRoute from "../routes/ProtectedRoute"
 import CityPage from "../pages/CityPage";
+import DashboardPage from "../pages/DashboardPage";
+import AboutPage from "../pages/AboutPage";
+import ExperiencePage from "../pages/ExperiencePage";
+import BookTripPage from "../pages/BookTripPage";
+
+function ScrollToTop() {
+  const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
+  return null;
+}
 
 const AppRouter=()=>{
     return (
+        <>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/admin/login" element={<AdminLoginPage />} />
@@ -57,11 +73,15 @@ const AppRouter=()=>{
         <Route path="/destinations/:slug" element={<CityPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/forgot-password" element={<ForgotPage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/experience" element={<ExperiencePage />} />
+        <Route path="/book-trip" element={<BookTripPage />} />
         {/* 404 Page for error*/}
         <Route path="*" element={<NotFoundPage />} />
         </Routes>
-        
+        </>
     );
 }
 
