@@ -73,7 +73,7 @@ const AppRouter=()=>{
         <Route path="/destinations/:slug" element={<CityPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />
-        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/dashboard/*" element={<DashboardPage />} />
         <Route path="/forgot-password" element={<ForgotPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/experience" element={<ExperiencePage />} />
