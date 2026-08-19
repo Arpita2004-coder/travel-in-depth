@@ -40,32 +40,32 @@ const AppRouter=()=>{
       <Route
         path="/admin"
         element={
-          <ProtectedRoute>
-            <AdminDashboardPage />
+          <ProtectedRoute adminOnly>
+              <AdminDashboardPage />
           </ProtectedRoute>
         }
       />
       <Route
         path="/admin/places"
         element={
-          <ProtectedRoute>
-            <AdminPlacesPage />
+          <ProtectedRoute adminOnly>
+              <AdminPlacesPage />
           </ProtectedRoute>
         }
       />
       <Route
         path="/admin/places/new"
         element={
-          <ProtectedRoute>
-            <AdminPlaceFormPage />
+          <ProtectedRoute adminOnly>
+              <AdminPlaceFormPage />
           </ProtectedRoute>
         }
       />
       <Route
         path="/admin/places/:id/edit"
         element={
-          <ProtectedRoute>
-            <AdminPlaceFormPage />
+          <ProtectedRoute adminOnly>
+              <AdminPlaceFormPage />
           </ProtectedRoute>
         }
       />

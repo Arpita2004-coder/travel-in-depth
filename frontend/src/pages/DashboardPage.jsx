@@ -1,4 +1,6 @@
 import React, { useState, useMemo } from 'react';
+import { useAuth } from "../features/auth/useAuth";
+import { useNavigate } from "react-router-dom";
 import {
   Routes,
   Route,
@@ -84,6 +86,7 @@ const Button = ({ children, variant = 'primary', className = "", ...props }) => 
 
 // 1. DASHBOARD
 const Dashboard = () => {
+  const { user } = useAuth();
   const distanceData = [
     { name: 'Jan', km: 1200 }, { name: 'Feb', km: 450 }, { name: 'Mar', km: 3400 },
     { name: 'Apr', km: 890 }, { name: 'May', km: 2100 }, { name: 'Jun', km: 5600 },
@@ -97,7 +100,7 @@ const Dashboard = () => {
         
         <Card className="bg-gradient-to-r from-[#8B1A1A] via-[#A32020] to-[#8B1A1A] text-white p-12 min-h-[320px] relative overflow-hidden">
           <div className="relative z-10">
-            <h2 className="text-4xl font-serif font-bold mb-4">Namaste, Arjun Mehta 👋</h2>
+            <h2 className="text-4xl font-serif font-bold mb-4">Namaste, {user?.name} 👋</h2>
             <p className="text-orange-200 italic mb-8 max-w-md">"The world is a book; non-travelers read only one page."</p>
             <div className="flex gap-4">
               <Button>Start New Plan</Button>
@@ -1523,6 +1526,13 @@ const SettingsPage = () => (
 // --- LAYOUT ---
 
 const Sidebar = ({ collapsed, setCollapsed }) => {
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
   const location = useLocation();
   const items = [
     { l: 'Home', p: '/', i: Home },
@@ -1600,10 +1610,13 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
         })}
       </nav>
       <div className="p-6 border-t border-[#E8DCC4]">
-        <button className="flex items-center justify-center lg:justify-start gap-3 ...">
-  <LogOut size={20} />
-  {!collapsed && <span>Logout</span>}
-</button>
+        <button
+          onClick={handleLogout}
+          className="flex items-center justify-center lg:justify-start gap-3 ..."
+        >
+          <LogOut size={20} />
+          {!collapsed && <span>Logout</span>}
+        </button>
       </div>
     </aside>
   );
