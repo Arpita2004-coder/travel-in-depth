@@ -1,5 +1,7 @@
 import React, { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../features/auth/useAuth";
+import { useNavigate } from "react-router-dom";
 
 const INTERESTS = [
   { id: "himalayan", label: "Himalayan Treks", icon: "🏔️" },
@@ -70,7 +72,19 @@ export default function TravelSignup() {
       prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
     );
   };
+  const { signup } = useAuth();
+  const navigate = useNavigate();
+  const [signupError, setSignupError] = useState("");
 
+  const handleFinalSubmit = async () => {
+    try {
+      await signup(fullName, email, password);
+      setSubmitted(true);
+      navigate("/dashboard");
+    } catch (err) {
+      setSignupError(err.message);
+    }
+  };
   const goNext = (e) => {
     e.preventDefault();
     if (step === 1) {
@@ -89,9 +103,9 @@ if (step === 2) {
     if (step < 3) {
       setStep(step + 1);
     } else {
-      if (!agreed) return;
-      setSubmitted(true);
-    }
+        if (!agreed) return;
+        handleFinalSubmit();
+      }
   };
 
   const goBack = () => {
