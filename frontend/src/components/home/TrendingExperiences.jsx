@@ -1,11 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 
-import desertSafari from "../../assets/experiences/desertSafari.jpg";
-import keralaHouseboat from "../../assets/experiences/keralaHouseboat.jpg";
-import gangaAarti from "../../assets/experiences/gangaAarti.jpg";
-import scubaDiving from "../../assets/experiences/scubaDiving.jpg";
-import chadarTrek from "../../assets/experiences/chadarTrek.jpg";
-import paragliding from "../../assets/experiences/paragliding.jpg";
+const desertSafari = "https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=800&q=80";
+const keralaHouseboat = "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=800&q=80";
+const gangaAarti = "https://images.unsplash.com/photo-1561361058-c24cecae35ca?w=800&q=80";
+const scubaDiving = "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&q=80";
+const chadarTrek = "https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?w=800&q=80";
+const paragliding = "https://images.unsplash.com/photo-1521673461164-de300ebcfb17?w=800&q=80";
 const experiences = [
   {
     id: 1, title: 'Desert Safari', location: 'Jaisalmer, Rajasthan',

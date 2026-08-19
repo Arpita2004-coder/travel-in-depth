@@ -1,6 +1,7 @@
 import { useState } from "react";
 import heroImg from "../assets/hawamahal.jpg";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../features/auth/useAuth";
 // Replace these with your own image sources (the base64 data URIs from the
 // original HTML, or paths/URLs to your logo and hero image).
 //const LOGO_SRC = "logo.jpg";
@@ -369,9 +370,18 @@ export default function TravelLoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
+  const { login } = useAuth();
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert("Namaste! Logging you in to your next adventure.");
+    setError("");
+    try {
+      await login(email, password);
+      navigate("/dashboard");
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   return (
