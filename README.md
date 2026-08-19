@@ -151,4 +151,4 @@ node seed/makeAdmin.js youremail@example.com
 
 ## License
 
-Not yet decided — add a license before making this repository public if you intend for others to reuse the code.
+Not yet decided 
