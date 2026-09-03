@@ -1,6 +1,9 @@
 import { useState, useEffect, useContext } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { CityContext } from "../context/CityContext";
+import * as plannerApi from "../api/plannerApi";
+import { fetchWeather } from "../api/weatherApi";
+import { useAuth } from "../features/auth/useAuth";
 
 /* ─── JAIPUR DATA (swap via CityContext for other cities) ─── */
 const JAIPUR = {
@@ -373,40 +376,69 @@ function Hero({ city }) {
 }
 
 function PlannerSection({ city }) {
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const [days, setDays] = useState(3);
   const [style, setStyle] = useState("Couple / Honeymoon");
-const [budget, setBudget] = useState("Mid-range (₹3000–6000/day)");
-const [itinerary, setItinerary] = useState(null);
-const [loading, setLoading] = useState(false);
+  const [budget, setBudget] = useState("mid-range");
+  const [itinerary, setItinerary] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [saving, setSaving] = useState(false);
+  const [savedSuccess, setSavedSuccess] = useState(false);
 
-const generate = async () => {
-  setLoading(true);
-  setItinerary(null);
-  try {
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
-        max_tokens: 1000,
-        messages: [{
-          role: "user",
-          content: `Create a ${days}-day itinerary for ${city.name} for a ${style} traveller with ${budget} budget. Format your response as JSON only, no markdown, like this: {"days": [{"day": 1, "title": "Day title", "morning": "activity", "afternoon": "activity", "evening": "activity", "tip": "local tip"}]}`
-        }]
-      })
-    });
-    const data = await response.json();
-    const text = data.content[0].text;
-    const clean = text.replace(/```json|```/g, "").trim();
-    const parsed = JSON.parse(clean);
-    setItinerary(parsed.days);
-  } catch (err) {
-    setItinerary("error");
-  }
-  setLoading(false);
-};
+  const generate = async () => {
+    setLoading(true);
+    setItinerary(null);
+    setError(null);
+    setSavedSuccess(false);
+    try {
+      const data = await plannerApi.generateItinerary({
+        destination: city.name,
+        days: days,
+        budget: budget,
+        travelStyle: style,
+        interests: "Sightseeing, Local Food, Culture",
+      });
+      setItinerary(data?.days || []);
+    } catch (err) {
+      console.error("Planner generation failed:", err);
+      setError(err.message || "Failed to generate itinerary. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-return (    <section id="plan-trip" style={{ padding: "80px 0", background: "#FDF6EC" }}>
+  const handleSave = async () => {
+    if (!user) {
+      navigate('/login', { state: { from: window.location.pathname + '#plan-trip' } });
+      return;
+    }
+    if (!itinerary || itinerary.length === 0) return;
+
+    setSaving(true);
+    try {
+      await plannerApi.saveItinerary({
+        destination: city.name,
+        days: itinerary,
+        meta: {
+          budget,
+          travelStyle: style,
+          totalDays: days,
+        },
+      });
+      setSavedSuccess(true);
+      setTimeout(() => setSavedSuccess(false), 4000);
+    } catch (err) {
+      console.error("Failed to save itinerary:", err);
+      alert(err.message || "Could not save itinerary.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <section id="plan-trip" style={{ padding: "80px 0", background: "#FDF6EC" }}>
       <div style={{ maxWidth: 1180, margin: "0 auto", padding: "0 40px" }}>
         <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: S.orange, textAlign: "center", marginBottom: 10 }}>SMART PLANNER</p>
         <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(28px,4vw,46px)", fontWeight: 800, color: S.darkBrown, textAlign: "center", marginBottom: 10 }}>
@@ -414,17 +446,24 @@ return (    <section id="plan-trip" style={{ padding: "80px 0", background: "#FD
         </h2>
         <div style={{ width: 60, height: 3, background: S.orange, margin: "0 auto 14px", borderRadius: 2 }} />
         <p style={{ color: S.textMuted, textAlign: "center", fontSize: 15.5, maxWidth: 560, margin: "0 auto 52px", lineHeight: 1.7 }}>
-          Tell us how you travel, and we'll craft a day-by-day plan tailored just for you.
+          Tell us how you travel, and our AI will craft a day-by-day plan tailored just for you.
         </p>
 
         <div style={{ background: "white", borderRadius: 20, overflow: "hidden", boxShadow: "0 4px 40px rgba(90,20,0,0.08)" }}>
           {/* Dark header */}
-          <div style={{ background: "#5c1212", padding: "28px 36px", display: "flex", alignItems: "center", gap: 18 }}>
-            <div style={{ width: 44, height: 44, background: "rgba(255,255,255,0.12)", borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22 }}>📅</div>
-            <div>
-              <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 22, fontWeight: 700, color: "white" }}>Trip Planner</div>
-              <div style={{ fontSize: 13.5, color: "rgba(255,255,255,0.65)" }}>Customise your experience in seconds</div>
+          <div style={{ background: "#5c1212", padding: "28px 36px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
+              <div style={{ width: 44, height: 44, background: "rgba(255,255,255,0.12)", borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22 }}>📅</div>
+              <div>
+                <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 22, fontWeight: 700, color: "white" }}>AI Trip Planner</div>
+                <div style={{ fontSize: 13.5, color: "rgba(255,255,255,0.65)" }}>Powered by Gemini AI for {city.name}</div>
+              </div>
             </div>
+            {user && (
+              <span style={{ fontSize: 12, color: "#FFD7B5", background: "rgba(255,255,255,0.1)", padding: "6px 14px", borderRadius: 50 }}>
+                👤 Planning as <b>{user.name}</b>
+              </span>
+            )}
           </div>
           {/* Controls */}
           <div style={{ padding: "40px 36px", display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 32, alignItems: "start" }}>
@@ -446,8 +485,8 @@ return (    <section id="plan-trip" style={{ padding: "80px 0", background: "#FD
                 fontSize: 14, fontFamily: "'DM Sans', sans-serif", background: "#fff8f4",
                 color: S.darkBrown, cursor: "pointer", outline: "none",
               }}>
-                {["Couple / Honeymoon 💑", "Solo Explorer 🎒", "Family with Kids 👨‍👩‍👧", "Friends Group 🎉", "Cultural Enthusiast 🏛"].map(s => (
-                  <option key={s}>{s}</option>
+                {["Couple / Honeymoon", "Solo Explorer", "Family with Kids", "Friends Group", "Cultural Enthusiast"].map(s => (
+                  <option key={s} value={s}>{s}</option>
                 ))}
               </select>
             </div>
@@ -458,20 +497,74 @@ return (    <section id="plan-trip" style={{ padding: "80px 0", background: "#FD
                 fontSize: 14, fontFamily: "'DM Sans', sans-serif", background: "#fff8f4",
                 color: S.darkBrown, cursor: "pointer", outline: "none",
               }}>
-                {["Budget (₹500–1500/day) 💰", "Mid-range (₹3000–6000/day) 💳", "Luxury (₹10000+/day) 👑"].map(b => (
-                  <option key={b}>{b}</option>
-                ))}
+                <option value="budget">Budget (₹2,000–4,000/day) 💰</option>
+                <option value="mid-range">Mid-range (₹5,000–10,000/day) 💳</option>
+                <option value="luxury">Luxury (₹15,000+/day) 👑</option>
               </select>
             </div>
           </div>
           <div style={{ padding: "0 36px 40px", textAlign: "center" }}>
             <button onClick={generate} disabled={loading} style={{
-             background: loading ? "#ccc" : S.orange, color: "white", border: "none", borderRadius: 50,
-            padding: "16px 48px", fontSize: 16, fontWeight: 600, cursor: loading ? "not-allowed" : "pointer",
-            display: "inline-flex", alignItems: "center", gap: 8,
-                }}>
-              {loading ? "⏳ Generating..." : "✦ Generate My Itinerary"}
+              background: loading ? "#ccc" : S.orange, color: "white", border: "none", borderRadius: 50,
+              padding: "16px 48px", fontSize: 16, fontWeight: 600, cursor: loading ? "not-allowed" : "pointer",
+              display: "inline-flex", alignItems: "center", gap: 8, boxShadow: "0 8px 24px rgba(255,107,26,0.35)",
+            }}>
+              {loading ? "⏳ Crafting Itinerary with AI…" : "✦ Generate My Itinerary"}
             </button>
+
+            {error && (
+              <div style={{ marginTop: 20, color: "#c0392b", fontSize: 14, background: "#fde8e8", padding: "12px 20px", borderRadius: 10, display: "inline-block" }}>
+                ⚠️ {error}
+              </div>
+            )}
+
+            {itinerary && Array.isArray(itinerary) && (
+              <div style={{ marginTop: 36, textAlign: "left", borderTop: "1px solid #e8d5c4", paddingTop: 32 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, flexWrap: "wrap", gap: 12 }}>
+                  <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 24, color: S.darkBrown }}>
+                    Your {itinerary.length}-Day {city.name} Itinerary
+                  </h3>
+                  <button
+                    onClick={handleSave}
+                    disabled={saving}
+                    style={{
+                      background: savedSuccess ? "#138808" : "#8B1A1A",
+                      color: "white",
+                      border: "none",
+                      borderRadius: 50,
+                      padding: "10px 24px",
+                      fontSize: 13,
+                      fontWeight: 700,
+                      cursor: saving ? "not-allowed" : "pointer",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 6,
+                    }}
+                  >
+                    {savedSuccess ? "✓ Saved to My Dashboard!" : saving ? "Saving…" : "💾 Save This Trip"}
+                  </button>
+                </div>
+                <div style={{ display: "grid", gap: 20 }}>
+                  {itinerary.map(d => (
+                    <div key={d.day} style={{ background: "#FFF8F0", border: "1px solid #E8DCC4", borderRadius: 16, padding: "24px" }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+                        <h4 style={{ fontFamily: "'Playfair Display', serif", color: S.orange, fontSize: 18, fontWeight: 700 }}>
+                          Day {d.day}: {d.title}
+                        </h4>
+                        <span style={{ fontSize: 13, color: "#138808", fontWeight: 700 }}>{d.estimatedBudgetINR}</span>
+                      </div>
+                      <div style={{ fontSize: 14, color: S.textMid, lineHeight: 1.8, spaceY: 8 }}>
+                        <p><b>🌅 Morning:</b> {d.morning}</p>
+                        <p><b>☀️ Afternoon:</b> {d.afternoon}</p>
+                        <p><b>🌆 Evening:</b> {d.evening}</p>
+                        <p><b>🍛 Meals:</b> {d.meals}</p>
+                        {d.tips && <p style={{ color: S.orange, marginTop: 8 }}><b>💡 Tip:</b> {d.tips}</p>}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -652,15 +745,113 @@ function NearbySection({ city }) {
 }
 
 function BestTimeSection({ city }) {
+  const [weather, setWeather] = useState(null);
+  const [loadingWeather, setLoadingWeather] = useState(true);
+
+  useEffect(() => {
+    let isMounted = true;
+    const loadWeather = async () => {
+      try {
+        const data = await fetchWeather({ slug: city.slug, lat: city.lat, lng: city.lng });
+        if (isMounted && data) {
+          setWeather(data);
+        }
+      } catch (err) {
+        console.error("Live weather fetch failed:", err);
+      } finally {
+        if (isMounted) setLoadingWeather(false);
+      }
+    };
+    loadWeather();
+    return () => { isMounted = false; };
+  }, [city.slug, city.lat, city.lng]);
+
   const typeStyles = {
     best: { bg: "#e8f5e9", text: "#2e7d32", icon: "✅" },
     good: { bg: "#e8f5e9", text: "#2e7d32", icon: "✅" },
     warn: { bg: "#fff8e1", text: "#b37a00", icon: "⚠️" },
     bad:  { bg: "#fdecea", text: "#b71c1c", icon: "🌧" },
   };
+
   return (
     <section id="best-time" style={{ padding: "80px 0", background: "#FDF6EC" }}>
       <div style={{ maxWidth: 1180, margin: "0 auto", padding: "0 40px" }}>
+        {/* Live Weather Forecast Widget */}
+        <div style={{
+          background: "linear-gradient(135deg, #2D1B00 0%, #4D2600 60%, #1A0A00 100%)",
+          borderRadius: 24,
+          padding: "36px 40px",
+          color: "white",
+          marginBottom: 60,
+          boxShadow: "0 20px 50px rgba(45,27,0,0.25)",
+          border: "1px solid rgba(245,166,35,0.2)",
+          position: "relative",
+          overflow: "hidden"
+        }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 20, marginBottom: 28 }}>
+            <div>
+              <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "#F5A623" }}>
+                📡 LIVE CLIMATE RADAR
+              </span>
+              <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, fontWeight: 700, color: "#FDF6EC", marginTop: 4 }}>
+                Real-Time Weather in {city.name}
+              </h3>
+            </div>
+            {weather?.current && (
+              <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+                <div style={{ fontSize: 44 }}>{weather.current.icon}</div>
+                <div>
+                  <div style={{ fontSize: 38, fontWeight: 800, lineHeight: 1, color: "#FFB347" }}>
+                    {weather.current.temperature}°C
+                  </div>
+                  <div style={{ fontSize: 13, color: "rgba(255,255,255,0.7)", marginTop: 2 }}>
+                    Feels like {weather.current.apparentTemperature}°C • {weather.current.label}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {loadingWeather ? (
+            <div style={{ textAlign: "center", padding: "20px 0", color: "rgba(255,255,255,0.6)" }}>
+              Fetching satellite telemetry & 5-day forecast…
+            </div>
+          ) : weather?.forecast ? (
+            <div>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: 14 }}>
+                {weather.forecast.map((f, i) => (
+                  <div key={f.date} style={{
+                    background: i === 0 ? "rgba(255,107,26,0.18)" : "rgba(255,255,255,0.06)",
+                    border: i === 0 ? "1px solid #FF6B1A" : "1px solid rgba(255,255,255,0.1)",
+                    borderRadius: 16,
+                    padding: "16px",
+                    textAlign: "center"
+                  }}>
+                    <div style={{ fontSize: 12, fontWeight: 700, color: i === 0 ? "#FFB347" : "rgba(255,255,255,0.6)", textTransform: "uppercase" }}>
+                      {i === 0 ? "Today" : f.day}
+                    </div>
+                    <div style={{ fontSize: 26, margin: "8px 0" }}>{f.icon}</div>
+                    <div style={{ fontSize: 15, fontWeight: 700, color: "white" }}>
+                      {f.maxTemp}° <span style={{ fontSize: 12, color: "rgba(255,255,255,0.5)" }}>/ {f.minTemp}°</span>
+                    </div>
+                    <div style={{ fontSize: 11, color: "rgba(255,255,255,0.7)", marginTop: 4, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                      {f.label}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div style={{ display: "flex", gap: 24, marginTop: 20, fontSize: 12, color: "rgba(255,255,255,0.65)", borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: 16 }}>
+                <span>💧 Humidity: <b>{weather.current.humidity}%</b></span>
+                <span>💨 Wind: <b>{weather.current.windSpeed} km/h</b></span>
+                <span>☀️ Daylight: <b>{weather.current.isDay ? "Daytime" : "Night"}</b></span>
+              </div>
+            </div>
+          ) : (
+            <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 13 }}>Live weather temporarily offline.</p>
+          )}
+        </div>
+
         <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(28px,4vw,46px)", fontWeight: 800, color: S.darkBrown, textAlign: "center", marginBottom: 10 }}>
           Best Time to Visit {city.name}
         </h2>

@@ -5,6 +5,8 @@ import { connectDB } from "./config/db.js";
 import destinationRoutes from "./routes/destinationRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import plannerRoutes from "./routes/plannerRoutes.js";
+import recommendationRoutes from "./routes/recommendationRoutes.js";
+import weatherRoutes from "./routes/weatherRoutes.js";
    // ...
    
    dotenv.config();
@@ -22,6 +24,8 @@ app.use(express.urlencoded({ extended: true }));
 
 // Routes — mounted after middleware
 app.use("/api/planner", plannerRoutes);
+app.use("/api/recommendations", recommendationRoutes);
+app.use("/api/weather", weatherRoutes);
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/destinations", destinationRoutes);

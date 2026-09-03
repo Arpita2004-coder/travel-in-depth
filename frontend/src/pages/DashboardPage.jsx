@@ -2,6 +2,8 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useAuth } from "../features/auth/useAuth";
 import { useNavigate } from "react-router-dom";
 import * as plannerApi from "../api/plannerApi";
+import { fetchRecommendations } from "../api/recommendationsApi";
+import { fetchWeather } from "../api/weatherApi";
 import {
   Routes,
   Route,
@@ -88,47 +90,65 @@ const Button = ({ children, variant = 'primary', className = "", ...props }) => 
 // 1. DASHBOARD
 const Dashboard = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
+  const [recommended, setRecommended] = useState([]);
+  const [loadingRecs, setLoadingRecs] = useState(true);
+
   const distanceData = [
     { name: 'Jan', km: 1200 }, { name: 'Feb', km: 450 }, { name: 'Mar', km: 3400 },
     { name: 'Apr', km: 890 }, { name: 'May', km: 2100 }, { name: 'Jun', km: 5600 },
   ];
-  
+
+  useEffect(() => {
+    let isMounted = true;
+    const loadRecs = async () => {
+      try {
+        const res = await fetchRecommendations({ limit: 4 });
+        if (isMounted && res?.destinations) {
+          setRecommended(res.destinations);
+        }
+      } catch (err) {
+        console.error("Dashboard recs failed:", err);
+      } finally {
+        if (isMounted) setLoadingRecs(false);
+      }
+    };
+    loadRecs();
+    return () => { isMounted = false; };
+  }, [user]);
 
   return (
     <PageTransition>
       <div className="p-8 space-y-8 max-w-7xl mx-auto">
-        
-        
         <Card className="bg-gradient-to-r from-[#8B1A1A] via-[#A32020] to-[#8B1A1A] text-white p-12 min-h-[320px] relative overflow-hidden">
           <div className="relative z-10">
             <h2 className="text-4xl font-serif font-bold mb-4">Namaste, {user?.name} 👋</h2>
             <p className="text-orange-200 italic mb-8 max-w-md">"The world is a book; non-travelers read only one page."</p>
             <div className="flex gap-4">
-              <Button>Start New Plan</Button>
-              <Button variant="outline" className="border-white text-white hover:bg-white hover:text-[#8B1A1A]">Explore Guidebooks</Button>
+              <Button onClick={() => navigate("/dashboard/planner")}>Start New Plan</Button>
+              <Button variant="outline" onClick={() => navigate("/destinations")} className="border-white text-white hover:bg-white hover:text-[#8B1A1A]">Explore Guidebooks</Button>
             </div>
           </div>
           
-            <div className="absolute inset-0 bg-black/40"></div>
+          <div className="absolute inset-0 bg-black/40"></div>
           <div className="absolute right-[-5%] bottom-[-20%] opacity-20"><Globe size={400} /></div>
           <div className="absolute right-10 top-1/2 -translate-y-1/2 bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-6 w-80">
-                   <p className="text-orange-300 text-sm font-semibold">
-                      NEXT ADVENTURE</p>
-                       <h3 className="text-2xl font-serif font-bold mt-2"> Varanasi & Sarnath</h3>
-                   <p className="text-orange-100 mt-2">15 July 2026 </p>
-         <div className="mt-4">
-         <div className="flex justify-between text-sm mb-2">
-           <span>Preparation</span> <span>78%</span></div>
-             <div className="w-full bg-white/20 rounded-full h-2">
-       <div
-        className="bg-orange-400 h-2 rounded-full"
-        style={{ width: "78%" }}
-      />
-    </div>
-  </div>
-</div>
+            <p className="text-orange-300 text-sm font-semibold">NEXT ADVENTURE</p>
+            <h3 className="text-2xl font-serif font-bold mt-2"> Varanasi & Sarnath</h3>
+            <p className="text-orange-100 mt-2">15 July 2026 </p>
+            <div className="mt-4">
+              <div className="flex justify-between text-sm mb-2">
+                <span>Preparation</span> <span>78%</span>
+              </div>
+              <div className="w-full bg-white/20 rounded-full h-2">
+                <div
+                  className="bg-orange-400 h-2 rounded-full"
+                  style={{ width: "78%" }}
+                />
+              </div>
+            </div>
+          </div>
         </Card>
-        
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           {[
@@ -146,6 +166,66 @@ const Dashboard = () => {
             </Card>
           ))}
         </div>
+
+        {/* Personalized Recommendations Widget */}
+        <section className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="font-serif text-2xl font-bold text-[#8B1A1A] flex items-center gap-2">
+                <Sparkles size={22} className="text-[#FF6B1A]" />
+                Curated Recommendations
+              </h3>
+              <p className="text-xs text-[#8B1A1A]/60">
+                Matched to your interests in {user?.interests?.length ? user.interests.join(", ") : "cultural & scenic India"}.
+              </p>
+            </div>
+            <Link to="/destinations" className="text-xs font-bold text-[#FF6B1A] hover:underline flex items-center gap-1">
+              View All <ArrowRight size={13} />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {loadingRecs ? (
+              [1, 2, 3, 4].map(n => (
+                <div key={n} className="bg-white rounded-2xl h-60 animate-pulse border border-[#E8DCC4] p-4" />
+              ))
+            ) : recommended.map(d => (
+              <Card
+                key={d.slug || d._id}
+                noPadding
+                className="group overflow-hidden hover:border-[#FF6B1A] transition-all duration-300 cursor-pointer flex flex-col justify-between"
+                onClick={() => navigate(`/destinations/${d.slug}`)}
+              >
+                <div className="relative h-36 overflow-hidden">
+                  <img
+                    src={d.image}
+                    alt={d.name}
+                    onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1564507592333-c60657eea523?w=600&q=80"; }}
+                    className="w-full h-full object-cover group-hover:scale-110 transition duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-md px-2.5 py-0.5 rounded-full text-[10px] font-black text-[#8B1A1A]">
+                    {d.matchScore}% MATCH
+                  </div>
+                  <div className="absolute bottom-2 left-3 right-3 text-white">
+                    <h4 className="font-serif font-bold text-lg leading-tight">{d.name}</h4>
+                    <p className="text-[10px] text-amber-200">{d.region} India • {d.state}</p>
+                  </div>
+                </div>
+
+                <div className="p-4 space-y-2 flex-1 flex flex-col justify-between">
+                  <p className="text-xs text-[#8B1A1A]/70 line-clamp-2 italic">
+                    "{d.tagline}"
+                  </p>
+                  <div className="pt-2 border-t border-[#E8DCC4] flex justify-between items-center text-xs">
+                    <span className="font-semibold text-[#8B1A1A]/60">🗓 {d.bestSeason}</span>
+                    <span className="font-bold text-[#138808]">{d.budget}</span>
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </section>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <Card className="lg:col-span-2">
@@ -766,10 +846,39 @@ const TripPlanner = ({ savedTrips, setSavedTrips }) => {
   const [selectedStyle, setSelectedStyle] = useState("");
   const [budget, setBudget] = useState(25000);
   const [itinerary, setItinerary] = useState([]);
-  const [destination, setDestination] = useState("");
+  const [destination, setDestination] = useState("Jaipur");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [weatherData, setWeatherData] = useState(null);
+  const [loadingWeather, setLoadingWeather] = useState(false);
+
+  useEffect(() => {
+    let isMounted = true;
+    if (!destination) {
+      setWeatherData(null);
+      return;
+    }
+    const loadCityWeather = async () => {
+      setLoadingWeather(true);
+      try {
+        const data = await fetchWeather({ slug: destination.toLowerCase() });
+        if (isMounted && data) {
+          setWeatherData(data);
+        }
+      } catch (err) {
+        console.error("Planner weather error:", err);
+      } finally {
+        if (isMounted) setLoadingWeather(false);
+      }
+    };
+    const timeout = setTimeout(loadCityWeather, 400);
+    return () => {
+      isMounted = false;
+      clearTimeout(timeout);
+    };
+  }, [destination]);
+
   const destinations = [
   "Jaipur",
   "Goa",
@@ -1138,8 +1247,47 @@ const split = budgetSplit[selectedStyle] || budgetSplit.Beach;
   </div>
 </Card>
           <Card>
-             <h4 className="font-bold mb-3 flex items-center gap-2"><CloudSun size={18} /> Weather Info</h4>
-             <p className="text-xs text-[#8B1A1A]/60">Select a destination to see expected climate conditions.</p>
+             <h4 className="font-bold mb-3 flex items-center gap-2 text-[#8B1A1A]">
+               <CloudSun size={18} className="text-[#FF6B1A]" />
+               Live Weather: {destination || "Select City"}
+             </h4>
+             {loadingWeather ? (
+               <p className="text-xs text-[#8B1A1A]/60">Checking satellite climate telemetry…</p>
+             ) : weatherData?.current ? (
+               <div className="space-y-2">
+                 <div className="flex items-center justify-between">
+                   <div className="flex items-center gap-2">
+                     <span className="text-2xl">{weatherData.current.icon}</span>
+                     <div>
+                       <div className="text-xl font-bold text-[#8B1A1A]">
+                         {weatherData.current.temperature}°C
+                       </div>
+                       <p className="text-[10px] text-[#8B1A1A]/60">
+                         {weatherData.current.label}
+                       </p>
+                     </div>
+                   </div>
+                   <div className="text-right text-xs text-[#8B1A1A]/70">
+                     <p>💧 {weatherData.current.humidity}%</p>
+                     <p>💨 {weatherData.current.windSpeed} km/h</p>
+                   </div>
+                 </div>
+
+                 {weatherData.forecast && weatherData.forecast.length > 0 && (
+                   <div className="grid grid-cols-4 gap-1.5 pt-2 border-t border-[#E8DCC4] text-center">
+                     {weatherData.forecast.slice(1, 5).map((f) => (
+                       <div key={f.date} className="bg-white p-1 rounded-lg border border-[#E8DCC4]">
+                         <p className="text-[10px] font-bold text-[#8B1A1A]/60">{f.day}</p>
+                         <p className="text-sm my-0.5">{f.icon}</p>
+                         <p className="text-[10px] font-bold text-[#8B1A1A]">{f.maxTemp}°</p>
+                       </div>
+                     ))}
+                   </div>
+                 )}
+               </div>
+             ) : (
+               <p className="text-xs text-[#8B1A1A]/60">Select a destination to see live climate conditions.</p>
+             )}
           </Card>
          <Button onClick={generateItinerary} className="w-full py-4 text-lg">Generate Full Plan</Button>
         </div>

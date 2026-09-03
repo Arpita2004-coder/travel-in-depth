@@ -19,6 +19,20 @@ export const requireAuth = async (req, res, next) => {
   }
 };
 
+export const optionalAuth = async (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  if (authHeader && authHeader.startsWith("Bearer ")) {
+    const token = authHeader.split(" ")[1];
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      req.userId = decoded.userId;
+    } catch {
+      // Ignore invalid token and continue as guest
+    }
+  }
+  next();
+};
+
 export const requireAdmin = async (req, res, next) => {
   const user = await User.findById(req.userId);
   if (!user || user.role !== "admin") {

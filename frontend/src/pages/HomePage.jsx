@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import HeroSection from '../components/home/HeroSection';
 import Stats from '../components/stats/Stats';
 import AITripPlanner from "../components/home/AITripPlanner";
+import RecommendedForYou from "../components/home/RecommendedForYou";
 import VisualDiscovery from "../components/home/VisualDiscovery";
 import ExploreByMood from "../components/home/ExploreByMood";
 import TrendingExperiences from "../components/home/TrendingExperiences";
@@ -19,6 +20,7 @@ function HomePage() {
         <>
         <HeroSection />
         <Featured/>
+        <RecommendedForYou />
         <AITripPlanner
             isLoggedIn={!!user}
             userName={user?.name}
