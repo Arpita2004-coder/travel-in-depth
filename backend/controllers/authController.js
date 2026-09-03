@@ -6,7 +6,7 @@ const generateToken = (userId) =>
 
 export const signup = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, phone, location, interests } = req.body;
 
     if (!name || !email || !password) {
       return res.status(400).json({ message: "Name, email and password are all required" });
@@ -20,12 +20,27 @@ export const signup = async (req, res) => {
       return res.status(409).json({ message: "An account with this email already exists" });
     }
 
-    const user = await User.create({ name, email, password });
+    const user = await User.create({
+      name,
+      email,
+      password,
+      phone: phone || "",
+      location: location || "",
+      interests: Array.isArray(interests) ? interests : [],
+    });
     const token = generateToken(user._id);
 
     res.status(201).json({
       token,
-      user: { id: user._id, name: user.name, email: user.email, role: user.role },
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        location: user.location,
+        interests: user.interests,
+        role: user.role,
+      },
     });
   } catch (err) {
     res.status(500).json({ message: "Signup failed", error: err.message });
@@ -49,7 +64,15 @@ export const login = async (req, res) => {
 
     res.status(200).json({
       token,
-      user: { id: user._id, name: user.name, email: user.email, role: user.role },
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        location: user.location,
+        interests: user.interests,
+        role: user.role,
+      },
     });
   } catch (err) {
     res.status(500).json({ message: "Login failed", error: err.message });

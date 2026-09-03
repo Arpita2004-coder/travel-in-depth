@@ -1,7 +1,14 @@
 import React from 'react'
-import {Plane} from 'lucide-react'
-import { Link } from 'react-router-dom';
+import { Plane } from 'lucide-react'
+import { Link, useLocation } from 'react-router-dom';
+
 function Footer() {
+    const location = useLocation();
+    const isDashboardOrAdmin = location.pathname.startsWith('/dashboard') || location.pathname.startsWith('/admin');
+
+    if (isDashboardOrAdmin) {
+        return null;
+    }
     return (
         <>
        <footer className='bg-[#1a0a00] text-white'>

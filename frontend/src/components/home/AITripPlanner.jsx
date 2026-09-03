@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import * as plannerApi from '../../api/plannerApi';
 
 /* ─── Styles ────────────────────────────────────────────────────────────── */
 const css = `
@@ -178,23 +179,38 @@ const css = `
 .atp-res-title{font-family:'Playfair Display',serif;font-size:22px;color:#FDF6EC;font-weight:700;}
 .atp-res-tags{display:flex;gap:10px;flex-wrap:wrap;}
 .atp-res-tag{padding:5px 14px;background:rgba(245,166,35,.12);border:1px solid rgba(245,166,35,.25);border-radius:99px;font-size:12px;color:#F5A623;font-weight:500;}
+
+.atp-day-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;}
+.atp-day-tab{
+  width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;
+  background:rgba(253,246,236,.05);border:1px solid rgba(253,246,236,.12);color:rgba(253,246,236,.6);
+}
+.atp-day-tab:hover{border-color:rgba(255,107,26,.4);color:#FDF6EC;}
+.atp-day-tab.active{background:linear-gradient(135deg,#FF6B1A,#8B1A1A);border-color:transparent;color:#fff;}
+
 .atp-itin{
   background:rgba(253,246,236,.03);border:1px solid rgba(245,166,35,.1);
-  border-radius:16px;padding:28px 32px;font-size:14px;color:rgba(253,246,236,.8);
-  line-height:1.85;max-height:420px;overflow-y:auto;white-space:pre-wrap;
+  border-radius:16px;padding:28px 32px;font-size:14px;color:rgba(253,246,236,.85);line-height:1.85;
 }
-.atp-itin::-webkit-scrollbar{width:4px;}
-.atp-itin::-webkit-scrollbar-track{background:transparent;}
-.atp-itin::-webkit-scrollbar-thumb{background:rgba(255,107,26,.4);border-radius:99px;}
+.atp-day-title{font-family:'Playfair Display',serif;color:#FF6B1A;font-size:18px;font-weight:600;margin:0 0 18px;}
+.atp-day-block{display:flex;gap:16px;margin-bottom:14px;}
+.atp-day-block-label{width:96px;flex-shrink:0;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(245,166,35,.7);padding-top:2px;}
+.atp-day-tip{margin-top:18px;padding:14px 18px;background:rgba(255,107,26,.08);border:1px solid rgba(255,107,26,.2);border-radius:10px;font-size:13px;color:rgba(253,246,236,.75);}
+.atp-day-tip b{color:#F5A623;}
+
 .atp-res-actions{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;}
 .atp-act-btn{
   padding:10px 24px;border-radius:10px;font-size:13px;font-weight:600;
   cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:7px;
+  border:none;
 }
-.atp-act-btn.pri{background:linear-gradient(135deg,#FF6B1A,#8B1A1A);color:#fff;border:none;box-shadow:0 6px 20px rgba(255,107,26,.3);}
+.atp-act-btn.pri{background:linear-gradient(135deg,#FF6B1A,#8B1A1A);color:#fff;box-shadow:0 6px 20px rgba(255,107,26,.3);}
 .atp-act-btn.sec{background:transparent;color:rgba(253,246,236,.7);border:1px solid rgba(253,246,236,.15);}
 .atp-act-btn:hover{transform:translateY(-2px);}
+.atp-act-btn:disabled{opacity:.5;pointer-events:none;transform:none;}
 .atp-error{background:rgba(139,26,26,.2);border:1px solid rgba(139,26,26,.4);border-radius:12px;padding:16px 20px;color:#ff9999;font-size:14px;margin-top:16px;}
+.atp-saved-note{font-size:12px;color:#F5A623;margin-top:10px;}
 
 @media(max-width:768px){
   .atp-card,.atp-mock-card{padding:28px 20px;}
@@ -237,7 +253,6 @@ function LockedPlanner({ onLogin }) {
         </p>
         <div className="atp-lock-btns">
           <button className="atp-btn-login" onClick={onLogin}>Sign In/Log In to Unlock</button>
-          
         </div>
         <div className="atp-perks">
           {['Day-wise itineraries','Local food picks','Budget breakdown','Eco-travel tips'].map(p=>(
@@ -252,40 +267,68 @@ function LockedPlanner({ onLogin }) {
 /* ─── Unlocked ────────────────────────────────────────────────────────────── */
 function UnlockedPlanner({ userName = 'Traveller' }) {
   const [dest, setDest]   = useState('Rajasthan');
-  const [days, setDays]   = useState(7);
+  const [numDays, setNumDays] = useState(7);
   const [budget, setBudget] = useState('mid-range');
   const [style, setStyle]   = useState('cultural');
   const [interests, setInterests] = useState(['Heritage','Food & Cuisine']);
   const [loading, setLoading] = useState(false);
-  const [itinerary, setItinerary] = useState(null);
-  const [error, setError]   = useState(null);
+  const [itinerary, setItinerary] = useState(null);   // { destination, days: [...] }
+  const [activeDay, setActiveDay] = useState(1);
+  const [regenDay, setRegenDay] = useState(null);
+  const [saveState, setSaveState] = useState('idle'); // idle | saving | saved | error
+  const [error, setError] = useState(null);
 
   const toggleInterest = l => setInterests(p => p.includes(l) ? p.filter(i=>i!==l) : [...p,l]);
 
   const generate = async () => {
-    setLoading(true); setError(null); setItinerary(null);
-    const prompt = `You are a luxury India travel expert. Create a detailed ${days}-day itinerary for ${dest}, India.
-Budget: ${budget} | Style: ${style} | Interests: ${interests.join(', ')}
-Format with day headings like "### Day 1: ..." including morning/afternoon/evening activities,
-specific restaurant recommendations with dishes, daily budget in INR, and sustainable travel tips.
-Keep it inspiring and magazine-quality. 600-800 words.`;
+    setLoading(true); setError(null); setItinerary(null); setSaveState('idle');
     try {
-      const res  = await fetch('https://api.anthropic.com/v1/messages',{
-        method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({ model:'claude-sonnet-4-6', max_tokens:1000,
-          messages:[{role:'user',content:prompt}] }),
+      const data = await plannerApi.generateItinerary({
+        destination: dest,
+        days: numDays,
+        budget,
+        interests: interests.join(', '),
+        travelStyle: style,
       });
-      const data = await res.json();
-      setItinerary(data.content?.[0]?.text || '');
-    } catch { setError('Unable to generate itinerary. Please try again.'); }
-    finally { setLoading(false); }
+      setItinerary(data);
+      setActiveDay(1);
+    } catch (err) {
+      setError(err.message || 'Unable to generate itinerary. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const renderText = text => text.split('\n').map((line,i) => {
-    if (line.startsWith('### ') || line.startsWith('## '))
-      return <h3 key={i} style={{fontFamily:"'Playfair Display',serif",color:'#FF6B1A',fontSize:'16px',margin:'18px 0 8px'}}>{line.replace(/^#{2,3} /,'')}</h3>;
-    return <span key={i}>{line}<br/></span>;
-  });
+  const regenerateDay = async (dayNumber) => {
+    setRegenDay(dayNumber);
+    try {
+      const newDay = await plannerApi.regenerateDay({
+        destination: itinerary.destination,
+        dayNumber,
+        totalDays: itinerary.days.length,
+      });
+      setItinerary(prev => ({
+        ...prev,
+        days: prev.days.map(d => d.day === dayNumber ? newDay : d),
+      }));
+    } catch (err) {
+      setError('Could not regenerate that day. Please try again.');
+    } finally {
+      setRegenDay(null);
+    }
+  };
+
+  const saveItinerary = async () => {
+    setSaveState('saving');
+    try {
+      await plannerApi.saveItinerary(itinerary);
+      setSaveState('saved');
+    } catch {
+      setSaveState('error');
+    }
+  };
+
+  const current = itinerary?.days?.find(d => d.day === activeDay);
 
   return (
     <div className="atp-card">
@@ -310,10 +353,10 @@ Keep it inspiring and magazine-quality. 600-800 words.`;
       <div className="atp-row2">
         <div>
           <label className="atp-label">Duration</label>
-          <div className="atp-slider-val">{days} Days</div>
-          <input type="range" min="1" max="30" value={days} className="atp-slider"
-            style={{'--pct':`${((days-1)/29)*100}%`}} onChange={e=>setDays(+e.target.value)}/>
-          <div className="atp-slider-labs"><span>1 Day</span><span>30 Days</span></div>
+          <div className="atp-slider-val">{numDays} Days</div>
+          <input type="range" min="1" max="14" value={numDays} className="atp-slider"
+            style={{'--pct':`${((numDays-1)/13)*100}%`}} onChange={e=>setNumDays(+e.target.value)}/>
+          <div className="atp-slider-labs"><span>1 Day</span><span>14 Days</span></div>
         </div>
         <div>
           <label className="atp-label">Budget Tier</label>
@@ -345,27 +388,72 @@ Keep it inspiring and magazine-quality. 600-800 words.`;
         ))}
       </div>
 
-      <button className={`atp-gen-btn${loading?' loading':''}`} onClick={generate}>
+      <button className={`atp-gen-btn${loading?' loading':''}`} onClick={generate} disabled={loading}>
         {loading ? <><div className="atp-spinner"/>Crafting Your Journey…</> : <>✦ Generate My Itinerary</>}
       </button>
 
       {error && <div className="atp-error">⚠️ {error}</div>}
 
-      {itinerary && (
+      {itinerary && current && (
         <div className="atp-result">
           <div className="atp-res-hdr">
-            <div className="atp-res-title">Your {days}-Day {dest} Journey</div>
+            <div className="atp-res-title">Your {itinerary.days.length}-Day {itinerary.destination} Journey</div>
             <div className="atp-res-tags">
               <span className="atp-res-tag">✦ {budget}</span>
-              <span className="atp-res-tag">📍 {dest}</span>
+              <span className="atp-res-tag">📍 {itinerary.destination}</span>
             </div>
           </div>
-          <div className="atp-itin">{renderText(itinerary)}</div>
-          <div className="atp-res-actions">
-            <button className="atp-act-btn pri">📥 Save Itinerary</button>
-            <button className="atp-act-btn sec">🔄 Regenerate</button>
-            <button className="atp-act-btn sec">📤 Share</button>
+
+          <div className="atp-day-tabs">
+            {itinerary.days.map(d => (
+              <div
+                key={d.day}
+                className={`atp-day-tab${d.day===activeDay?' active':''}`}
+                onClick={()=>setActiveDay(d.day)}
+              >
+                {d.day}
+              </div>
+            ))}
           </div>
+
+          <div className="atp-itin">
+            <h3 className="atp-day-title">Day {current.day} — {current.title}</h3>
+            <div className="atp-day-block">
+              <div className="atp-day-block-label">Morning</div>
+              <div>{current.morning}</div>
+            </div>
+            <div className="atp-day-block">
+              <div className="atp-day-block-label">Afternoon</div>
+              <div>{current.afternoon}</div>
+            </div>
+            <div className="atp-day-block">
+              <div className="atp-day-block-label">Evening</div>
+              <div>{current.evening}</div>
+            </div>
+            <div className="atp-day-block">
+              <div className="atp-day-block-label">Meals</div>
+              <div>{current.meals}</div>
+            </div>
+            <div className="atp-day-block">
+              <div className="atp-day-block-label">Budget</div>
+              <div>{current.estimatedBudgetINR}</div>
+            </div>
+            <div className="atp-day-tip"><b>Tip —</b> {current.tips}</div>
+          </div>
+
+          <div className="atp-res-actions">
+            <button className="atp-act-btn pri" onClick={saveItinerary} disabled={saveState==='saving'}>
+              📥 {saveState==='saving' ? 'Saving…' : saveState==='saved' ? 'Saved' : 'Save Itinerary'}
+            </button>
+            <button
+              className="atp-act-btn sec"
+              onClick={()=>regenerateDay(current.day)}
+              disabled={regenDay===current.day}
+            >
+              🔄 {regenDay===current.day ? 'Regenerating…' : `Regenerate Day ${current.day}`}
+            </button>
+          </div>
+          {saveState==='error' && <div className="atp-saved-note">Couldn't save — please try again.</div>}
         </div>
       )}
     </div>

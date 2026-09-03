@@ -188,57 +188,141 @@ const Dashboard = () => {
 };
 
 // 2. MY PROFILE
-const Profile = () => (
-  <PageTransition>
-    <div className="p-8 max-w-4xl mx-auto space-y-8">
-      <div className="flex items-center gap-8 mb-8">
-        <div className="relative">
-          <div className="w-32 h-32 rounded-full bg-[#8B1A1A] flex items-center justify-center text-4xl text-white font-serif font-bold">AM</div>
-          <button className="absolute bottom-0 right-0 p-2 bg-[#FF6B1A] text-white rounded-full ring-4 ring-[#FDF6EC]"><Camera size={16}/></button>
-        </div>
-        <div>
-          <h2 className="text-3xl font-serif font-bold text-[#8B1A1A]">Arjun Mehta</h2>
-          <p className="text-[#8B1A1A]/60 font-medium">Mumbai, India • Pro Traveler</p>
-          <div className="flex gap-2 mt-3">
-            <Badge>Spiritual</Badge><Badge>Adventure</Badge><Badge variant="gold">Luxury</Badge>
-          </div>
-        </div>
-      </div>
+const Profile = () => {
+  const { user } = useAuth();
+  const initials = user?.name
+    ? user.name
+        .split(" ")
+        .map((n) => n[0])
+        .join("")
+        .toUpperCase()
+        .slice(0, 2)
+    : "AM";
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card className="space-y-4">
-          <h3 className="font-bold text-[#8B1A1A]">Personal Information</h3>
-          <div className="space-y-4">
-            {['Full Name', 'Email', 'Phone', 'Passport Status'].map(l => (
-              <div key={l}>
-                <label className="text-[10px] font-bold text-[#8B1A1A]/40 uppercase tracking-widest">{l}</label>
-                <input type="text" className="w-full bg-white border border-[#E8DCC4] rounded-xl px-4 py-2 mt-1 text-sm" placeholder={l} />
-              </div>
-            ))}
-          </div>
-        </Card>
-        <Card className="space-y-4">
-          <h3 className="font-bold text-[#8B1A1A]">Travel Preferences</h3>
-          <div className="space-y-4">
-            <div>
-              <label className="text-[10px] font-bold text-[#8B1A1A]/40 uppercase tracking-widest">Bio</label>
-              <textarea className="w-full bg-white border border-[#E8DCC4] rounded-xl px-4 py-2 mt-1 text-sm h-24" placeholder="Share your travel philosophy..." />
+  return (
+    <PageTransition>
+      <div className="p-8 max-w-4xl mx-auto space-y-8">
+        <div className="flex items-center gap-8 mb-8">
+          <div className="relative">
+            <div className="w-32 h-32 rounded-full bg-[#8B1A1A] flex items-center justify-center text-4xl text-white font-serif font-bold">
+              {initials}
             </div>
-            <div>
-              <label className="text-[10px] font-bold text-[#8B1A1A]/40 uppercase tracking-widest">Known Languages</label>
-              <div className="flex flex-wrap gap-2 mt-2">
-                {['Hindi', 'English', 'Marathi', 'Gujarati'].map(lang => (
-                  <span key={lang} className="bg-white border border-[#E8DCC4] px-3 py-1 rounded-full text-xs font-bold text-[#8B1A1A]">{lang}</span>
-                ))}
-              </div>
+            <button className="absolute bottom-0 right-0 p-2 bg-[#FF6B1A] text-white rounded-full ring-4 ring-[#FDF6EC]">
+              <Camera size={16} />
+            </button>
+          </div>
+          <div>
+            <h2 className="text-3xl font-serif font-bold text-[#8B1A1A]">
+              {user?.name || "Explorer"}
+            </h2>
+            <p className="text-[#8B1A1A]/60 font-medium">
+              {user?.location || "India"} • {user?.role === "admin" ? "Admin" : "Pro Traveler"}
+            </p>
+            <div className="flex gap-2 mt-3">
+              {user?.interests && user.interests.length > 0 ? (
+                user.interests.map((int) => (
+                  <Badge key={int} variant="primary">
+                    {int}
+                  </Badge>
+                ))
+              ) : (
+                <>
+                  <Badge>Spiritual</Badge>
+                  <Badge>Adventure</Badge>
+                  <Badge variant="gold">Luxury</Badge>
+                </>
+              )}
             </div>
           </div>
-        </Card>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <Card className="space-y-4">
+            <h3 className="font-bold text-[#8B1A1A]">Personal Information</h3>
+            <div className="space-y-4">
+              <div>
+                <label className="text-[10px] font-bold text-[#8B1A1A]/40 uppercase tracking-widest">
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  className="w-full bg-white border border-[#E8DCC4] rounded-xl px-4 py-2 mt-1 text-sm text-[#2D1B00]"
+                  defaultValue={user?.name || ""}
+                />
+              </div>
+              <div>
+                <label className="text-[10px] font-bold text-[#8B1A1A]/40 uppercase tracking-widest">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  readOnly
+                  className="w-full bg-white/70 border border-[#E8DCC4] rounded-xl px-4 py-2 mt-1 text-sm text-[#2D1B00]/70 cursor-not-allowed"
+                  value={user?.email || ""}
+                />
+              </div>
+              <div>
+                <label className="text-[10px] font-bold text-[#8B1A1A]/40 uppercase tracking-widest">
+                  Phone
+                </label>
+                <input
+                  type="text"
+                  className="w-full bg-white border border-[#E8DCC4] rounded-xl px-4 py-2 mt-1 text-sm text-[#2D1B00]"
+                  defaultValue={user?.phone || ""}
+                  placeholder="+91..."
+                />
+              </div>
+              <div>
+                <label className="text-[10px] font-bold text-[#8B1A1A]/40 uppercase tracking-widest">
+                  Location
+                </label>
+                <input
+                  type="text"
+                  className="w-full bg-white border border-[#E8DCC4] rounded-xl px-4 py-2 mt-1 text-sm text-[#2D1B00]"
+                  defaultValue={user?.location || ""}
+                  placeholder="e.g. Mumbai, India"
+                />
+              </div>
+            </div>
+          </Card>
+          <Card className="space-y-4">
+            <h3 className="font-bold text-[#8B1A1A]">Travel Preferences</h3>
+            <div className="space-y-4">
+              <div>
+                <label className="text-[10px] font-bold text-[#8B1A1A]/40 uppercase tracking-widest">
+                  Bio
+                </label>
+                <textarea
+                  className="w-full bg-white border border-[#E8DCC4] rounded-xl px-4 py-2 mt-1 text-sm h-24"
+                  placeholder="Share your travel philosophy..."
+                  defaultValue="Passionate explorer discovering hidden gems and authentic cultures across India."
+                />
+              </div>
+              <div>
+                <label className="text-[10px] font-bold text-[#8B1A1A]/40 uppercase tracking-widest">
+                  Known Languages
+                </label>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {["Hindi", "English", "Marathi", "Gujarati"].map((lang) => (
+                    <span
+                      key={lang}
+                      className="bg-white border border-[#E8DCC4] px-3 py-1 rounded-full text-xs font-bold text-[#8B1A1A]"
+                    >
+                      {lang}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </Card>
+        </div>
+        <div className="flex justify-end">
+          <Button>Save Profile Changes</Button>
+        </div>
       </div>
-      <div className="flex justify-end"><Button>Save Profile Changes</Button></div>
-    </div>
-  </PageTransition>
-);
+    </PageTransition>
+  );
+};
 
 // 3. MY TRIPS
 const MyTrips = ({ savedTrips, setSavedTrips }) => {
@@ -1612,7 +1696,7 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
       <div className="p-6 border-t border-[#E8DCC4]">
         <button
           onClick={handleLogout}
-          className="flex items-center justify-center lg:justify-start gap-3 ..."
+          className="flex items-center justify-center lg:justify-start gap-3 w-full text-[#8B1A1A] hover:text-red-600 font-bold transition-colors cursor-pointer"
         >
           <LogOut size={20} />
           {!collapsed && <span>Logout</span>}
@@ -1622,21 +1706,37 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
   );
 };
 
-const Topbar = () => (
-  <header className="h-20 border-b border-[#E8DCC4] bg-[#FDF6EC]/80 backdrop-blur-md sticky top-0 px-8 flex items-center justify-between z-40">
-    <div className="flex-1 max-w-xl relative">
-      <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8B1A1A]/40" size={18} />
-      <input type="text" placeholder="Search experiences, stays, or itineraries..." className="w-full bg-[#FFF8F0] border border-[#E8DCC4] pl-12 pr-4 py-2.5 rounded-full text-sm outline-none focus:ring-2 focus:ring-[#FF6B1A]/20" />
-    </div>
-    <div className="flex items-center gap-4 pl-8 border-l border-[#E8DCC4] ml-8">
-      <div className="text-right hidden md:block">
-        <p className="text-sm font-bold text-[#8B1A1A]">Arjun Mehta</p>
-        <p className="text-[10px] font-bold text-[#FF6B1A] uppercase tracking-tighter">Level 4: Heritage Hunter</p>
+const Topbar = () => {
+  const { user } = useAuth();
+  const initials = user?.name
+    ? user.name
+        .split(" ")
+        .map((n) => n[0])
+        .join("")
+        .toUpperCase()
+        .slice(0, 2)
+    : "AM";
+
+  return (
+    <header className="h-20 border-b border-[#E8DCC4] bg-[#FDF6EC]/80 backdrop-blur-md sticky top-0 px-8 flex items-center justify-between z-40">
+      <div className="flex-1 max-w-xl relative">
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8B1A1A]/40" size={18} />
+        <input type="text" placeholder="Search experiences, stays, or itineraries..." className="w-full bg-[#FFF8F0] border border-[#E8DCC4] pl-12 pr-4 py-2.5 rounded-full text-sm outline-none focus:ring-2 focus:ring-[#FF6B1A]/20" />
       </div>
-      <div className="w-10 h-10 bg-[#8B1A1A] text-white rounded-full flex items-center justify-center font-bold font-serif">AM</div>
-    </div>
-  </header>
-);
+      <div className="flex items-center gap-4 pl-8 border-l border-[#E8DCC4] ml-8">
+        <div className="text-right hidden md:block">
+          <p className="text-sm font-bold text-[#8B1A1A]">{user?.name || "Explorer"}</p>
+          <p className="text-[10px] font-bold text-[#FF6B1A] uppercase tracking-tighter">
+            {user?.role === "admin" ? "Admin" : "Level 4: Heritage Hunter"}
+          </p>
+        </div>
+        <div className="w-10 h-10 bg-[#8B1A1A] text-white rounded-full flex items-center justify-center font-bold font-serif">
+          {initials}
+        </div>
+      </div>
+    </header>
+  );
+};
 
 const App = () => {
   const [collapsed, setCollapsed] = useState(false);

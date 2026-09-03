@@ -1,18 +1,28 @@
-import React, { useEffect, useState } from 'react'
-import {Plane,Menu,X,User,Search} from 'lucide-react'
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Plane, Menu, X, User, Search, LogOut } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
+import { useAuth } from '../../features/auth/useAuth';
 
 function Navbar() {
-    const [isScrolled,setIsScrolled]=useState(false);
-    const [isOpened,setIsOpened]=useState(false);
-    const [isLoggedIn,setIsLoggedIn]=useState(false);
-    useEffect(()=>{
-        const handleScroll=()=>{
-            setIsScrolled(window.scrollY>50);
+    const [isScrolled, setIsScrolled] = useState(false);
+    const [isOpened, setIsOpened] = useState(false);
+    const { user, logout } = useAuth();
+    const location = useLocation();
+
+    // Do not show public fixed navbar on dashboard or admin pages to avoid overlap
+    const isDashboardOrAdmin = location.pathname.startsWith('/dashboard') || location.pathname.startsWith('/admin');
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 50);
         };
-        window.addEventListener('scroll',handleScroll);
-        return ()=>{window.removeEventListener('scroll',handleScroll)};
-    },[]);
+        window.addEventListener('scroll', handleScroll);
+        return () => { window.removeEventListener('scroll', handleScroll); };
+    }, []);
+
+    if (isDashboardOrAdmin) {
+        return null;
+    }
     return (
       <nav className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 px-6 py-4 md:px-12 ${
   isScrolled 
@@ -45,22 +55,35 @@ function Navbar() {
         {/* ACTIONS */}
         <div className="flex items-center gap-6 text-white">
           <Search size={18} className="cursor-pointer hover:text-amber-500 transition-colors hidden sm:block" />
-          {/* {Login User rendering section} */}
-          {isLoggedIn ? (
-  <div className="flex items-center gap-2 cursor-pointer hover:text-amber-500 transition-colors">
-    <User size={18} className='text-green-400'/>
-    <span className="text-sm font-bold hidden md:block text-green-400">Profile</span>
-  </div>
-) : (
-  <Link to='/login'>
-    <button className="bg-transparent border border-white text-white px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-white hover:text-black transition-all">
-      Login
-    </button>
-  </Link>
-)}
-          <button className="hidden md:block bg-amber-500 hover:bg-amber-600 text-black px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all active:scale-95">
-            Book Trip
-          </button>
+          {/* Login User rendering section */}
+          {user ? (
+            <div className="flex items-center gap-3">
+              <Link to="/dashboard" className="flex items-center gap-2 cursor-pointer hover:text-amber-500 transition-colors">
+                <User size={18} className='text-green-400'/>
+                <span className="text-sm font-bold hidden md:block text-green-400">
+                  {user.name?.split(" ")[0] || "Dashboard"}
+                </span>
+              </Link>
+              <button
+                onClick={logout}
+                title="Logout"
+                className="hidden md:flex items-center text-white/70 hover:text-red-400 transition-colors"
+              >
+                <LogOut size={16} />
+              </button>
+            </div>
+          ) : (
+            <Link to='/login'>
+              <button className="bg-transparent border border-white text-white px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-white hover:text-black transition-all">
+                Login
+              </button>
+            </Link>
+          )}
+          <Link to="/book-trip">
+            <button className="hidden md:block bg-amber-500 hover:bg-amber-600 text-black px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all active:scale-95">
+              Book Trip
+            </button>
+          </Link>
 
           {/* Mobile Menu Icon */}
           <div className="md:hidden cursor-pointer hover:text-amber-500" onClick={()=>{setIsOpened(!isOpened)}}>
@@ -92,21 +115,28 @@ function Navbar() {
       <Link to='/about' onClick={() => setIsOpened(false)} className={isScrolled ? 'text-white/80' : 'text-white'}>
         About
       </Link>
-      {isLoggedIn ? (
-  <div className="flex items-center gap-2 cursor-pointer hover:text-amber-500 transition-colors">
-    <User size={18} />
-    <span>Profile</span>
-  </div>
-) : (
-  <Link to='/login' onClick={() => setIsOpened(false)}>
-    <button className="bg-transparent border border-white text-white px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-white hover:text-black transition-all w-fit">
-      Login
-    </button>
-  </Link>
-)}
-      <button className="bg-amber-500 text-black px-8 py-3 rounded-full text-[12px] font-black uppercase tracking-widest w-fit shadow-xl transition-all duration-300 hover:scale-105 hover:bg-amber-400">
-        Book Trip
-      </button>
+      {user ? (
+        <div className="flex flex-col items-center gap-4">
+          <Link to="/dashboard" onClick={() => setIsOpened(false)} className="flex items-center gap-2 cursor-pointer text-green-400">
+            <User size={18} />
+            <span>{user.name}</span>
+          </Link>
+          <button onClick={() => { logout(); setIsOpened(false); }} className="text-red-400 text-xs uppercase tracking-widest">
+            Logout
+          </button>
+        </div>
+      ) : (
+        <Link to='/login' onClick={() => setIsOpened(false)}>
+          <button className="bg-transparent border border-white text-white px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-white hover:text-black transition-all w-fit">
+            Login
+          </button>
+        </Link>
+      )}
+      <Link to="/book-trip" onClick={() => setIsOpened(false)}>
+        <button className="bg-amber-500 text-black px-8 py-3 rounded-full text-[12px] font-black uppercase tracking-widest w-fit shadow-xl transition-all duration-300 hover:scale-105 hover:bg-amber-400">
+          Book Trip
+        </button>
+      </Link>
 
     </div>
   </div>

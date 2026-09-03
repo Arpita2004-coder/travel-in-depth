@@ -1,7 +1,9 @@
 import { apiClient } from "./client";
 
-export const signup = (name, email, password) =>
-  apiClient.post("/auth/signup", { name, email, password });
+export const signup = (payload, email, password) => {
+  const body = typeof payload === "object" ? payload : { name: payload, email, password };
+  return apiClient.post("/auth/signup", body);
+};
 
 export const login = (email, password) =>
   apiClient.post("/auth/login", { email, password });

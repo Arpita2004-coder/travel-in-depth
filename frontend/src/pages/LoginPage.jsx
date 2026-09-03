@@ -366,21 +366,24 @@ function EyeIcon({ open }) {
 const LOGO_SRC = "logo.jpg";
 export default function TravelLoginPage() {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const { login } = useAuth();
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
     try {
       await login(email, password);
       navigate("/dashboard");
     } catch (err) {
-      setError(err.message);
+      setError(err.message || "Invalid credentials. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -396,7 +399,7 @@ export default function TravelLoginPage() {
           <div className="geo-border"></div>
           <div className="left-content">
             <div className="brand">
-              <img className="brand-logo-img" src={LOGO_SRC} alt="Travel in Depth Logo" />
+              <img className="brand-logo-img" src="/logo.jpg" alt="Travel in Depth Logo" />
               <div className="brand-name">
                 Travel in Depth
                 <span>Discover Incredible India</span>
@@ -412,7 +415,7 @@ export default function TravelLoginPage() {
         <div className="right-panel">
           <div className="form-card">
             <div className="form-logo-row">
-              <img className="form-logo-img" src={LOGO_SRC} alt="Travel in Depth" />
+              <img className="form-logo-img" src="/logo.jpg" alt="Travel in Depth" />
               <span className="form-logo-text">Travel in Depth</span>
             </div>
 
@@ -421,16 +424,33 @@ export default function TravelLoginPage() {
             </h2>
             <p className="form-subtitle">Pick up right where you left your journey.</p>
 
+            {error && (
+              <div style={{
+                background: "rgba(224, 72, 62, 0.1)",
+                border: "1px solid rgba(224, 72, 62, 0.4)",
+                borderRadius: "10px",
+                padding: "10px 14px",
+                color: "#E0483E",
+                fontSize: "0.85rem",
+                marginBottom: "1.2rem",
+                display: "flex",
+                alignItems: "center",
+                gap: "8px"
+              }}>
+                <span>⚠️</span> {error}
+              </div>
+            )}
+
             <form onSubmit={handleSubmit}>
               <div className="field">
-                <label>Email or Phone Number</label>
+                <label>Email Address</label>
                 <div className="input-wrap">
                   <svg className="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
                     <path d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"></path>
                   </svg>
                   <input
-                    type="text"
-                    placeholder="name@email.com or +91..."
+                    type="email"
+                    placeholder="name@email.com"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -463,14 +483,18 @@ export default function TravelLoginPage() {
               </div>
 
               <div className="forgot-link">
-                <a href="/forgot">Forgot Password?</a>
+                <a href="/forgot-password">Forgot Password?</a>
               </div>
 
-              <button type="button"className="btn-login"onClick={() => navigate("/dashboard")}>
-                <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                  <path d="M21 3L3 10.53v.98l6.84 2.65L12.48 21h.98z" />
-                </svg>
-                Login to Dashboard
+              <button type="submit" className="btn-login" disabled={loading}>
+                {loading ? "Logging in..." : (
+                  <>
+                    <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <path d="M21 3L3 10.53v.98l6.84 2.65L12.48 21h.98z" />
+                    </svg>
+                    Login to Dashboard
+                  </>
+                )}
               </button>
             </form>
 

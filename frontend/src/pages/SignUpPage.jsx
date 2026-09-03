@@ -75,40 +75,59 @@ export default function TravelSignup() {
   const { signup } = useAuth();
   const navigate = useNavigate();
   const [signupError, setSignupError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   const handleFinalSubmit = async () => {
+    setSignupError("");
+    setSubmitting(true);
     try {
-      await signup(fullName, email, password);
+      await signup({
+        name: fullName,
+        email,
+        password,
+        phone,
+        location,
+        interests,
+      });
       setSubmitted(true);
       navigate("/dashboard");
     } catch (err) {
-      setSignupError(err.message);
+      setSignupError(err.message || "Failed to create account. Please try again.");
+    } finally {
+      setSubmitting(false);
     }
   };
+
   const goNext = (e) => {
     e.preventDefault();
+    setSignupError("");
     if (step === 1) {
-  if (!fullName.trim() || !email.trim()) {
-    alert("Please enter your full name and email.");
-    return;
-  }
-}
+      if (!fullName.trim() || !email.trim()) {
+        setSignupError("Please enter your full name and email.");
+        return;
+      }
+    }
    
-if (step === 2) {
-  if (password !== confirm) {
-    alert("Passwords do not match.");
-    return;
-  }
-}
+    if (step === 2) {
+      if (!password || password.length < 6) {
+        setSignupError("Password must be at least 6 characters.");
+        return;
+      }
+      if (password !== confirm) {
+        setSignupError("Passwords do not match.");
+        return;
+      }
+    }
     if (step < 3) {
       setStep(step + 1);
     } else {
-        if (!agreed) return;
-        handleFinalSubmit();
-      }
+      if (!agreed) return;
+      handleFinalSubmit();
+    }
   };
 
   const goBack = () => {
+    setSignupError("");
     if (step > 1) setStep(step - 1);
   };
 
@@ -387,6 +406,23 @@ if (step === 2) {
             />
           </div>
 
+          {signupError && (
+            <div style={{
+              background: "rgba(224, 72, 62, 0.1)",
+              border: "1px solid rgba(224, 72, 62, 0.4)",
+              borderRadius: "10px",
+              padding: "10px 14px",
+              color: "#E0483E",
+              fontSize: "0.85rem",
+              marginBottom: "1.2rem",
+              display: "flex",
+              alignItems: "center",
+              gap: "8px"
+            }}>
+              <span>⚠️</span> {signupError}
+            </div>
+          )}
+
           <form onSubmit={goNext}>
             {/* STEP 1: ACCOUNT */}
             {step === 1 && (
@@ -649,15 +685,15 @@ if (step === 2) {
                 </div>
 
                 <div className="btn-row">
-                  <button type="button" className="btn-back" onClick={goBack}>
+                  <button type="button" className="btn-back" onClick={goBack} disabled={submitting}>
                     ← Back
                   </button>
                   <button
                     type="submit"
                     className={"btn-primary " + (submitted ? "success" : "")}
-                    disabled={!agreed || interests.length === 0}
+                    disabled={!agreed || interests.length === 0 || submitting}
                   >
-                    {submitted ? "✓ Account Created!" : "📍 Begin Your Journey"}
+                    {submitting ? "Creating Account..." : submitted ? "✓ Account Created!" : "📍 Begin Your Journey"}
                   </button>
                 </div>
               </>

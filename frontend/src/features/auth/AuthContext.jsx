@@ -46,8 +46,15 @@ export const AuthProvider = ({ children }) => {
     return data.user;
   };
 
-  const signup = async (name, email, password) => {
-    const data = await authApi.signup(name, email, password);
+  const signup = async (userData) => {
+    // accept object or individual parameters for backward compatibility
+    let payload;
+    if (typeof userData === "object") {
+      payload = userData;
+    } else {
+      payload = { name: arguments[0], email: arguments[1], password: arguments[2] };
+    }
+    const data = await authApi.signup(payload);
     localStorage.setItem("token", data.token);
     setUser(data.user);
     return data.user;
