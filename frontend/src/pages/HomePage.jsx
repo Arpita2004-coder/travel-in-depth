@@ -22,7 +22,7 @@ function HomePage() {
         <AITripPlanner
             isLoggedIn={!!user}
             userName={user?.name}
-            onLoginRequest={() => navigate('/login')}
+            onLoginRequest={() => navigate('/login', { state: { from: '/#ai-trip-planner' } })}
         />
         <VisualDiscovery />
         <ExploreByMood />

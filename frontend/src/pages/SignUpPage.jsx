@@ -1,7 +1,6 @@
 import React, { useState, useMemo } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../features/auth/useAuth";
-import { useNavigate } from "react-router-dom";
 
 const INTERESTS = [
   { id: "himalayan", label: "Himalayan Treks", icon: "🏔️" },
@@ -72,8 +71,12 @@ export default function TravelSignup() {
       prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
     );
   };
+
   const { signup } = useAuth();
   const navigate = useNavigate();
+  const locationHook = useLocation();
+  const redirectTarget = locationHook.state?.from || "/dashboard";
+
   const [signupError, setSignupError] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
@@ -90,7 +93,7 @@ export default function TravelSignup() {
         interests,
       });
       setSubmitted(true);
-      navigate("/dashboard");
+      navigate(redirectTarget, { replace: true });
     } catch (err) {
       setSignupError(err.message || "Failed to create account. Please try again.");
     } finally {
@@ -701,7 +704,7 @@ export default function TravelSignup() {
           </form>
 
           <p className="signin-link">
-            Already have an account? <Link to="/login">Sign in here</Link>
+            Already have an account? <Link to="/login" state={{ from: redirectTarget }}>Sign in here</Link>
           </p>
         </div>
       </div>

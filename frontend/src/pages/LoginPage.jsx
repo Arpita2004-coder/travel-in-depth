@@ -1,6 +1,6 @@
 import { useState } from "react";
 import heroImg from "../assets/hawamahal.jpg";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useAuth } from "../features/auth/useAuth";
 // Replace these with your own image sources (the base64 data URIs from the
 // original HTML, or paths/URLs to your logo and hero image).
@@ -366,6 +366,7 @@ function EyeIcon({ open }) {
 const LOGO_SRC = "logo.jpg";
 export default function TravelLoginPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { login } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
@@ -373,13 +374,16 @@ export default function TravelLoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // Determine return target: from location.state or fallback
+  const redirectTarget = location.state?.from || "/dashboard";
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setLoading(true);
     try {
       await login(email, password);
-      navigate("/dashboard");
+      navigate(redirectTarget, { replace: true });
     } catch (err) {
       setError(err.message || "Invalid credentials. Please try again.");
     } finally {
@@ -519,7 +523,7 @@ export default function TravelLoginPage() {
             </div>
 
             <p className="signup-link">
-              Don't have an account? <a href="/signup">Sign up</a>
+              Don't have an account? <Link to="/signup" state={{ from: redirectTarget }}>Sign up</Link>
             </p>
           </div>
 

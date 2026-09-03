@@ -274,6 +274,7 @@ function UnlockedPlanner({ userName = 'Traveller' }) {
   const [loading, setLoading] = useState(false);
   const [itinerary, setItinerary] = useState(null);   // { destination, days: [...] }
   const [activeDay, setActiveDay] = useState(1);
+  const [isEditing, setIsEditing] = useState(false);
   const [regenDay, setRegenDay] = useState(null);
   const [saveState, setSaveState] = useState('idle'); // idle | saving | saved | error
   const [error, setError] = useState(null);
@@ -281,7 +282,7 @@ function UnlockedPlanner({ userName = 'Traveller' }) {
   const toggleInterest = l => setInterests(p => p.includes(l) ? p.filter(i=>i!==l) : [...p,l]);
 
   const generate = async () => {
-    setLoading(true); setError(null); setItinerary(null); setSaveState('idle');
+    setLoading(true); setError(null); setItinerary(null); setSaveState('idle'); setIsEditing(false);
     try {
       const data = await plannerApi.generateItinerary({
         destination: dest,
@@ -316,6 +317,13 @@ function UnlockedPlanner({ userName = 'Traveller' }) {
     } finally {
       setRegenDay(null);
     }
+  };
+
+  const handleDayFieldChange = (dayNumber, field, value) => {
+    setItinerary(prev => ({
+      ...prev,
+      days: prev.days.map(d => d.day === dayNumber ? { ...d, [field]: value } : d),
+    }));
   };
 
   const saveItinerary = async () => {
@@ -417,33 +425,116 @@ function UnlockedPlanner({ userName = 'Traveller' }) {
           </div>
 
           <div className="atp-itin">
-            <h3 className="atp-day-title">Day {current.day} — {current.title}</h3>
+            <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:18}}>
+              {isEditing ? (
+                <input
+                  type="text"
+                  value={current.title}
+                  onChange={(e) => handleDayFieldChange(current.day, 'title', e.target.value)}
+                  className="atp-select"
+                  style={{maxWidth:'300px', fontWeight:600}}
+                />
+              ) : (
+                <h3 className="atp-day-title" style={{margin:0}}>Day {current.day} — {current.title}</h3>
+              )}
+              <button
+                className="atp-act-btn sec"
+                onClick={() => setIsEditing(!isEditing)}
+                style={{padding:'6px 14px', fontSize:'12px'}}
+              >
+                {isEditing ? '✓ Done Editing' : '✏️ Edit Day'}
+              </button>
+            </div>
+
             <div className="atp-day-block">
               <div className="atp-day-block-label">Morning</div>
-              <div>{current.morning}</div>
+              {isEditing ? (
+                <textarea
+                  className="atp-select"
+                  rows={2}
+                  value={current.morning}
+                  onChange={(e) => handleDayFieldChange(current.day, 'morning', e.target.value)}
+                />
+              ) : (
+                <div>{current.morning}</div>
+              )}
             </div>
+
             <div className="atp-day-block">
               <div className="atp-day-block-label">Afternoon</div>
-              <div>{current.afternoon}</div>
+              {isEditing ? (
+                <textarea
+                  className="atp-select"
+                  rows={2}
+                  value={current.afternoon}
+                  onChange={(e) => handleDayFieldChange(current.day, 'afternoon', e.target.value)}
+                />
+              ) : (
+                <div>{current.afternoon}</div>
+              )}
             </div>
+
             <div className="atp-day-block">
               <div className="atp-day-block-label">Evening</div>
-              <div>{current.evening}</div>
+              {isEditing ? (
+                <textarea
+                  className="atp-select"
+                  rows={2}
+                  value={current.evening}
+                  onChange={(e) => handleDayFieldChange(current.day, 'evening', e.target.value)}
+                />
+              ) : (
+                <div>{current.evening}</div>
+              )}
             </div>
+
             <div className="atp-day-block">
               <div className="atp-day-block-label">Meals</div>
-              <div>{current.meals}</div>
+              {isEditing ? (
+                <input
+                  type="text"
+                  className="atp-select"
+                  value={current.meals}
+                  onChange={(e) => handleDayFieldChange(current.day, 'meals', e.target.value)}
+                />
+              ) : (
+                <div>{current.meals}</div>
+              )}
             </div>
+
             <div className="atp-day-block">
               <div className="atp-day-block-label">Budget</div>
-              <div>{current.estimatedBudgetINR}</div>
+              {isEditing ? (
+                <input
+                  type="text"
+                  className="atp-select"
+                  value={current.estimatedBudgetINR}
+                  onChange={(e) => handleDayFieldChange(current.day, 'estimatedBudgetINR', e.target.value)}
+                />
+              ) : (
+                <div>{current.estimatedBudgetINR}</div>
+              )}
             </div>
-            <div className="atp-day-tip"><b>Tip —</b> {current.tips}</div>
+
+            <div className="atp-day-tip">
+              <b>Tip — </b>
+              {isEditing ? (
+                <input
+                  type="text"
+                  className="atp-select"
+                  style={{marginTop:'6px'}}
+                  value={current.tips}
+                  onChange={(e) => handleDayFieldChange(current.day, 'tips', e.target.value)}
+                />
+              ) : (
+                current.tips
+              )}
+            </div>
           </div>
 
           <div className="atp-res-actions">
             <button className="atp-act-btn pri" onClick={saveItinerary} disabled={saveState==='saving'}>
-              📥 {saveState==='saving' ? 'Saving…' : saveState==='saved' ? 'Saved' : 'Save Itinerary'}
+              📥 {saveState==='saving' ? 'Saving…' : saveState==='saved' ? 'Saved to Dashboard' : 'Save Itinerary'}
             </button>
             <button
               className="atp-act-btn sec"
@@ -453,7 +544,8 @@ function UnlockedPlanner({ userName = 'Traveller' }) {
               🔄 {regenDay===current.day ? 'Regenerating…' : `Regenerate Day ${current.day}`}
             </button>
           </div>
-          {saveState==='error' && <div className="atp-saved-note">Couldn't save — please try again.</div>}
+          {saveState==='saved' && <div className="atp-saved-note">✓ Itinerary successfully saved! View it anytime in your dashboard.</div>}
+          {saveState==='error' && <div className="atp-saved-note" style={{color:'#ff9999'}}>Couldn't save — please try again.</div>}
         </div>
       )}
     </div>
@@ -463,10 +555,15 @@ function UnlockedPlanner({ userName = 'Traveller' }) {
 /* ─── Export ──────────────────────────────────────────────────────────────── */
 export default function AITripPlanner({ isLoggedIn = false, userName, onLoginRequest }) {
   const [loggedIn, setLoggedIn] = useState(isLoggedIn);
+
+  React.useEffect(() => {
+    setLoggedIn(isLoggedIn);
+  }, [isLoggedIn]);
+
   return (
     <>
       <style>{css}</style>
-      <section className="atp-section">
+      <section id="ai-trip-planner" className="atp-section">
         <div className="atp-orb atp-orb-1"/><div className="atp-orb atp-orb-2"/><div className="atp-orb atp-orb-3"/>
         <div className="atp-wrap">
           <div className="atp-hdr">

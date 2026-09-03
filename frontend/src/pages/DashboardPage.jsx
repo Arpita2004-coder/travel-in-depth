@@ -1,6 +1,7 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useAuth } from "../features/auth/useAuth";
 import { useNavigate } from "react-router-dom";
+import * as plannerApi from "../api/plannerApi";
 import {
   Routes,
   Route,
@@ -325,13 +326,48 @@ const Profile = () => {
 };
 
 // 3. MY TRIPS
-const MyTrips = ({ savedTrips, setSavedTrips }) => {
+const MyTrips = ({ savedTrips = [], setSavedTrips }) => {
+  const navigate = useNavigate();
   const [tab, setTab] = useState("upcoming");
   const [selectedTrip, setSelectedTrip] = useState(null);
+  const [backendTrips, setBackendTrips] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    let isMounted = true;
+    const loadItineraries = async () => {
+      setLoading(true);
+      try {
+        const data = await plannerApi.fetchMyItineraries();
+        if (isMounted && Array.isArray(data)) {
+          setBackendTrips(data);
+        }
+      } catch (err) {
+        if (isMounted) setError(err.message);
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    };
+    loadItineraries();
+    return () => { isMounted = false; };
+  }, []);
+
+  const handleDeleteBackendTrip = async (id, e) => {
+    e.stopPropagation();
+    if (!window.confirm("Are you sure you want to delete this itinerary?")) return;
+    try {
+      await plannerApi.deleteItinerary(id);
+      setBackendTrips(prev => prev.filter(t => t._id !== id));
+      if (selectedTrip?._id === id) setSelectedTrip(null);
+    } catch (err) {
+      alert("Failed to delete itinerary: " + err.message);
+    }
+  };
 
   const trips = [
     {
-      id: 1,
+      id: "demo-1",
       destination: "Varanasi",
       title: "Varanasi Spiritual Sojourn",
       startDate: "15 Jul 2026",
@@ -343,7 +379,7 @@ const MyTrips = ({ savedTrips, setSavedTrips }) => {
       image: "/images/varanasi.jpg",
     },
     {
-      id: 2,
+      id: "demo-2",
       destination: "Ladakh",
       title: "Ladakh Bike Expedition",
       startDate: "10 Aug 2026",
@@ -355,7 +391,7 @@ const MyTrips = ({ savedTrips, setSavedTrips }) => {
       image: "/images/ladakh.jpg",
     },
     {
-      id: 3,
+      id: "demo-3",
       destination: "Goa",
       title: "Goa Monsoon Escape",
       startDate: "05 May 2026",
@@ -368,10 +404,30 @@ const MyTrips = ({ savedTrips, setSavedTrips }) => {
     },
   ];
 
+  // Map backend AI itineraries to card format
+  const formattedBackendTrips = backendTrips.map(bt => ({
+    _id: bt._id,
+    id: bt._id,
+    destination: bt.destination,
+    title: `${bt.destination} AI Expedition`,
+    startDate: new Date(bt.createdAt).toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" }),
+    endDate: `${bt.days?.length || 1} Days Plan`,
+    status: "upcoming",
+    budget: bt.days?.reduce((acc, d) => acc, 0) || "AI Tailored",
+    style: "AI Planned",
+    travelers: 1,
+    image: `/images/${(bt.destination || "default").toLowerCase().replace(/\s+/g, '-')}.jpg`,
+    isAiGenerated: true,
+    rawDays: bt.days,
+  }));
+
+  const allDisplayTrips = [...formattedBackendTrips, ...savedTrips, ...trips].filter(
+    (trip) => trip.status === tab
+  );
+
   return (
     <PageTransition>
       <div className="p-8 max-w-7xl mx-auto">
-
         <div className="flex justify-between items-end mb-8">
           <div>
             <h2 className="text-4xl font-serif font-bold text-[#8B1A1A]">
@@ -399,114 +455,150 @@ const MyTrips = ({ savedTrips, setSavedTrips }) => {
           </div>
         </div>
 
+        {loading && <div className="text-center py-6 text-[#8B1A1A]/60 font-medium">Loading your journeys…</div>}
+        {error && <div className="text-center py-2 text-red-500 text-sm">⚠️ {error}</div>}
+
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-
-          {[...savedTrips, ...trips].filter((trip) => trip.status === tab).map((trip) => (
-              <Card
-                key={trip.id}
-                className="group overflow-hidden hover:border-[#FF6B1A] transition-all duration-300 cursor-pointer"
-              >
-                <div className="h-44 rounded-xl overflow-hidden relative">
-                  <img src={trip.image}alt={trip.destination} className="w-full h-full object-cover group-hover:scale-110 transition duration-500"/>
-                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-                      <div className="absolute top-4 left-4">
-                      <Badge variant={trip.style === "Adventure" ? "primary" : "secondary"}> {trip.style}</Badge>
-         </div>
-
-</div>
+          {allDisplayTrips.map((trip) => (
+            <Card
+              key={trip.id || trip._id}
+              className="group overflow-hidden hover:border-[#FF6B1A] transition-all duration-300 cursor-pointer flex flex-col justify-between"
+              onClick={() => setSelectedTrip(trip)}
+            >
+              <div>
+                <div className="h-44 rounded-xl overflow-hidden relative bg-[#E8DCC4]">
+                  <img
+                    src={trip.image}
+                    alt={trip.destination}
+                    onError={(e) => { e.target.src = "/images/varanasi.jpg"; }}
+                    className="w-full h-full object-cover group-hover:scale-110 transition duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                  <div className="absolute top-4 left-4 flex gap-2">
+                    <Badge variant={trip.style === "Adventure" ? "primary" : trip.isAiGenerated ? "gold" : "secondary"}>
+                      {trip.style}
+                    </Badge>
+                  </div>
+                  {trip.isAiGenerated && (
+                    <button
+                      onClick={(e) => handleDeleteBackendTrip(trip._id, e)}
+                      title="Delete Itinerary"
+                      className="absolute top-4 right-4 p-2 bg-red-600/80 hover:bg-red-600 text-white rounded-full transition-all shadow-md"
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                  )}
+                </div>
 
                 <div className="mt-5">
-
                   <h3 className="text-xl font-bold text-[#8B1A1A]">
                     {trip.title}
                   </h3>
-
                   <p className="text-sm text-[#8B1A1A]/50 mt-1">
                     📍 {trip.destination}
                   </p>
-
                   <div className="flex items-center gap-2 mt-4 text-sm text-[#8B1A1A]/60">
                     <Calendar size={15} />
                     {trip.startDate} — {trip.endDate}
                   </div>
-
                   <div className="flex items-center gap-2 mt-2 text-sm text-[#8B1A1A]/60">
                     <Users size={15} />
-                    {trip.travelers} Travelers
+                    {trip.travelers} Traveler{trip.travelers > 1 ? 's' : ''}
                   </div>
-
-                  <div className="mt-5 pt-4 border-t border-[#E8DCC4] flex justify-between items-center">
-
-                    <div>
-                      <p className="text-xs text-[#8B1A1A]/50">
-                        Budget
-                      </p>
-
-                      <p className="font-bold text-[#138808]">
-                        ₹{trip.budget.toLocaleString()}
-                      </p>
-                    </div>
-
-                    <Button variant="ghost" className="text-sm px-4 py-2" onClick={() => setSelectedTrip(trip)}>  View Details</Button>
-
-                  </div>
-
                 </div>
-              </Card>
-            ))}
+              </div>
 
-          <Card onClick={() => navigate("/dashboard/planner")} className="border-2 border-dashed border-[#E8DCC4] flex flex-col items-center justify-center min-h-[340px] hover:border-[#FF6B1A] transition-all cursor-pointer">
+              <div className="mt-5 pt-4 border-t border-[#E8DCC4] flex justify-between items-center">
+                <div>
+                  <p className="text-xs text-[#8B1A1A]/50">Budget / Day Cost</p>
+                  <p className="font-bold text-[#138808]">
+                    {typeof trip.budget === "number" ? `₹${trip.budget.toLocaleString()}` : trip.budget}
+                  </p>
+                </div>
+                <Button variant="ghost" className="text-sm px-4 py-2" onClick={(e) => { e.stopPropagation(); setSelectedTrip(trip); }}>
+                  View Details
+                </Button>
+              </div>
+            </Card>
+          ))}
 
+          <Card
+            onClick={() => navigate("/dashboard/planner")}
+            className="border-2 border-dashed border-[#E8DCC4] flex flex-col items-center justify-center min-h-[340px] hover:border-[#FF6B1A] transition-all cursor-pointer"
+          >
             <div className="w-20 h-20 rounded-full bg-[#FFF2E8] flex items-center justify-center mb-5">
               <Plus size={34} className="text-[#FF6B1A]" />
             </div>
-
-            <h3 className="text-xl font-bold text-[#8B1A1A]">
-              Plan a New Trip
-            </h3>
-
+            <h3 className="text-xl font-bold text-[#8B1A1A]">Plan a New Trip</h3>
             <p className="text-[#8B1A1A]/50 text-center mt-2 px-6">
               Create a personalized itinerary and start your next adventure.
             </p>
-
           </Card>
-
         </div>
       </div>
+
       {selectedTrip && (
-  <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-    <div className="bg-white rounded-2xl p-8 w-[500px] shadow-2xl">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-[#FFF8F0] border border-[#E8DCC4] rounded-3xl p-6 sm:p-8 w-full max-w-2xl max-h-[85vh] overflow-y-auto shadow-2xl">
+            <div className="flex justify-between items-start mb-4">
+              <div>
+                <span className="text-xs font-bold uppercase tracking-widest text-[#FF6B1A]">
+                  {selectedTrip.style} Trip
+                </span>
+                <h3 className="text-2xl font-serif font-bold text-[#8B1A1A]">
+                  {selectedTrip.title}
+                </h3>
+              </div>
+              <button
+                onClick={() => setSelectedTrip(null)}
+                className="w-8 h-8 rounded-full bg-[#8B1A1A]/10 text-[#8B1A1A] hover:bg-[#8B1A1A] hover:text-white font-bold flex items-center justify-center transition-colors"
+              >
+                ✕
+              </button>
+            </div>
 
-      <img
-  src={selectedTrip.image}
-  alt={selectedTrip.destination}
-  className="w-full h-56 object-cover rounded-xl mb-6"
-/>
+            <div className="flex items-center gap-4 text-sm text-[#8B1A1A]/70 mb-6 pb-4 border-b border-[#E8DCC4]">
+              <span>📍 {selectedTrip.destination}</span>
+              <span>📅 {selectedTrip.startDate}</span>
+              <span>💰 {typeof selectedTrip.budget === 'number' ? `₹${selectedTrip.budget.toLocaleString()}` : selectedTrip.budget}</span>
+            </div>
 
-      <p className="mt-3">📍 {selectedTrip.destination}</p>
+            {selectedTrip.rawDays && selectedTrip.rawDays.length > 0 ? (
+              <div className="space-y-4">
+                <h4 className="font-bold text-[#8B1A1A] uppercase tracking-wider text-xs">
+                  Day-by-Day AI Itinerary
+                </h4>
+                {selectedTrip.rawDays.map((d) => (
+                  <div key={d.day} className="bg-white/80 border border-[#E8DCC4] rounded-2xl p-4 space-y-2">
+                    <div className="flex justify-between items-center font-bold text-[#8B1A1A]">
+                      <span>Day {d.day} — {d.title}</span>
+                      <span className="text-xs text-[#138808]">{d.estimatedBudgetINR}</span>
+                    </div>
+                    <div className="text-xs text-[#2D1B00]/80 space-y-1">
+                      <p><b>🌅 Morning:</b> {d.morning}</p>
+                      <p><b>☀️ Afternoon:</b> {d.afternoon}</p>
+                      <p><b>🌆 Evening:</b> {d.evening}</p>
+                      <p><b>🍛 Meals:</b> {d.meals}</p>
+                      {d.tips && <p className="text-[#FF6B1A]"><b>💡 Tip:</b> {d.tips}</p>}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-sm text-[#8B1A1A]/70">
+                Detailed schedule confirmed with your local guides. Check notifications for live transit updates.
+              </p>
+            )}
 
-      <p className="mt-2">
-        📅 {selectedTrip.startDate} — {selectedTrip.endDate}
-      </p>
-
-      <p className="mt-2">
-        👥 {selectedTrip.travelers} Travelers
-      </p>
-
-      <p className="mt-2">
-        💰 ₹{selectedTrip.budget.toLocaleString()}
-      </p>
-
-      <button
-        onClick={() => setSelectedTrip(null)}
-        className="mt-6 w-full bg-[#8B1A1A] text-white py-3 rounded-xl"
-      >
-        Close
-      </button>
-
-    </div>
-  </div>
-)}
+            <button
+              onClick={() => setSelectedTrip(null)}
+              className="mt-6 w-full bg-[#8B1A1A] text-white font-bold py-3 rounded-xl hover:bg-[#701515] transition-all"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </PageTransition>
   );
 };
