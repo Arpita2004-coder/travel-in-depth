@@ -407,6 +407,11 @@ function UnlockedPlanner({ userName = 'Traveller' }) {
           <div className="atp-res-hdr">
             <div className="atp-res-title">Your {itinerary.days.length}-Day {itinerary.destination} Journey</div>
             <div className="atp-res-tags">
+              {itinerary.isFallback && (
+                <span className="atp-res-tag" style={{ background: 'rgba(255,107,26,0.15)', borderColor: 'rgba(255,107,26,0.35)', color: '#FFB347' }}>
+                  ✦ Curated Pick
+                </span>
+              )}
               <span className="atp-res-tag">✦ {budget}</span>
               <span className="atp-res-tag">📍 {itinerary.destination}</span>
             </div>

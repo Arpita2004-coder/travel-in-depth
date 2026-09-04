@@ -1,20 +1,21 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+
+dotenv.config();
+
 import { connectDB } from "./config/db.js";
 import destinationRoutes from "./routes/destinationRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import plannerRoutes from "./routes/plannerRoutes.js";
 import recommendationRoutes from "./routes/recommendationRoutes.js";
 import weatherRoutes from "./routes/weatherRoutes.js";
-   // ...
-   
-   dotenv.config();
-   
-   connectDB();
-   
-   const app = express();
-   
+import submissionRoutes from "./routes/submissionRoutes.js";
+
+connectDB();
+
+const app = express();
+
 
 
 // Middleware — these must come first
@@ -26,6 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/planner", plannerRoutes);
 app.use("/api/recommendations", recommendationRoutes);
 app.use("/api/weather", weatherRoutes);
+app.use("/api/submissions", submissionRoutes);
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/destinations", destinationRoutes);
@@ -40,6 +42,3 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
-
-// token for postman
-// "token": eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YTdjYTAzM2YxOGZkMGExODgxZmFmNGQiLCJpYXQiOjE3ODgxODI3OTAsImV4cCI6MTc4ODc4NzU5MH0.UgpMW8SfWc48wAeuKG8NvgKfhWiqqzpid5KqzOQb6S0

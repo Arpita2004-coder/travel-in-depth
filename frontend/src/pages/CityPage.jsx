@@ -400,7 +400,7 @@ function PlannerSection({ city }) {
         travelStyle: style,
         interests: "Sightseeing, Local Food, Culture",
       });
-      setItinerary(data?.days || []);
+      setItinerary(data);
     } catch (err) {
       console.error("Planner generation failed:", err);
       setError(err.message || "Failed to generate itinerary. Please try again.");
@@ -414,13 +414,14 @@ function PlannerSection({ city }) {
       navigate('/login', { state: { from: window.location.pathname + '#plan-trip' } });
       return;
     }
-    if (!itinerary || itinerary.length === 0) return;
+    const daysList = itinerary?.days || (Array.isArray(itinerary) ? itinerary : []);
+    if (!daysList || daysList.length === 0) return;
 
     setSaving(true);
     try {
       await plannerApi.saveItinerary({
         destination: city.name,
-        days: itinerary,
+        days: daysList,
         meta: {
           budget,
           travelStyle: style,
@@ -518,53 +519,72 @@ function PlannerSection({ city }) {
               </div>
             )}
 
-            {itinerary && Array.isArray(itinerary) && (
-              <div style={{ marginTop: 36, textAlign: "left", borderTop: "1px solid #e8d5c4", paddingTop: 32 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, flexWrap: "wrap", gap: 12 }}>
-                  <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 24, color: S.darkBrown }}>
-                    Your {itinerary.length}-Day {city.name} Itinerary
-                  </h3>
-                  <button
-                    onClick={handleSave}
-                    disabled={saving}
-                    style={{
-                      background: savedSuccess ? "#138808" : "#8B1A1A",
-                      color: "white",
-                      border: "none",
-                      borderRadius: 50,
-                      padding: "10px 24px",
-                      fontSize: 13,
-                      fontWeight: 700,
-                      cursor: saving ? "not-allowed" : "pointer",
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: 6,
-                    }}
-                  >
-                    {savedSuccess ? "✓ Saved to My Dashboard!" : saving ? "Saving…" : "💾 Save This Trip"}
-                  </button>
-                </div>
-                <div style={{ display: "grid", gap: 20 }}>
-                  {itinerary.map(d => (
-                    <div key={d.day} style={{ background: "#FFF8F0", border: "1px solid #E8DCC4", borderRadius: 16, padding: "24px" }}>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-                        <h4 style={{ fontFamily: "'Playfair Display', serif", color: S.orange, fontSize: 18, fontWeight: 700 }}>
-                          Day {d.day}: {d.title}
-                        </h4>
-                        <span style={{ fontSize: 13, color: "#138808", fontWeight: 700 }}>{d.estimatedBudgetINR}</span>
-                      </div>
-                      <div style={{ fontSize: 14, color: S.textMid, lineHeight: 1.8, spaceY: 8 }}>
-                        <p><b>🌅 Morning:</b> {d.morning}</p>
-                        <p><b>☀️ Afternoon:</b> {d.afternoon}</p>
-                        <p><b>🌆 Evening:</b> {d.evening}</p>
-                        <p><b>🍛 Meals:</b> {d.meals}</p>
-                        {d.tips && <p style={{ color: S.orange, marginTop: 8 }}><b>💡 Tip:</b> {d.tips}</p>}
-                      </div>
+            {itinerary && (itinerary.days || Array.isArray(itinerary)) && (() => {
+              const daysList = itinerary.days || itinerary;
+              const isFallback = Boolean(itinerary.isFallback);
+              return (
+                <div style={{ marginTop: 36, textAlign: "left", borderTop: "1px solid #e8d5c4", paddingTop: 32 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, flexWrap: "wrap", gap: 12 }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
+                      <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 24, color: S.darkBrown, margin: 0 }}>
+                        Your {daysList.length}-Day {city.name} Itinerary
+                      </h3>
+                      {isFallback && (
+                        <span style={{
+                          padding: "4px 12px",
+                          background: "rgba(255,107,26,0.12)",
+                          border: "1px solid rgba(255,107,26,0.3)",
+                          borderRadius: 50,
+                          fontSize: 12,
+                          fontWeight: 600,
+                          color: S.orange,
+                        }}>
+                          ✦ Curated Pick
+                        </span>
+                      )}
                     </div>
-                  ))}
+                    <button
+                      onClick={handleSave}
+                      disabled={saving}
+                      style={{
+                        background: savedSuccess ? "#138808" : "#8B1A1A",
+                        color: "white",
+                        border: "none",
+                        borderRadius: 50,
+                        padding: "10px 24px",
+                        fontSize: 13,
+                        fontWeight: 700,
+                        cursor: saving ? "not-allowed" : "pointer",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: 6,
+                      }}
+                    >
+                      {savedSuccess ? "✓ Saved to My Dashboard!" : saving ? "Saving…" : "💾 Save This Trip"}
+                    </button>
+                  </div>
+                  <div style={{ display: "grid", gap: 20 }}>
+                    {daysList.map(d => (
+                      <div key={d.day} style={{ background: "#FFF8F0", border: "1px solid #E8DCC4", borderRadius: 16, padding: "24px" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+                          <h4 style={{ fontFamily: "'Playfair Display', serif", color: S.orange, fontSize: 18, fontWeight: 700 }}>
+                            Day {d.day}: {d.title}
+                          </h4>
+                          <span style={{ fontSize: 13, color: "#138808", fontWeight: 700 }}>{d.estimatedBudgetINR}</span>
+                        </div>
+                        <div style={{ fontSize: 14, color: S.textMid, lineHeight: 1.8, spaceY: 8 }}>
+                          <p><b>🌅 Morning:</b> {d.morning}</p>
+                          <p><b>☀️ Afternoon:</b> {d.afternoon}</p>
+                          <p><b>🌆 Evening:</b> {d.evening}</p>
+                          <p><b>🍛 Meals:</b> {d.meals}</p>
+                          {d.tips && <p style={{ color: S.orange, marginTop: 8 }}><b>💡 Tip:</b> {d.tips}</p>}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
+              );
+            })()}
           </div>
         </div>
       </div>

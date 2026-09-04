@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useAuth } from "../features/auth/useAuth";
 import { useNavigate } from "react-router-dom";
 import * as plannerApi from "../api/plannerApi";
+import { updateInterests } from "../api/authApi";
 import { fetchRecommendations } from "../api/recommendationsApi";
 import { fetchWeather } from "../api/weatherApi";
 import {
@@ -36,6 +37,32 @@ const COLORS = {
   card: '#FFF8F0', // Ivory
   accent: '#F5A623', // Gold
   success: '#138808' // Green
+};
+
+const DESTINATION_IMAGES = {
+  jaipur: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Hawa_Mahal_2010.jpg/1280px-Hawa_Mahal_2010.jpg",
+  varanasi: "https://images.pexels.com/photos/36565405/pexels-photo-36565405.jpeg",
+  agra: "https://images.unsplash.com/photo-1564507592333-c60657eea523?w=600&q=80",
+  goa: "https://images.pexels.com/photos/28368721/pexels-photo-28368721.jpeg",
+  udaipur: "https://images.unsplash.com/photo-1599661046289-e31897846e41?w=600&q=80",
+  mumbai: "https://images.unsplash.com/photo-1529253355930-ddbe423a2ac7?w=600&q=80",
+  kerala: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=600&q=80",
+  manali: "https://images.unsplash.com/photo-1605649487212-47bdab064df8?w=600&q=80",
+  rishikesh: "https://images.unsplash.com/photo-1512632578888-169bbbc64f33?w=600&q=80",
+  ladakh: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600&q=80",
+  leh: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600&q=80",
+  default: "https://images.unsplash.com/photo-1564507592333-c60657eea523?w=600&q=80",
+};
+
+const getDestinationImage = (dest) => {
+  if (!dest) return DESTINATION_IMAGES.default;
+  const key = dest.toString().toLowerCase().trim().replace(/[^a-z]/g, "");
+  for (const [k, v] of Object.entries(DESTINATION_IMAGES)) {
+    if (k !== "default" && (key.includes(k) || k.includes(key))) {
+      return v;
+    }
+  }
+  return DESTINATION_IMAGES.default;
 };
 
 // --- SHARED COMPONENTS ---
@@ -299,7 +326,12 @@ const Profile = () => {
             <p className="text-[#8B1A1A]/60 font-medium">
               {user?.location || "India"} • {user?.role === "admin" ? "Admin" : "Pro Traveler"}
             </p>
-            <div className="flex gap-2 mt-3">
+            <div className="flex flex-wrap items-center gap-2 mt-3">
+              {user?.isContributor && (
+                <span className="px-3.5 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-gradient-to-r from-[#F5A623] to-[#FF6B1A] text-white shadow-md shadow-[#F5A623]/30 border border-[#F5A623]/50 inline-flex items-center gap-1.5">
+                  🏆 Contributor
+                </span>
+              )}
               {user?.interests && user.interests.length > 0 ? (
                 user.interests.map((int) => (
                   <Badge key={int} variant="primary">
@@ -314,6 +346,23 @@ const Profile = () => {
                 </>
               )}
             </div>
+
+            {user?.contributions && user.contributions.length > 0 && (
+              <div className="mt-3.5 pt-3 border-t border-[#E8DCC4] flex flex-wrap items-center gap-2">
+                <span className="text-xs font-bold text-[#8B1A1A]/80">
+                  Contributed:
+                </span>
+                {user.contributions.map((c, i) => (
+                  <Link
+                    key={c.destinationSlug || i}
+                    to={`/destinations/${c.destinationSlug}`}
+                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold bg-[#138808]/10 text-[#138808] border border-[#138808]/20 hover:bg-[#138808] hover:text-white transition-all shadow-sm"
+                  >
+                    📍 {c.destinationName}
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 
@@ -445,45 +494,6 @@ const MyTrips = ({ savedTrips = [], setSavedTrips }) => {
     }
   };
 
-  const trips = [
-    {
-      id: "demo-1",
-      destination: "Varanasi",
-      title: "Varanasi Spiritual Sojourn",
-      startDate: "15 Jul 2026",
-      endDate: "20 Jul 2026",
-      status: "upcoming",
-      budget: 45000,
-      style: "Spiritual",
-      travelers: 2,
-      image: "/images/varanasi.jpg",
-    },
-    {
-      id: "demo-2",
-      destination: "Ladakh",
-      title: "Ladakh Bike Expedition",
-      startDate: "10 Aug 2026",
-      endDate: "22 Aug 2026",
-      status: "upcoming",
-      budget: 85000,
-      style: "Adventure",
-      travelers: 4,
-      image: "/images/ladakh.jpg",
-    },
-    {
-      id: "demo-3",
-      destination: "Goa",
-      title: "Goa Monsoon Escape",
-      startDate: "05 May 2026",
-      endDate: "10 May 2026",
-      status: "past",
-      budget: 32000,
-      style: "Beach",
-      travelers: 2,
-      image: "/images/goa.jpg",
-    },
-  ];
-
   // Map backend AI itineraries to card format
   const formattedBackendTrips = backendTrips.map(bt => ({
     _id: bt._id,
@@ -493,15 +503,15 @@ const MyTrips = ({ savedTrips = [], setSavedTrips }) => {
     startDate: new Date(bt.createdAt).toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" }),
     endDate: `${bt.days?.length || 1} Days Plan`,
     status: "upcoming",
-    budget: bt.days?.reduce((acc, d) => acc, 0) || "AI Tailored",
+    budget: "AI Tailored",
     style: "AI Planned",
     travelers: 1,
-    image: `/images/${(bt.destination || "default").toLowerCase().replace(/\s+/g, '-')}.jpg`,
+    image: getDestinationImage(bt.destination),
     isAiGenerated: true,
     rawDays: bt.days,
   }));
 
-  const allDisplayTrips = [...formattedBackendTrips, ...savedTrips, ...trips].filter(
+  const allDisplayTrips = [...formattedBackendTrips, ...savedTrips].filter(
     (trip) => trip.status === tab
   );
 
@@ -538,83 +548,102 @@ const MyTrips = ({ savedTrips = [], setSavedTrips }) => {
         {loading && <div className="text-center py-6 text-[#8B1A1A]/60 font-medium">Loading your journeys…</div>}
         {error && <div className="text-center py-2 text-red-500 text-sm">⚠️ {error}</div>}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-          {allDisplayTrips.map((trip) => (
-            <Card
-              key={trip.id || trip._id}
-              className="group overflow-hidden hover:border-[#FF6B1A] transition-all duration-300 cursor-pointer flex flex-col justify-between"
-              onClick={() => setSelectedTrip(trip)}
-            >
-              <div>
-                <div className="h-44 rounded-xl overflow-hidden relative bg-[#E8DCC4]">
-                  <img
-                    src={trip.image}
-                    alt={trip.destination}
-                    onError={(e) => { e.target.src = "/images/varanasi.jpg"; }}
-                    className="w-full h-full object-cover group-hover:scale-110 transition duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-                  <div className="absolute top-4 left-4 flex gap-2">
-                    <Badge variant={trip.style === "Adventure" ? "primary" : trip.isAiGenerated ? "gold" : "secondary"}>
-                      {trip.style}
-                    </Badge>
-                  </div>
-                  {trip.isAiGenerated && (
-                    <button
-                      onClick={(e) => handleDeleteBackendTrip(trip._id, e)}
-                      title="Delete Itinerary"
-                      className="absolute top-4 right-4 p-2 bg-red-600/80 hover:bg-red-600 text-white rounded-full transition-all shadow-md"
-                    >
-                      <Trash2 size={14} />
-                    </button>
-                  )}
-                </div>
-
-                <div className="mt-5">
-                  <h3 className="text-xl font-bold text-[#8B1A1A]">
-                    {trip.title}
-                  </h3>
-                  <p className="text-sm text-[#8B1A1A]/50 mt-1">
-                    📍 {trip.destination}
-                  </p>
-                  <div className="flex items-center gap-2 mt-4 text-sm text-[#8B1A1A]/60">
-                    <Calendar size={15} />
-                    {trip.startDate} — {trip.endDate}
-                  </div>
-                  <div className="flex items-center gap-2 mt-2 text-sm text-[#8B1A1A]/60">
-                    <Users size={15} />
-                    {trip.travelers} Traveler{trip.travelers > 1 ? 's' : ''}
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-5 pt-4 border-t border-[#E8DCC4] flex justify-between items-center">
-                <div>
-                  <p className="text-xs text-[#8B1A1A]/50">Budget / Day Cost</p>
-                  <p className="font-bold text-[#138808]">
-                    {typeof trip.budget === "number" ? `₹${trip.budget.toLocaleString()}` : trip.budget}
-                  </p>
-                </div>
-                <Button variant="ghost" className="text-sm px-4 py-2" onClick={(e) => { e.stopPropagation(); setSelectedTrip(trip); }}>
-                  View Details
-                </Button>
-              </div>
-            </Card>
-          ))}
-
-          <Card
-            onClick={() => navigate("/dashboard/planner")}
-            className="border-2 border-dashed border-[#E8DCC4] flex flex-col items-center justify-center min-h-[340px] hover:border-[#FF6B1A] transition-all cursor-pointer"
-          >
-            <div className="w-20 h-20 rounded-full bg-[#FFF2E8] flex items-center justify-center mb-5">
-              <Plus size={34} className="text-[#FF6B1A]" />
+        {allDisplayTrips.length === 0 && !loading ? (
+          <div className="text-center py-16 px-6 bg-white/70 border border-dashed border-[#E8DCC4] rounded-3xl space-y-4">
+            <div className="w-16 h-16 rounded-full bg-[#FFF2E8] text-[#FF6B1A] flex items-center justify-center mx-auto text-2xl">
+              🗺️
             </div>
-            <h3 className="text-xl font-bold text-[#8B1A1A]">Plan a New Trip</h3>
-            <p className="text-[#8B1A1A]/50 text-center mt-2 px-6">
-              Create a personalized itinerary and start your next adventure.
+            <h3 className="text-2xl font-serif font-bold text-[#8B1A1A]">
+              No {tab} trips yet
+            </h3>
+            <p className="text-sm text-[#8B1A1A]/60 max-w-md mx-auto">
+              You don't have any {tab} travel plans. Use our AI Trip Planner to build and customize your next dream itinerary.
             </p>
-          </Card>
-        </div>
+            <div className="pt-2">
+              <Button onClick={() => navigate("/dashboard/planner")} className="px-6 py-3">
+                <Plus size={16} className="mr-2 inline" /> Start Planning with AI
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            {allDisplayTrips.map((trip) => (
+              <Card
+                key={trip.id || trip._id}
+                className="group overflow-hidden hover:border-[#FF6B1A] transition-all duration-300 cursor-pointer flex flex-col justify-between"
+                onClick={() => setSelectedTrip(trip)}
+              >
+                <div>
+                  <div className="h-44 rounded-xl overflow-hidden relative bg-[#E8DCC4]">
+                    <img
+                      src={trip.image}
+                      alt={trip.destination}
+                      onError={(e) => { e.target.src = DESTINATION_IMAGES.default; }}
+                      className="w-full h-full object-cover group-hover:scale-110 transition duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                    <div className="absolute top-4 left-4 flex gap-2">
+                      <Badge variant={trip.style === "Adventure" ? "primary" : trip.isAiGenerated ? "gold" : "secondary"}>
+                        {trip.style}
+                      </Badge>
+                    </div>
+                    {trip.isAiGenerated && (
+                      <button
+                        onClick={(e) => handleDeleteBackendTrip(trip._id, e)}
+                        title="Delete Itinerary"
+                        className="absolute top-4 right-4 p-2 bg-red-600/80 hover:bg-red-600 text-white rounded-full transition-all shadow-md"
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="mt-5">
+                    <h3 className="text-xl font-bold text-[#8B1A1A]">
+                      {trip.title}
+                    </h3>
+                    <p className="text-sm text-[#8B1A1A]/50 mt-1">
+                      📍 {trip.destination}
+                    </p>
+                    <div className="flex items-center gap-2 mt-4 text-sm text-[#8B1A1A]/60">
+                      <Calendar size={15} />
+                      {trip.startDate} — {trip.endDate}
+                    </div>
+                    <div className="flex items-center gap-2 mt-2 text-sm text-[#8B1A1A]/60">
+                      <Users size={15} />
+                      {trip.travelers} Traveler{trip.travelers > 1 ? 's' : ''}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-5 pt-4 border-t border-[#E8DCC4] flex justify-between items-center">
+                  <div>
+                    <p className="text-xs text-[#8B1A1A]/50">Budget / Day Cost</p>
+                    <p className="font-bold text-[#138808]">
+                      {typeof trip.budget === "number" ? `₹${trip.budget.toLocaleString()}` : trip.budget}
+                    </p>
+                  </div>
+                  <Button variant="ghost" className="text-sm px-4 py-2" onClick={(e) => { e.stopPropagation(); setSelectedTrip(trip); }}>
+                    View Details
+                  </Button>
+                </div>
+              </Card>
+            ))}
+
+            <Card
+              onClick={() => navigate("/dashboard/planner")}
+              className="border-2 border-dashed border-[#E8DCC4] flex flex-col items-center justify-center min-h-[340px] hover:border-[#FF6B1A] transition-all cursor-pointer"
+            >
+              <div className="w-20 h-20 rounded-full bg-[#FFF2E8] flex items-center justify-center mb-5">
+                <Plus size={34} className="text-[#FF6B1A]" />
+              </div>
+              <h3 className="text-xl font-bold text-[#8B1A1A]">Plan a New Trip</h3>
+              <p className="text-[#8B1A1A]/50 text-center mt-2 px-6">
+                Create a personalized itinerary and start your next adventure.
+              </p>
+            </Card>
+          </div>
+        )}
       </div>
 
       {selectedTrip && (
@@ -1013,7 +1042,7 @@ const generateItinerary = () => {
     budget,
     style: selectedStyle || "General",
     travelers: 2,
-    image: `/images/${destination.toLowerCase()}.jpg`,
+    image: getDestinationImage(destination),
   },
 ]);
 
@@ -1802,50 +1831,172 @@ const Notifications = () => (
 );
 
 // 10. SETTINGS
-const SettingsPage = () => (
-  <PageTransition>
-    <div className="p-8 max-w-4xl mx-auto space-y-8">
-      <h2 className="text-3xl font-serif font-bold text-[#8B1A1A]">Settings</h2>
-      
-      <section className="space-y-4">
-        <h3 className="text-xs font-bold text-[#8B1A1A]/40 uppercase tracking-widest px-2">Account & Security</h3>
-        <Card className="divide-y divide-[#E8DCC4]">
-          <div className="py-4 flex justify-between items-center">
-            <div><p className="font-bold text-[#8B1A1A] text-sm">Email Address</p><p className="text-xs text-[#8B1A1A]/50">arjun.mehta@travelindepth.in</p></div>
-            <Button variant="ghost" className="text-xs">Change</Button>
-          </div>
-          <div className="py-4 flex justify-between items-center">
-            <div><p className="font-bold text-[#8B1A1A] text-sm">Password</p><p className="text-xs text-[#8B1A1A]/50">Last changed 3 months ago</p></div>
-            <Button variant="ghost" className="text-xs">Update</Button>
-          </div>
-          <div className="py-4 flex justify-between items-center">
-            <div><p className="font-bold text-[#8B1A1A] text-sm">Two-Factor Authentication</p><p className="text-xs text-[#8B1A1A]/50">Enhance your account security</p></div>
-            <div className="w-10 h-5 bg-[#138808] rounded-full relative"><div className="absolute right-1 top-1 w-3 h-3 bg-white rounded-full"></div></div>
-          </div>
-        </Card>
-      </section>
+const SettingsPage = () => {
+  const { user, updateUser, setUser } = useAuth();
+  const [selectedInterests, setSelectedInterests] = useState([]);
+  const [saving, setSaving] = useState(false);
+  const [savedSuccess, setSavedSuccess] = useState(false);
+  const [error, setError] = useState(null);
 
-      <section className="space-y-4">
-        <h3 className="text-xs font-bold text-[#8B1A1A]/40 uppercase tracking-widest px-2">Preferences</h3>
-        <Card className="space-y-6">
-          <div className="flex justify-between items-center">
-             <div className="flex items-center gap-3"><Moon size={18} className="text-[#8B1A1A]"/> <span className="text-sm font-bold">Dark Mode</span></div>
-             <div className="w-10 h-5 bg-[#E8DCC4] rounded-full relative"><div className="absolute left-1 top-1 w-3 h-3 bg-white rounded-full"></div></div>
-          </div>
-          <div className="flex justify-between items-center">
-             <div className="flex items-center gap-3"><Bell size={18} className="text-[#8B1A1A]"/> <span className="text-sm font-bold">Email Notifications</span></div>
-             <div className="w-10 h-5 bg-[#138808] rounded-full relative"><div className="absolute right-1 top-1 w-3 h-3 bg-white rounded-full"></div></div>
-          </div>
-        </Card>
-      </section>
+  const interestCategories = [
+    { id: "heritage", label: "🏛️ Heritage", desc: "Forts, Palaces & Ancient Sites" },
+    { id: "adventure", label: "🏔️ Adventure", desc: "Trekking, Climbing & Expeditions" },
+    { id: "spiritual", label: "🧘 Spiritual", desc: "Temples, Ghats & Meditation" },
+    { id: "wildlife", label: "🐅 Wildlife", desc: "Safaris & National Parks" },
+    { id: "coastal", label: "🌊 Coastal", desc: "Beaches, Sea & Coastal Towns" },
+    { id: "food", label: "🍛 Food Trails", desc: "Culinary & Street Food Tours" },
+    { id: "wellness", label: "🌿 Wellness", desc: "Yoga, Ayurveda & Healing" },
+    { id: "photography", label: "📸 Photography", desc: "Scenic Vistas & Sunsets" },
+    { id: "himalayan", label: "❄️ Himalayan", desc: "Snow Peaks & Mountain Passes" },
+    { id: "cultural", label: "🎭 Cultural", desc: "Bazaars, Folk Art & Festivals" },
+  ];
 
-      <div className="pt-8 border-t border-[#E8DCC4] flex justify-between">
-        <button className="text-sm font-bold text-red-500 flex items-center gap-2"><Trash2 size={16}/> Delete Account</button>
-        <button className="text-sm font-bold text-[#8B1A1A] flex items-center gap-2"><Download size={16}/> Download My Data</button>
+  useEffect(() => {
+    if (user?.interests && Array.isArray(user.interests)) {
+      setSelectedInterests(user.interests.map(i => i.toLowerCase()));
+    } else {
+      setSelectedInterests([]);
+    }
+  }, [user]);
+
+  const toggleInterest = (id) => {
+    setSelectedInterests(prev =>
+      prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
+    );
+  };
+
+  const handleSavePreferences = async () => {
+    if (selectedInterests.length === 0) {
+      setError("Please select at least one travel interest.");
+      return;
+    }
+
+    setSaving(true);
+    setError(null);
+    setSavedSuccess(false);
+
+    try {
+      const res = await updateInterests(selectedInterests);
+      const updated = res?.user || { ...user, interests: selectedInterests };
+      if (updateUser) {
+        updateUser(updated);
+      } else if (setUser) {
+        setUser(updated);
+      }
+      setSavedSuccess(true);
+      setTimeout(() => setSavedSuccess(false), 4000);
+    } catch (err) {
+      console.error("Failed to update preferences:", err);
+      setError(err.message || "Failed to save preferences.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <PageTransition>
+      <div className="p-8 max-w-4xl mx-auto space-y-8">
+        <h2 className="text-3xl font-serif font-bold text-[#8B1A1A]">Settings</h2>
+
+        {/* Travel Interests & Recommendation Preferences Section */}
+        <section className="space-y-4">
+          <div className="flex justify-between items-end px-2">
+            <div>
+              <h3 className="text-xs font-bold text-[#8B1A1A]/40 uppercase tracking-widest">Travel Profile & Recommendation Interests</h3>
+              <p className="text-xs text-[#8B1A1A]/70 mt-1">Select the experiences that inspire you most to power personalized trip recommendations and curated guides.</p>
+            </div>
+          </div>
+
+          <Card className="p-6 space-y-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {interestCategories.map((cat) => {
+                const isSelected = selectedInterests.includes(cat.id);
+                return (
+                  <button
+                    key={cat.id}
+                    type="button"
+                    onClick={() => toggleInterest(cat.id)}
+                    className={`p-3.5 rounded-2xl border text-left transition-all duration-200 cursor-pointer flex items-start gap-3 ${
+                      isSelected
+                        ? "bg-[#8B1A1A] text-white border-[#8B1A1A] shadow-md shadow-[#8B1A1A]/20"
+                        : "bg-white text-[#8B1A1A] border-[#E8DCC4] hover:border-[#FF6B1A] hover:bg-[#FFF7F1]"
+                    }`}
+                  >
+                    <div className="flex-1">
+                      <div className="font-bold text-sm flex items-center justify-between">
+                        <span>{cat.label}</span>
+                        {isSelected && <span className="text-xs font-black">✓</span>}
+                      </div>
+                      <p className={`text-xs mt-1 ${isSelected ? "text-orange-200" : "text-[#8B1A1A]/60"}`}>
+                        {cat.desc}
+                      </p>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+
+            {error && (
+              <div className="p-3 bg-red-100/70 border border-red-200 text-red-700 text-xs rounded-xl">
+                ⚠️ {error}
+              </div>
+            )}
+
+            <div className="pt-4 border-t border-[#E8DCC4] flex items-center justify-between flex-wrap gap-4">
+              <span className="text-xs text-[#8B1A1A]/60 font-medium">
+                {selectedInterests.length} interest{selectedInterests.length === 1 ? "" : "s"} selected
+              </span>
+              <Button
+                onClick={handleSavePreferences}
+                disabled={saving}
+                className={savedSuccess ? "bg-[#138808] hover:bg-[#138808]" : ""}
+              >
+                {savedSuccess ? "✓ Preferences Saved!" : saving ? "Saving…" : "Save Preferences"}
+              </Button>
+            </div>
+          </Card>
+        </section>
+        
+        <section className="space-y-4">
+          <h3 className="text-xs font-bold text-[#8B1A1A]/40 uppercase tracking-widest px-2">Account & Security</h3>
+          <Card className="divide-y divide-[#E8DCC4]">
+            <div className="py-4 flex justify-between items-center">
+              <div><p className="font-bold text-[#8B1A1A] text-sm">Email Address</p><p className="text-xs text-[#8B1A1A]/50">{user?.email || "arjun.mehta@travelindepth.in"}</p></div>
+              <Button variant="ghost" className="text-xs">Change</Button>
+            </div>
+            <div className="py-4 flex justify-between items-center">
+              <div><p className="font-bold text-[#8B1A1A] text-sm">Password</p><p className="text-xs text-[#8B1A1A]/50">Last changed 3 months ago</p></div>
+              <Button variant="ghost" className="text-xs">Update</Button>
+            </div>
+            <div className="py-4 flex justify-between items-center">
+              <div><p className="font-bold text-[#8B1A1A] text-sm">Two-Factor Authentication</p><p className="text-xs text-[#8B1A1A]/50">Enhance your account security</p></div>
+              <div className="w-10 h-5 bg-[#138808] rounded-full relative"><div className="absolute right-1 top-1 w-3 h-3 bg-white rounded-full"></div></div>
+            </div>
+          </Card>
+        </section>
+
+        <section className="space-y-4">
+          <h3 className="text-xs font-bold text-[#8B1A1A]/40 uppercase tracking-widest px-2">Preferences</h3>
+          <Card className="space-y-6">
+            <div className="flex justify-between items-center">
+               <div className="flex items-center gap-3"><Moon size={18} className="text-[#8B1A1A]"/> <span className="text-sm font-bold">Dark Mode</span></div>
+               <div className="w-10 h-5 bg-[#E8DCC4] rounded-full relative"><div className="absolute left-1 top-1 w-3 h-3 bg-white rounded-full"></div></div>
+            </div>
+            <div className="flex justify-between items-center">
+               <div className="flex items-center gap-3"><Bell size={18} className="text-[#8B1A1A]"/> <span className="text-sm font-bold">Email Notifications</span></div>
+               <div className="w-10 h-5 bg-[#138808] rounded-full relative"><div className="absolute right-1 top-1 w-3 h-3 bg-white rounded-full"></div></div>
+            </div>
+          </Card>
+        </section>
+
+        <div className="pt-8 border-t border-[#E8DCC4] flex justify-between">
+          <button className="text-sm font-bold text-red-500 flex items-center gap-2"><Trash2 size={16}/> Delete Account</button>
+          <button className="text-sm font-bold text-[#8B1A1A] flex items-center gap-2"><Download size={16}/> Download My Data</button>
+        </div>
       </div>
-    </div>
-  </PageTransition>
-);
+    </PageTransition>
+  );
+};
 
 // --- LAYOUT ---
 

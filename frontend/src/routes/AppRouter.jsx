@@ -11,7 +11,8 @@ import AdminLoginPage from "../pages/admin/AdminLoginPage";
 import AdminDashboardPage from "../pages/admin/AdminDashboardPage";
 import AdminPlacesPage from "../pages/admin/AdminPlacesPage";
 import AdminPlaceFormPage from "../pages/admin/AdminPlaceFormPage";
-import ProtectedRoute from "../routes/ProtectedRoute"
+import AdminSubmissionsPage from "../pages/admin/AdminSubmissionsPage";
+import ProtectedRoute from "../routes/ProtectedRoute";
 import CityPage from "../pages/CityPage";
 import DashboardPage from "../pages/DashboardPage";
 import AboutPage from "../pages/AboutPage";
@@ -57,6 +58,14 @@ const AppRouter=()=>{
         element={
           <ProtectedRoute adminOnly>
               <AdminPlacesPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/submissions"
+        element={
+          <ProtectedRoute adminOnly>
+              <AdminSubmissionsPage />
           </ProtectedRoute>
         }
       />

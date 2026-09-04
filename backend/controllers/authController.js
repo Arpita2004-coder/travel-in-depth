@@ -40,6 +40,8 @@ export const signup = async (req, res) => {
         location: user.location,
         interests: user.interests,
         role: user.role,
+        isContributor: user.isContributor || false,
+        contributions: user.contributions || [],
       },
     });
   } catch (err) {
@@ -72,6 +74,8 @@ export const login = async (req, res) => {
         location: user.location,
         interests: user.interests,
         role: user.role,
+        isContributor: user.isContributor || false,
+        contributions: user.contributions || [],
       },
     });
   } catch (err) {
@@ -86,5 +90,34 @@ export const getMe = async (req, res) => {
     res.status(200).json(user);
   } catch (err) {
     res.status(500).json({ message: "Failed to fetch user", error: err.message });
+  }
+};
+
+export const updateInterests = async (req, res) => {
+  try {
+    const { interests } = req.body;
+
+    if (!Array.isArray(interests) || interests.length === 0 || !interests.every((i) => typeof i === "string")) {
+      return res.status(400).json({ message: "Interests must be a non-empty array of strings" });
+    }
+
+    const cleanInterests = interests.map((i) => i.trim().toLowerCase()).filter(Boolean);
+
+    const user = await User.findByIdAndUpdate(
+      req.userId,
+      { interests: cleanInterests },
+      { new: true }
+    ).select("-password");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({
+      message: "Preferences updated successfully",
+      user,
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to update interests", error: err.message });
   }
 };

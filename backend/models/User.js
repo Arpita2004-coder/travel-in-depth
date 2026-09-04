@@ -9,6 +9,17 @@ const userSchema = new mongoose.Schema(
     phone: { type: String, default: "" },
     location: { type: String, default: "" },
     interests: { type: [String], default: [] },
+    contributions: {
+      type: [
+        {
+          destinationName: String,
+          destinationSlug: String,
+          contributedAt: Date,
+        },
+      ],
+      default: [],
+    },
+    isContributor: { type: Boolean, default: false },
     role: { type: String, enum: ["user", "admin"], default: "user" },
   },
   { timestamps: true }
