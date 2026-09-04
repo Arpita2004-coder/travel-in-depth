@@ -9,10 +9,10 @@ const MAX_REQUESTS = 10;
 const requestLog = new Map(); // userId -> [timestamps]
 
 export const plannerRateLimit = (req, res, next) => {
-  const userId = req.userId;
+  const identifier = req.userId || req.ip || req.headers["x-forwarded-for"] || "guest";
   const now = Date.now();
 
-  const timestamps = (requestLog.get(userId) || []).filter((t) => now - t < WINDOW_MS);
+  const timestamps = (requestLog.get(identifier) || []).filter((t) => now - t < WINDOW_MS);
 
   if (timestamps.length >= MAX_REQUESTS) {
     return res.status(429).json({
@@ -21,6 +21,6 @@ export const plannerRateLimit = (req, res, next) => {
   }
 
   timestamps.push(now);
-  requestLog.set(userId, timestamps);
+  requestLog.set(identifier, timestamps);
   next();
 };
