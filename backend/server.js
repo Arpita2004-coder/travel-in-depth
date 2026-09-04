@@ -41,5 +41,3 @@ app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
 
-// token for postman
-// "token": eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YTdjYTAzM2YxOGZkMGExODgxZmFmNGQiLCJpYXQiOjE3ODgxODI3OTAsImV4cCI6MTc4ODc4NzU5MH0.UgpMW8SfWc48wAeuKG8NvgKfhWiqqzpid5KqzOQb6S0
