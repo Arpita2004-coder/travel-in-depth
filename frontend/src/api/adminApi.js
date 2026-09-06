@@ -5,3 +5,4 @@ export const getDestinationBySlug = (slug) => apiClient.get(`/destinations/${slu
 export const createDestination = (data) => apiClient.post("/destinations", data);
 export const updateDestination = (slug, data) => apiClient.put(`/destinations/${slug}`, data);
 export const deleteDestination = (slug) => apiClient.delete(`/destinations/${slug}`);
+export const generateDestinationContent = (slug, data) => apiClient.post(`/destinations/${slug}/generate-content`, data);

@@ -10,69 +10,74 @@ function Footer() {
         return null;
     }
     return (
-        <>
-       <footer className='bg-[#1a0a00] text-white'>
+        <footer className='bg-[#120600] text-white border-t border-[#2d1205]'>
+            {/* Main Section */}
+            <div className='max-w-7xl mx-auto px-6 lg:px-12 py-16 grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-12'>
 
-  {/* Main Section */}
-  <div className='max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-4 gap-10 '>
+                {/* Column 1 - Logo and About */}
+                <div className='space-y-4'>
+                    <div className='flex items-center gap-3'>
+                        <div className="bg-[#FF6B1A] p-2.5 rounded-xl flex items-center justify-center shadow-lg shadow-orange-950/40">
+                            <Plane size={22} className="text-black fill-black" />
+                        </div>
+                        <h2 className='text-xl font-bold tracking-tight'>
+                            <span className='text-white'>TRAVEL </span>
+                            <span className='text-[#FF6B1A]'>IN DEPTH</span>
+                        </h2>
+                    </div>
+                    <p className='text-sm text-stone-400 leading-relaxed max-w-sm'>
+                        Explore the world deeply. We curate sustainable, immersive travel experiences that connect you with culture, nature, and people.
+                    </p>
+                </div>
 
-    {/* Column 1 - Logo and About */}
-    <div>
-        <div className='flex flex-row'>
-             <div className="bg-amber-500 p-2 rounded-lg group-hover:rotate-[360deg] transition-all duration-700 ml-2">
-                   <Plane size={20} className="text-black" />
-                 </div>
-     <div className=''>
-         <h2 className='ml-3 text-2xl font-bold'>
-        <span className='text-white'>TRAVEL</span> <span className='text-orange-400'>IN DEPTH</span>
-      </h2>
-     </div>
-        </div>
-      <p className='mt-4 text-base text-white/60 leading-relaxed'>
-        Explore the world deeply. We curate sustainable, immersive travel experiences that connect you with culture, nature, and people.
-      </p>
-    </div>
+                {/* Column 2 - Quick Links */}
+                <div>
+                    <h3 className='text-[#FF6B1A] font-bold tracking-[0.14em] text-xs uppercase mb-5'>
+                        QUICK LINKS
+                    </h3>
+                    <ul className='space-y-2.5 text-sm text-stone-300'>
+                        <li><Link to='/' className='hover:text-[#FF6B1A] transition-colors duration-200'>Home</Link></li>
+                        <li><Link to='/destinations' className='hover:text-[#FF6B1A] transition-colors duration-200'>Destinations</Link></li>
+                        <li><Link to='/experience' className='hover:text-[#FF6B1A] transition-colors duration-200'>Experience</Link></li>
+                        <li><Link to='/about' className='hover:text-[#FF6B1A] transition-colors duration-200'>About</Link></li>
+                    </ul>
+                </div>
 
-    {/* Column 2 - Quick Links */}
-    <div>
-      <h3 className='text-orange-400 font-semibold tracking-widest text-base uppercase mb-4'>Quick Links</h3>
-      <ul className='space-y-2 text-sm text-white/60'>
-        <li><Link to='/'>Home</Link></li>
-        <li><Link to='/destinations'>Destinations</Link></li>
-        <li><Link to='/experience'>Experience</Link></li>
-        <li><Link to='/about'>About</Link></li>
-      </ul>
-    </div>
+                {/* Column 3 - Destinations */}
+                <div>
+                    <h3 className='text-[#FF6B1A] font-bold tracking-[0.14em] text-xs uppercase mb-5'>
+                        TOP DESTINATIONS
+                    </h3>
+                    <ul className='space-y-2.5 text-sm text-stone-300'>
+                        <li><Link to='/destinations/manali' className='hover:text-[#FF6B1A] transition-colors duration-200'>Manali, India</Link></li>
+                        <li><Link to='/destinations/jaipur' className='hover:text-[#FF6B1A] transition-colors duration-200'>Jaipur, Rajasthan</Link></li>
+                        <li><Link to='/destinations/odisha' className='hover:text-[#FF6B1A] transition-colors duration-200'>Odisha, Kerala</Link></li>
+                        <li><Link to='/destinations/nainital' className='hover:text-[#FF6B1A] transition-colors duration-200'>Nainital, Uttarakhand</Link></li>
+                    </ul>
+                </div>
 
-    {/* Column 3 - Destinations */}
-    <div>
-      <h3 className='text-orange-400 font-semibold tracking-widest text-sm uppercase mb-4'>Top Destinations</h3>
-      <ul className='space-y-2 text-base text-white/60'>
-        <li>Manali, India</li>
-        <li>Jaipur, Rajasthan</li>
-        <li>Odisha, Kerla</li>
-        <li>Nainital, Uttarakhand</li>
-      </ul>
-    </div>
+                {/* Column 4 - Contact */}
+                <div>
+                    <h3 className='text-[#FF6B1A] font-bold tracking-[0.14em] text-xs uppercase mb-5'>
+                        CONTACT US
+                    </h3>
+                    <ul className='space-y-2.5 text-sm text-stone-300'>
+                        <li>
+                            <a href="mailto:av6821246@gmail.com" className='hover:text-[#FF6B1A] transition-colors duration-200'>
+                                av6821246@gmail.com
+                            </a>
+                        </li>
+                        <li className='text-stone-300'>+91 7052501218</li>
+                        <li className='text-stone-300'>Kanpur, Uttar Pradesh</li>
+                    </ul>
+                </div>
+            </div>
 
-    {/* Column 4 - Contact */}
-    <div>
-      <h3 className='text-orange-400 font-semibold tracking-widest text-sm uppercase mb-4'>Contact Us</h3>
-      <ul className='space-y-2 text-base text-white/60'>
-        <li><a href="mailto:av6821246@gmail.com">av6821246@gmail.com</a></li>
-        <li>+91 7052501218</li>
-        <li>Kanpur, Uttar Pradesh</li>
-      </ul>
-    </div>
-    {/* Bottom Copyright section*/}
-
-
-  </div>
-<div className='font-medium border-t py-5 border-orange-900 text-center text-lg text-white/60'>
-  © 2025 Travel In Depth. All rights reserved.
-</div>
-</footer>
-        </>
+            {/* Bottom Copyright section */}
+            <div className='border-t border-[#2a0e02] py-6 text-center text-sm font-normal text-stone-400'>
+                © 2025 Travel In Depth. All rights reserved.
+            </div>
+        </footer>
     )
 }
 

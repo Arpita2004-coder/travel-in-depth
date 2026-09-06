@@ -5,6 +5,7 @@ import {
   createDestination,
   updateDestination,
   deleteDestination,
+  generateDestinationContent,
 } from "../controllers/destinationController.js";
 import { requireAuth, requireAdmin } from "../middleware/authMiddleware.js";
 
@@ -16,6 +17,7 @@ router.get("/:slug", getDestinationBySlug);
 
 // Admin-only — must be logged in AND have role "admin"
 router.post("/", requireAuth, requireAdmin, createDestination);
+router.post("/:slug/generate-content", requireAuth, requireAdmin, generateDestinationContent);
 router.put("/:slug", requireAuth, requireAdmin, updateDestination);
 router.delete("/:slug", requireAuth, requireAdmin, deleteDestination);
 

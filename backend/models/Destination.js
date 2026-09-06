@@ -15,9 +15,102 @@ const destinationSchema = new mongoose.Schema(
     // Kept from the original hardcoded data — used for the SVG map positions on the homepage
     mapX: { type: Number },
     mapY: { type: Number },
-    // Added for the weather feature (Month 3) — real coordinates, not SVG percentages
+    // Coordinates for weather & geolocation
     lat: { type: Number, required: true },
     lng: { type: Number, required: true },
+    // Rich content fields (optional for gradual enrichment)
+    about: { type: String, default: "" },
+    subtitle: { type: String, default: "" },
+    badge: { type: String, default: "" },
+    stats: [
+      {
+        value: { type: String },
+        label: { type: String },
+      },
+    ],
+    attractions: [
+      {
+        name: { type: String, required: true },
+        desc: { type: String },
+        description: { type: String },
+        image: { type: String },
+        tags: [
+          {
+            label: { type: String },
+            color: { type: String },
+          },
+        ],
+        rating: { type: String },
+        reviews: { type: String },
+        hours: { type: String },
+      },
+    ],
+    foodRecommendations: [
+      {
+        name: { type: String, required: true },
+        desc: { type: String },
+        description: { type: String },
+        type: { type: String },
+        image: { type: String },
+      },
+    ],
+    activities: [
+      {
+        name: { type: String, required: true },
+        desc: { type: String },
+        description: { type: String },
+        icon: { type: String },
+        time: { type: String },
+        image: { type: String },
+      },
+    ],
+    hiddenGems: [
+      {
+        name: { type: String },
+        desc: { type: String },
+        description: { type: String },
+        icon: { type: String },
+        location: { type: String },
+        image: { type: String },
+      },
+    ],
+    nearby: [
+      {
+        name: { type: String },
+        emoji: { type: String },
+        desc: { type: String },
+        description: { type: String },
+        distance: { type: String },
+        image: { type: String },
+      },
+    ],
+    months: [
+      {
+        m: { type: String },
+        range: { type: String },
+        label: { type: String },
+        type: { type: String },
+      },
+    ],
+    tips: [
+      {
+        icon: { type: String },
+        title: { type: String },
+        desc: { type: String },
+      },
+    ],
+    checklist: {
+      type: mongoose.Schema.Types.Mixed,
+      default: {},
+    },
+    gallery: {
+      type: [String],
+      default: [],
+    },
+    isEnriched: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

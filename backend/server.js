@@ -11,6 +11,7 @@ import plannerRoutes from "./routes/plannerRoutes.js";
 import recommendationRoutes from "./routes/recommendationRoutes.js";
 import weatherRoutes from "./routes/weatherRoutes.js";
 import submissionRoutes from "./routes/submissionRoutes.js";
+import photoRoutes from "./routes/photoRoutes.js";
 
 connectDB();
 
@@ -28,6 +29,7 @@ app.use("/api/planner", plannerRoutes);
 app.use("/api/recommendations", recommendationRoutes);
 app.use("/api/weather", weatherRoutes);
 app.use("/api/submissions", submissionRoutes);
+app.use("/api/photos", photoRoutes);
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/destinations", destinationRoutes);

@@ -13,7 +13,7 @@ Respond with ONLY valid JSON without markdown fences. Follow this structure:
   "days": [
     {
       "day": 1,
-      "title": "short day theme",
+      "title": "short day theme (do not repeat 'Day 1:' in title, just theme like 'Iconic Landmarks & Heritage')",
       "morning": "specific activity at landmark with timing",
       "afternoon": "specific activity or market with lunch",
       "evening": "sunset/cultural experience and dinner",
@@ -39,7 +39,7 @@ const generateCuratedFallback = ({ destination, days, budget, travelStyle }) => 
       tips: "Wear comfortable walking shoes and carry cash for local craft shopping.",
     },
     {
-      title: "Cultural Immersive & Food Trail",
+      title: "Cultural Immersion & Food Trail",
       morning: `Explore sacred temples, historic ghats, and royal palaces with an expert local heritage storyteller.`,
       afternoon: `Guided street food and spice trail sampling century-old family recipes and artisanal delicacies.`,
       evening: `Evening boat ride or rooftop dinner overlooking the illuminated city skyline under the stars.`,
@@ -72,7 +72,7 @@ const generateCuratedFallback = ({ destination, days, budget, travelStyle }) => 
     const template = dayTemplates[i % dayTemplates.length];
     generatedDays.push({
       day: i + 1,
-      title: `Day ${i + 1}: ${template.title}`,
+      title: template.title,
       morning: template.morning,
       afternoon: template.afternoon,
       evening: template.evening,

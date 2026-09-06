@@ -15,7 +15,7 @@ const JAIPUR = {
     "Step into a city draped in terracotta hues, where forts rise from golden hills, bazaars hum with silk and spice, and every sunset turns the sky into a masterpiece. Jaipur doesn't just welcome you — it enchants you.",
   region: "Rajasthan, India",
   badge: "The Pink City",
-  image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Hawa_Mahal_2010.jpg/1280px-Hawa_Mahal_2010.jpg",
+  image: "https://images.unsplash.com/photo-1603262110263-fb0112e7cc33?w=1200&q=80",
   stats: [
     { value: "300+", label: "Years of History" },
     { value: "4.8★", label: "Traveller Rating" },
@@ -26,42 +26,42 @@ const JAIPUR = {
     {
       name: "Amber Fort",
       desc: "A majestic palace complex perched atop the Aravalli hills, with mirror halls, elephant corridors, and sweeping lake views that leave you breathless.",
-      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Amer_Fort_bird_eye_view.jpg/1280px-Amer_Fort_bird_eye_view.jpg",
+      image: "https://images.unsplash.com/photo-1599661046827-dacff0c0f09a?w=800&q=80",
       tags: [{ label: "UNESCO", color: "#FF6B1A" }, { label: "Must Visit", color: "#6B1A1A" }],
       rating: "4.9", reviews: "48K", hours: "8AM – 5:30PM",
     },
     {
       name: "Hawa Mahal",
       desc: "The Palace of Winds — a five-storey honeycomb of 953 carved windows, built so royal ladies could observe street festivities while remaining unseen.",
-      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Hawa_Mahal_2010.jpg/1280px-Hawa_Mahal_2010.jpg",
+      image: "https://images.unsplash.com/photo-1603262110263-fb0112e7cc33?w=800&q=80",
       tags: [{ label: "Iconic", color: "#FF6B1A" }, { label: "UNESCO", color: "#FF6B1A" }],
       rating: "4.8", reviews: "62K", hours: "9AM – 4:30PM",
     },
     {
       name: "City Palace",
       desc: "A grand palace complex at the heart of Jaipur's walled city, home to royal art galleries, silver urns, and opulent courtyards still used by the royal family.",
-      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/City_Palace_Jaipur_2012.jpg/1280px-City_Palace_Jaipur_2012.jpg",
+      image: "https://images.unsplash.com/photo-1661924326425-c14a6426d989?w=800&q=80",
       tags: [{ label: "Royal", color: "#6B1A1A" }, { label: "Heritage", color: "#b37a00" }],
       rating: "4.7", reviews: "35K", hours: "9:30AM – 5PM",
     },
     {
       name: "Jantar Mantar",
       desc: "The world's largest stone astronomical observatory, built in 1724. Its giant instruments measure time, predict eclipses, and track stars with startling accuracy.",
-      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Jantar_Mantar_Jaipur_2010.jpg/1280px-Jantar_Mantar_Jaipur_2010.jpg",
+      image: "https://images.unsplash.com/photo-1599661046827-dacff0c0f09a?w=800&q=80",
       tags: [{ label: "UNESCO", color: "#FF6B1A" }, { label: "Science", color: "#2e7d32" }],
       rating: "4.6", reviews: "28K", hours: "9AM – 4:30PM",
     },
     {
       name: "Nahargarh Fort",
       desc: 'Perched on the rocky Aravalli ridge, this "Tiger Fort" offers the most dramatic panoramic view of Jaipur — especially at twilight when the city glows amber.',
-      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Nahargarh_Fort_Jaipur_Rajasthan_India.jpg/1280px-Nahargarh_Fort_Jaipur_Rajasthan_India.jpg",
+      image: "https://images.unsplash.com/photo-1653495484044-479eeabe94ab?w=800&q=80",
       tags: [{ label: "Sunset Spot", color: "#e05a10" }, { label: "Fort", color: "#6B1A1A" }],
       rating: "4.5", reviews: "22K", hours: "10AM – 5:30PM",
     },
     {
       name: "Johari Bazaar",
       desc: "Jaipur's legendary jewellery market, glittering with kundan, meenakari, and precious gemstones. Also home to vibrant textile stalls and the city's finest silver.",
-      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Johari_Bazar_Jaipur.jpg/1280px-Johari_Bazar_Jaipur.jpg",
+      image: "https://images.unsplash.com/photo-1606837731918-f006ef0ef3da?w=800&q=80",
       tags: [{ label: "Shopping", color: "#b37a00" }, { label: "Cultural", color: "#5c3d8f" }],
       rating: "4.6", reviews: "19K", hours: "10AM – 8PM",
     },
@@ -71,25 +71,25 @@ const JAIPUR = {
       name: "Laxmi Misthan Bhandar (LMB)",
       desc: "A Jaipur institution since 1954 — their sweets and Rajasthani thali are legendary.",
       type: "Heritage Restaurant",
-      image: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=300&h=200&fit=crop",
+      image: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&h=300&fit=crop",
     },
     {
       name: "Suvarna Mahal, Rambagh Palace",
       desc: "Dine like royalty in a gilded ballroom with the finest Rajasthani and Mughal cuisine.",
       type: "Luxury / Fine Dining",
-      image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=300&h=200&fit=crop",
+      image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=300&fit=crop",
     },
     {
       name: "Peacock Rooftop Restaurant",
       desc: "Rooftop dining with views of Hawa Mahal — perfect at sunset with a cold lassi.",
       type: "Views + Great Food",
-      image: "https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?w=300&h=200&fit=crop",
+      image: "https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?w=400&h=300&fit=crop",
     },
     {
       name: "Rawat Mishthan Bhandar",
       desc: "The birthplace of Jaipur's famous Pyaaz Kachori. No visit is complete without stopping here.",
       type: "Street Food Icon",
-      image: "https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=300&h=200&fit=crop",
+      image: "https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=400&h=300&fit=crop",
     },
   ],
   experiences: [
@@ -98,21 +98,21 @@ const JAIPUR = {
       desc: "Ascend to Amber Fort on the back of a majestic painted elephant — a royal arrival befitting the palace you're about to enter.",
       icon: "🐘",
       time: "Morning Only",
-      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Elephants_at_Amer_Fort_Jaipur.jpg/1280px-Elephants_at_Amer_Fort_Jaipur.jpg",
+      image: "https://images.unsplash.com/photo-1599661046827-dacff0c0f09a?w=600&h=400&fit=crop",
     },
     {
       name: "Shopping in Johari Bazaar",
       desc: "Hunt for blue pottery, kundan jewellery, block-printed textiles, and handcrafted leather shoes in Jaipur's bustling walled-city markets.",
       icon: "💍",
       time: "Evening Best",
-      image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=400&fit=crop",
+      image: "https://images.unsplash.com/photo-1606837731918-f006ef0ef3da?w=600&h=400&fit=crop",
     },
     {
       name: "Sunset at Nahargarh Fort",
       desc: "Watch the Pink City blush deeper as the sun melts into the Aravalli ridgeline — one of India's most dramatic and romantic sunsets.",
       icon: "🌅",
       time: "5 PM – 7 PM",
-      image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop",
+      image: "https://images.unsplash.com/photo-1653495484044-479eeabe94ab?w=600&h=400&fit=crop",
     },
     {
       name: "Cultural Shows & Folk Dance",
@@ -128,21 +128,21 @@ const JAIPUR = {
       desc: "A mesmerising 16th-century stepwell near Amber Fort with symmetrical staircases forming perfect geometric patterns. Peaceful, photogenic, and almost always uncrowded.",
       icon: "🪜",
       location: "Amer",
-      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Panna_Meena_ka_Kund%2C_Jaipur.jpg/1280px-Panna_Meena_ka_Kund%2C_Jaipur.jpg",
+      image: "https://images.unsplash.com/photo-1630261000949-b4a3c3571af4?w=600&h=400&fit=crop",
     },
     {
       name: "Jawahar Circle Garden",
       desc: "The largest circular park in Asia, this gorgeous garden dazzles at evening with illuminated fountains and manicured flower beds. Perfect for a quiet evening stroll.",
       icon: "🌸",
       location: "Malviya Nagar",
-      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Jawahar_Circle_Jaipur.jpg/1280px-Jawahar_Circle_Jaipur.jpg",
+      image: "https://images.unsplash.com/photo-1603262110263-fb0112e7cc33?w=600&h=400&fit=crop",
     },
     {
       name: "Kanak Vrindavan Garden",
       desc: "Nestled beside the Jal Mahal lake, this serene 18th-century garden with its ornate temples and peacock-filled lawns is overlooked by nearly every tourist guide.",
       icon: "🌺",
       location: "Nahargarh Road",
-      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Kanak_Vrindavan_Jaipur.jpg/1280px-Kanak_Vrindavan_Jaipur.jpg",
+      image: "https://images.unsplash.com/photo-1661924326425-c14a6426d989?w=600&h=400&fit=crop",
     },
     {
       name: "Chandlai Lake",
@@ -158,21 +158,21 @@ const JAIPUR = {
       emoji: "🕌",
       desc: "Home to the revered Dargah of Sufi saint Moinuddin Chishti, Ajmer radiates a profound spiritual calm. Visit during Urs festival for an otherworldly experience.",
       distance: "135 km · ~2.5 hrs by road",
-      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Ajmer_Dargah.jpg/1280px-Ajmer_Dargah.jpg",
+      image: "https://images.unsplash.com/photo-1666175146759-ce6a39f991ae?w=600&h=400&fit=crop",
     },
     {
       name: "Pushkar",
       emoji: "🐪",
       desc: "A sacred lake town with 52 bathing ghats and over 400 temples. November's Pushkar Camel Fair is one of the world's most surreal spectacles.",
       distance: "145 km · ~3 hrs by road",
-      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Pushkar_Lake.jpg/1280px-Pushkar_Lake.jpg",
+      image: "https://images.unsplash.com/photo-1715168931029-2949161ee406?w=600&h=400&fit=crop",
     },
     {
       name: "Ranthambore",
       emoji: "🐯",
       desc: "India's most famed tiger reserve, set against ancient fort ruins. A morning safari here, watching a Bengal tiger stalk through tall grass, is a defining life experience.",
       distance: "180 km · ~3.5 hrs by road",
-      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Ranthambhore_Fort.jpg/1280px-Ranthambhore_Fort.jpg",
+      image: "https://images.unsplash.com/photo-1725990076174-a3448eb86e76?w=600&h=400&fit=crop",
     },
   ],
   months: [
@@ -241,12 +241,13 @@ function Navbar() {
   return (
     <nav style={{
       position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000,
-      background: scrolled ? "rgba(253,246,236,0.97)" : "rgba(253,246,236,0.85)",
-      backdropFilter: "blur(10px)",
-      borderBottom: scrolled ? "1px solid rgba(200,150,100,0.2)" : "1px solid transparent",
+      background: scrolled ? "rgba(234, 88, 12, 0.92)" : "transparent",
+      backdropFilter: scrolled ? "blur(12px)" : "none",
+      borderBottom: scrolled ? "1px solid rgba(255,255,255,0.15)" : "1px solid transparent",
+      boxShadow: scrolled ? "0 8px 30px rgba(0,0,0,0.12)" : "none",
       display: "flex", alignItems: "center", justifyContent: "space-between",
       padding: "0 48px", height: 64,
-      transition: "all 0.3s ease",
+      transition: "all 0.4s ease",
     }}>
       <a href="/" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none" }}>
         <img 
@@ -254,123 +255,130 @@ function Navbar() {
           alt="logo" 
           style={{ 
            width: 40, height: 40, 
-          transition: "transform 0.5s ease",
-          border: "none",
-          outline: "none",
-          borderRadius: 10,
-  }}
-  onMouseEnter={e => e.target.style.transform = "rotate(360deg)"}
-  onMouseLeave={e => e.target.style.transform = "rotate(0deg)"}
-/>
-        <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 18, fontWeight: 700, color: S.darkBrown }}>
-          Travel in <span style={{ color: S.orange }}>Depth</span>
+           transition: "transform 0.5s ease",
+           border: "none",
+           outline: "none",
+           borderRadius: 10,
+          }}
+          onMouseEnter={e => e.target.style.transform = "rotate(360deg)"}
+          onMouseLeave={e => e.target.style.transform = "rotate(0deg)"}
+        />
+        <span style={{
+          fontFamily: "'DM Sans', sans-serif",
+          fontSize: 18,
+          fontWeight: 700,
+          color: scrolled ? "#FFFFFF" : "#000000",
+          transition: "color 0.3s ease",
+        }}>
+          Travel in <span style={{ color: scrolled ? "#FDE68A" : S.orange }}>Depth</span>
         </span>
       </a>
       <ul style={{ display: "flex", gap: 36, listStyle: "none" }}>
         {["Plan Trip", "Attractions", "Food", "Experiences", "Best Time"].map(item => (
           <li key={item}>
             <a href={`#${item.toLowerCase().replace(" ", "-")}`} style={{
-              textDecoration: "none", color: S.textMid, fontSize: 14, fontWeight: 500,
+              textDecoration: "none",
+              color: scrolled ? "rgba(255,255,255,0.95)" : "#000000",
+              fontSize: 14,
+              fontWeight: 700,
               transition: "color 0.2s",
             }}
-            onMouseEnter={e => e.target.style.color = S.orange}
-            onMouseLeave={e => e.target.style.color = S.textMid}
+            onMouseEnter={e => e.target.style.color = scrolled ? "#FDE68A" : S.orange}
+            onMouseLeave={e => e.target.style.color = scrolled ? "rgba(255,255,255,0.95)" : "#000000"}
             >{item}</a>
           </li>
         ))}
       </ul>
-      <button style={{
-        background: S.orange, color: "white", border: "none", borderRadius: 50,
-        padding: "10px 24px", fontSize: 14, fontWeight: 600, cursor: "pointer",
-        display: "flex", alignItems: "center", gap: 6,
-      }}>✦ Plan My Trip</button>
+      <button
+        onClick={() => document.getElementById("plan-trip")?.scrollIntoView({ behavior: "smooth" })}
+        style={{
+          background: scrolled ? "#FFFFFF" : S.orange,
+          color: scrolled ? "#000000" : "#FFFFFF",
+          border: "none", borderRadius: 50,
+          padding: "10px 24px", fontSize: 14, fontWeight: 700, cursor: "pointer",
+          display: "flex", alignItems: "center", gap: 6,
+          boxShadow: "0 4px 14px rgba(0,0,0,0.15)",
+          transition: "all 0.3s ease",
+        }}
+      >
+        ✦ Plan My Trip
+      </button>
     </nav>
   );
 }
 
-function FloatingNav() {
-  const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
-  return (
-    <div style={{ position: "fixed", right: 24, top: "50%", transform: "translateY(-50%)", zIndex: 900, display: "flex", flexDirection: "column", gap: 10 }}>
-      {[
-        { icon: "↑", action: scrollToTop, bg: "white" },
-        { icon: "📅", action: () => document.getElementById("plan-trip")?.scrollIntoView({ behavior: "smooth" }), bg: "white" },
-        { icon: "♥", action: () => {}, bg: S.orange },
-      ].map((btn, i) => (
-        <button key={i} onClick={btn.action} style={{
-          width: 44, height: 44, borderRadius: "50%",
-          background: btn.bg, border: "1px solid rgba(0,0,0,0.1)",
-          boxShadow: "0 2px 8px rgba(0,0,0,0.12)",
-          display: "flex", alignItems: "center", justifyContent: "center",
-          cursor: "pointer", fontSize: btn.icon === "♥" ? 18 : 16,
-          color: btn.bg === S.orange ? "white" : S.darkBrown,
-        }}>{btn.icon}</button>
-      ))}
-    </div>
-  );
-}
+const PLACEHOLDER_IMAGE = "/photo-placeholder.jpg";
 
 function Hero({ city }) {
+  const subtitle = city.subtitle || `Discover the best of ${city.name}, ${city.state || city.region}`;
+  const description = city.about || city.description || `${city.name} is a captivating destination in ${city.state || city.region}, offering unforgettable heritage, culture, and nature experiences.`;
+  const badge = city.badge || city.region || "Incredible India";
+  const stats = Array.isArray(city.stats) && city.stats.length > 0 ? city.stats : [
+    { value: `${city.rating || 4.5}★`, label: "Traveller Rating" },
+    { value: city.budget || "Affordable", label: "Budget Tier" },
+    { value: city.bestSeason || "All Year", label: "Best Season" },
+  ];
+
+  const heroImage = city.image || PLACEHOLDER_IMAGE;
+
   return (
-    <section id="hero" style={{ position: "relative", height: "100vh", minHeight: 700, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+    <section id="hero" style={{ position: "relative", minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "space-between", overflow: "hidden", paddingTop: 100, paddingBottom: 60 }}>
       <div style={{
         position: "absolute", inset: 0,
-        backgroundImage: `url(${city.image})`,
+        backgroundImage: `url(${heroImage})`,
         backgroundSize: "cover", backgroundPosition: "center",
-        filter: "brightness(0.5) saturate(1.2)",
+        filter: "brightness(0.55) saturate(1.15)",
       }} />
-      <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(80,20,0,0.25) 0%, rgba(120,30,0,0.5) 50%, rgba(50,10,0,0.75) 100%)" }} />
+      <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(40,15,5,0.4) 0%, rgba(70,25,10,0.55) 50%, rgba(30,10,0,0.85) 100%)" }} />
 
-      <div style={{ position: "relative", zIndex: 2, textAlign: "center", color: "white", maxWidth: 900, padding: "0 24px" }}>
+      {/* Main Hero Content */}
+      <div style={{ position: "relative", zIndex: 2, textAlign: "center", color: "white", maxWidth: 900, padding: "20px 24px 30px", margin: "auto 0" }}>
         <div style={{
           display: "inline-flex", alignItems: "center", gap: 10,
-          background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.3)",
-          borderRadius: 50, padding: "7px 20px", fontSize: 14, fontWeight: 500,
-          marginBottom: 22,
+          background: "rgba(255,255,255,0.15)", backdropFilter: "blur(6px)", border: "1px solid rgba(255,255,255,0.3)",
+          borderRadius: 50, padding: "7px 22px", fontSize: 13, fontWeight: 600,
+          marginBottom: 18,
         }}>
           <span style={{ width: 8, height: 8, background: S.orange, borderRadius: "50%", display: "inline-block" }} />
-          {city.region} · {city.badge}
+          {city.state ? `${city.state}, India` : city.region} · {badge}
         </div>
-        <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(64px,8vw,96px)", fontWeight: 800, lineHeight: 1, marginBottom: 4 }}>
+        <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(46px,7vw,84px)", fontWeight: 800, lineHeight: 1.05, marginBottom: 6 }}>
           {city.name}
         </h1>
-        <div style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(48px,6vw,76px)", fontWeight: 700, fontStyle: "italic", color: "#FFB347", lineHeight: 1.1, marginBottom: 28 }}>
+        <div style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(32px,4.5vw,56px)", fontWeight: 700, fontStyle: "italic", color: "#FFB347", lineHeight: 1.15, marginBottom: 20 }}>
           {city.tagline}
         </div>
-        <p style={{ fontSize: 17, fontStyle: "italic", color: "rgba(255,255,255,0.8)", marginBottom: 16 }}>{city.subtitle}</p>
-        <p style={{ fontSize: 15.5, color: "rgba(255,255,255,0.68)", lineHeight: 1.8, maxWidth: 600, margin: "0 auto 40px" }}>{city.description}</p>
-        <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap" }}>
+        <p style={{ fontSize: 16, fontStyle: "italic", color: "rgba(255,255,255,0.85)", marginBottom: 12 }}>{subtitle}</p>
+        <p style={{ fontSize: 14.5, color: "rgba(255,255,255,0.72)", lineHeight: 1.7, maxWidth: 640, margin: "0 auto 32px" }}>{description}</p>
+        
+        <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap", marginBottom: 32 }}>
           <button onClick={() => document.getElementById("plan-trip")?.scrollIntoView({ behavior: "smooth" })} style={{
             background: S.orange, color: "white", border: "none", borderRadius: 50,
-            padding: "15px 32px", fontSize: 15, fontWeight: 600, cursor: "pointer",
-            display: "flex", alignItems: "center", gap: 8,
+            padding: "14px 32px", fontSize: 14, fontWeight: 700, cursor: "pointer",
+            display: "flex", alignItems: "center", gap: 8, boxShadow: "0 6px 20px rgba(255,107,26,0.4)",
+            transition: "all 0.3s ease",
           }}>✦ Plan Your Trip</button>
           <button onClick={() => document.getElementById("attractions")?.scrollIntoView({ behavior: "smooth" })} style={{
-            background: "transparent", color: "white", border: "1.5px solid rgba(255,255,255,0.7)",
-            borderRadius: 50, padding: "15px 32px", fontSize: 15, fontWeight: 600, cursor: "pointer",
-            display: "flex", alignItems: "center", gap: 8,
+            background: "rgba(255,255,255,0.12)", color: "white", border: "1.5px solid rgba(255,255,255,0.6)",
+            borderRadius: 50, padding: "14px 32px", fontSize: 14, fontWeight: 700, cursor: "pointer",
+            display: "flex", alignItems: "center", gap: 8, backdropFilter: "blur(4px)",
+            transition: "all 0.3s ease",
           }}>🗺 Explore Places</button>
         </div>
       </div>
 
-      <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, zIndex: 2 }}>
-        <p style={{ textAlign: "center", color: "rgba(255,255,255,0.45)", fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: 24 }}>SCROLL</p>
-        <div style={{ display: "flex", justifyContent: "center", gap: "clamp(32px, 5vw, 80px)", padding: "0 40px 40px" }}>
-          // REPLACE with:
-           {(city.stats ?? []).map(s => (
+      {/* Stats Bottom Container */}
+      <div style={{ position: "relative", zIndex: 4, width: "100%", paddingBottom: 20 }}>
+        <p style={{ textAlign: "center", color: "rgba(255,255,255,0.5)", fontSize: 10, letterSpacing: "0.22em", textTransform: "uppercase", marginBottom: 16 }}>SCROLL TO EXPLORE</p>
+        <div style={{ display: "flex", justifyContent: "center", gap: "clamp(24px, 5vw, 70px)", padding: "0 24px", flexWrap: "wrap" }}>
+          {stats.map(s => (
             <div key={s.label} style={{ textAlign: "center", color: "white" }}>
-              <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 34, fontWeight: 700, color: "#FFB347" }}>{s.value}</div>
-              <div style={{ fontSize: 13, color: "rgba(255,255,255,0.65)", marginTop: 2 }}>{s.label}</div>
+              <div style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(24px, 3.5vw, 36px)", fontWeight: 700, color: "#FFB347", lineHeight: 1 }}>{s.value}</div>
+              <div style={{ fontSize: 12, color: "rgba(255,255,255,0.7)", marginTop: 6, fontWeight: 500 }}>{s.label}</div>
             </div>
           ))}
         </div>
       </div>
-
-      {/* curved white transition */}
-      <div style={{
-        position: "absolute", bottom: -2, left: 0, right: 0, height: 80, zIndex: 3,
-        background: "#FDF6EC", borderRadius: "50% 50% 0 0 / 80px 80px 0 0",
-      }} />
     </section>
   );
 }
@@ -452,51 +460,57 @@ function PlannerSection({ city }) {
 
         <div style={{ background: "white", borderRadius: 20, overflow: "hidden", boxShadow: "0 4px 40px rgba(90,20,0,0.08)" }}>
           {/* Dark header */}
-          <div style={{ background: "#5c1212", padding: "28px 36px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
+          <div style={{ background: "#5c1212", padding: "28px 36px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 20 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
-              <div style={{ width: 44, height: 44, background: "rgba(255,255,255,0.12)", borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22 }}>📅</div>
-              <div>
-                <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 22, fontWeight: 700, color: "white" }}>AI Trip Planner</div>
-                <div style={{ fontSize: 13.5, color: "rgba(255,255,255,0.65)" }}>Powered by Gemini AI for {city.name}</div>
+              <div style={{ width: 48, height: 48, background: "rgba(255,255,255,0.12)", borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24, flexShrink: 0 }}>📅</div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 22, fontWeight: 700, color: "white", lineHeight: 1.2 }}>AI Trip Planner</div>
+                <div style={{ fontSize: 13.5, color: "rgba(255,255,255,0.75)", lineHeight: 1.4 }}>Powered by Gemini AI for {city.name}</div>
               </div>
             </div>
             {user && (
-              <span style={{ fontSize: 12, color: "#FFD7B5", background: "rgba(255,255,255,0.1)", padding: "6px 14px", borderRadius: 50 }}>
+              <span style={{ fontSize: 13, color: "#FFD7B5", background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.15)", padding: "8px 18px", borderRadius: 50, display: "inline-flex", alignItems: "center", gap: 6 }}>
                 👤 Planning as <b>{user.name}</b>
               </span>
             )}
           </div>
           {/* Controls */}
-          <div style={{ padding: "40px 36px", display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 32, alignItems: "start" }}>
-            <div>
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
-                <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: S.textMuted }}>NUMBER OF DAYS</span>
-                <span style={{ background: S.orange, color: "white", fontSize: 13, fontWeight: 700, borderRadius: 50, padding: "3px 14px" }}>{days} Days</span>
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+            gap: 32,
+            padding: "36px 36px 28px",
+            alignItems: "start",
+          }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: S.textMuted }}>NUMBER OF DAYS</span>
+                <span style={{ background: S.orange, color: "white", fontSize: 13, fontWeight: 700, borderRadius: 50, padding: "4px 16px" }}>{days} Days</span>
               </div>
               <input type="range" min={1} max={7} value={days} onChange={e => setDays(+e.target.value)}
-                style={{ width: "100%", accentColor: S.orange, cursor: "pointer" }} />
-              <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, color: S.textMuted, marginTop: 6 }}>
+                style={{ width: "100%", accentColor: S.orange, cursor: "pointer", marginTop: 6 }} />
+              <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, color: S.textMuted }}>
                 <span>1 Day</span><span>7 Days</span>
               </div>
             </div>
-            <div>
-              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: S.textMuted, marginBottom: 12 }}>TRAVEL STYLE</div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: S.textMuted }}>TRAVEL STYLE</div>
               <select value={style} onChange={e => setStyle(e.target.value)} style={{
-                width: "100%", padding: "12px 14px", borderRadius: 10, border: "1px solid #e8d5c4",
+                width: "100%", padding: "13px 16px", borderRadius: 12, border: "1.5px solid #e8d5c4",
                 fontSize: 14, fontFamily: "'DM Sans', sans-serif", background: "#fff8f4",
-                color: S.darkBrown, cursor: "pointer", outline: "none",
+                color: S.darkBrown, cursor: "pointer", outline: "none", fontWeight: 500,
               }}>
                 {["Couple / Honeymoon", "Solo Explorer", "Family with Kids", "Friends Group", "Cultural Enthusiast"].map(s => (
                   <option key={s} value={s}>{s}</option>
                 ))}
               </select>
             </div>
-            <div>
-              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: S.textMuted, marginBottom: 12 }}>BUDGET LEVEL</div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: S.textMuted }}>BUDGET LEVEL</div>
               <select value={budget} onChange={e => setBudget(e.target.value)} style={{
-                width: "100%", padding: "12px 14px", borderRadius: 10, border: "1px solid #e8d5c4",
+                width: "100%", padding: "13px 16px", borderRadius: 12, border: "1.5px solid #e8d5c4",
                 fontSize: 14, fontFamily: "'DM Sans', sans-serif", background: "#fff8f4",
-                color: S.darkBrown, cursor: "pointer", outline: "none",
+                color: S.darkBrown, cursor: "pointer", outline: "none", fontWeight: 500,
               }}>
                 <option value="budget">Budget (₹2,000–4,000/day) 💰</option>
                 <option value="mid-range">Mid-range (₹5,000–10,000/day) 💳</option>
@@ -504,17 +518,18 @@ function PlannerSection({ city }) {
               </select>
             </div>
           </div>
-          <div style={{ padding: "0 36px 40px", textAlign: "center" }}>
+          <div style={{ padding: "0 36px 44px", textAlign: "center" }}>
             <button onClick={generate} disabled={loading} style={{
               background: loading ? "#ccc" : S.orange, color: "white", border: "none", borderRadius: 50,
-              padding: "16px 48px", fontSize: 16, fontWeight: 600, cursor: loading ? "not-allowed" : "pointer",
-              display: "inline-flex", alignItems: "center", gap: 8, boxShadow: "0 8px 24px rgba(255,107,26,0.35)",
+              padding: "16px 48px", fontSize: 16, fontWeight: 700, cursor: loading ? "not-allowed" : "pointer",
+              display: "inline-flex", alignItems: "center", gap: 10, boxShadow: "0 8px 24px rgba(255,107,26,0.35)",
+              transition: "transform 0.2s ease",
             }}>
               {loading ? "⏳ Crafting Itinerary with AI…" : "✦ Generate My Itinerary"}
             </button>
 
             {error && (
-              <div style={{ marginTop: 20, color: "#c0392b", fontSize: 14, background: "#fde8e8", padding: "12px 20px", borderRadius: 10, display: "inline-block" }}>
+              <div style={{ marginTop: 24, color: "#c0392b", fontSize: 14, background: "#fde8e8", padding: "14px 24px", borderRadius: 12, display: "inline-block" }}>
                 ⚠️ {error}
               </div>
             )}
@@ -523,20 +538,20 @@ function PlannerSection({ city }) {
               const daysList = itinerary.days || itinerary;
               const isFallback = Boolean(itinerary.isFallback);
               return (
-                <div style={{ marginTop: 36, textAlign: "left", borderTop: "1px solid #e8d5c4", paddingTop: 32 }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, flexWrap: "wrap", gap: 12 }}>
+                <div style={{ marginTop: 44, textAlign: "left", borderTop: "1.5px solid #f0e4d8", paddingTop: 36 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 28, flexWrap: "wrap", gap: 16 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
-                      <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 24, color: S.darkBrown, margin: 0 }}>
+                      <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 26, color: S.darkBrown, margin: 0, fontWeight: 800 }}>
                         Your {daysList.length}-Day {city.name} Itinerary
                       </h3>
                       {isFallback && (
                         <span style={{
-                          padding: "4px 12px",
-                          background: "rgba(255,107,26,0.12)",
-                          border: "1px solid rgba(255,107,26,0.3)",
+                          padding: "5px 16px",
+                          background: "rgba(255,107,26,0.1)",
+                          border: "1px solid rgba(255,107,26,0.25)",
                           borderRadius: 50,
-                          fontSize: 12,
-                          fontWeight: 600,
+                          fontSize: 12.5,
+                          fontWeight: 700,
                           color: S.orange,
                         }}>
                           ✦ Curated Pick
@@ -551,36 +566,64 @@ function PlannerSection({ city }) {
                         color: "white",
                         border: "none",
                         borderRadius: 50,
-                        padding: "10px 24px",
-                        fontSize: 13,
+                        padding: "12px 28px",
+                        fontSize: 13.5,
                         fontWeight: 700,
                         cursor: saving ? "not-allowed" : "pointer",
                         display: "inline-flex",
                         alignItems: "center",
-                        gap: 6,
+                        gap: 8,
+                        boxShadow: "0 4px 14px rgba(0,0,0,0.12)",
+                        transition: "all 0.25s ease",
                       }}
                     >
                       {savedSuccess ? "✓ Saved to My Dashboard!" : saving ? "Saving…" : "💾 Save This Trip"}
                     </button>
                   </div>
-                  <div style={{ display: "grid", gap: 20 }}>
-                    {daysList.map(d => (
-                      <div key={d.day} style={{ background: "#FFF8F0", border: "1px solid #E8DCC4", borderRadius: 16, padding: "24px" }}>
-                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-                          <h4 style={{ fontFamily: "'Playfair Display', serif", color: S.orange, fontSize: 18, fontWeight: 700 }}>
-                            Day {d.day}: {d.title}
-                          </h4>
-                          <span style={{ fontSize: 13, color: "#138808", fontWeight: 700 }}>{d.estimatedBudgetINR}</span>
+                  <div style={{ display: "grid", gap: 28 }}>
+                    {daysList.map(d => {
+                      // Clean title to strip duplicate "Day 1:" prefixes from AI output if present
+                      const cleanTitle = (d.title || "")
+                        .replace(new RegExp(`^Day\\s*${d.day}\\s*:\\s*`, "i"), "")
+                        .replace(/^Day\s*\d+\s*:\s*/i, "")
+                        .trim();
+
+                      return (
+                        <div key={d.day} style={{ background: "#FFFBF7", border: "1.5px solid #F0E2D2", borderRadius: 20, padding: "32px", boxShadow: "0 4px 20px rgba(90,20,0,0.04)" }}>
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, flexWrap: "wrap", gap: 12, borderBottom: "1px solid #F3E5D8", paddingBottom: 16 }}>
+                            <h4 style={{ fontFamily: "'Playfair Display', serif", color: S.orange, fontSize: 20, fontWeight: 800, margin: 0 }}>
+                              Day {d.day}: {cleanTitle || `Exploring ${city.name}`}
+                            </h4>
+                            <span style={{ fontSize: 13.5, color: "#138808", fontWeight: 800, background: "#E8F5E9", padding: "5px 14px", borderRadius: 50 }}>
+                              {d.estimatedBudgetINR}
+                            </span>
+                          </div>
+                          <div style={{ display: "flex", flexDirection: "column", gap: 14, fontSize: 15, color: S.textMid, lineHeight: 1.8 }}>
+                            <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+                              <span style={{ fontWeight: 800, color: S.darkBrown, minWidth: 110, flexShrink: 0 }}>🌅 Morning:</span>
+                              <span>{d.morning}</span>
+                            </div>
+                            <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+                              <span style={{ fontWeight: 800, color: S.darkBrown, minWidth: 110, flexShrink: 0 }}>☀️ Afternoon:</span>
+                              <span>{d.afternoon}</span>
+                            </div>
+                            <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+                              <span style={{ fontWeight: 800, color: S.darkBrown, minWidth: 110, flexShrink: 0 }}>🌆 Evening:</span>
+                              <span>{d.evening}</span>
+                            </div>
+                            <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+                              <span style={{ fontWeight: 800, color: S.darkBrown, minWidth: 110, flexShrink: 0 }}>🍛 Meals:</span>
+                              <span>{d.meals}</span>
+                            </div>
+                            {d.tips && (
+                              <div style={{ marginTop: 10, padding: "14px 18px", background: "#FFF3E8", borderLeft: `4px solid ${S.orange}`, borderRadius: 10, fontSize: 14, color: S.midBrown }}>
+                                <b>💡 Insider Tip:</b> {d.tips}
+                              </div>
+                            )}
+                          </div>
                         </div>
-                        <div style={{ fontSize: 14, color: S.textMid, lineHeight: 1.8, spaceY: 8 }}>
-                          <p><b>🌅 Morning:</b> {d.morning}</p>
-                          <p><b>☀️ Afternoon:</b> {d.afternoon}</p>
-                          <p><b>🌆 Evening:</b> {d.evening}</p>
-                          <p><b>🍛 Meals:</b> {d.meals}</p>
-                          {d.tips && <p style={{ color: S.orange, marginTop: 8 }}><b>💡 Tip:</b> {d.tips}</p>}
-                        </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
               );
@@ -592,24 +635,41 @@ function PlannerSection({ city }) {
   );
 }
 
-function AttractionCard({ a }) {
+function AttractionCard({ a, cityImage }) {
+  const desc = a.desc || a.description || "";
+  const tags = a.tags || [{ label: "Popular", color: "#FF6B1A" }];
+  const rating = a.rating || "4.7";
+  const reviews = a.reviews || "1K+";
+  const hours = a.hours || "9AM – 5PM";
+  const defaultFallback = cityImage || PLACEHOLDER_IMAGE;
+
   return (
     <div style={{ background: "white", borderRadius: 16, overflow: "hidden", boxShadow: "0 2px 20px rgba(90,20,0,0.06)", display: "flex", flexDirection: "column" }}>
-      <div style={{ position: "relative", height: 220 }}>
-        <img src={a.image} alt={a.name} style={{ width: "100%", height: "100%", objectFit: "cover" }}
-          onError={e => { e.target.style.background = "#e8d5c0"; e.target.style.display = "none"; }} />
+      <div style={{ position: "relative", height: 220, background: "#F3E5D8" }}>
+        <img
+          src={a.image || defaultFallback}
+          alt={a.name}
+          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          onError={(e) => {
+            if (e.target.src !== defaultFallback && defaultFallback) {
+              e.target.src = defaultFallback;
+            } else if (e.target.src !== PLACEHOLDER_IMAGE) {
+              e.target.src = PLACEHOLDER_IMAGE;
+            }
+          }}
+        />
         <div style={{ position: "absolute", top: 12, left: 12, display: "flex", gap: 7 }}>
-          {a.tags.map(t => (
-            <span key={t.label} style={{ background: t.color, color: "white", fontSize: 12, fontWeight: 600, borderRadius: 50, padding: "4px 12px" }}>{t.label}</span>
+          {tags.map(t => (
+            <span key={t.label} style={{ background: t.color || "#FF6B1A", color: "white", fontSize: 12, fontWeight: 600, borderRadius: 50, padding: "4px 12px" }}>{t.label}</span>
           ))}
         </div>
       </div>
       <div style={{ padding: "20px 22px 22px", flex: 1, display: "flex", flexDirection: "column" }}>
         <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, fontWeight: 700, color: S.midBrown, marginBottom: 8 }}>{a.name}</h3>
-        <p style={{ fontSize: 14, color: S.textMid, lineHeight: 1.75, flex: 1, marginBottom: 18 }}>{a.desc}</p>
+        <p style={{ fontSize: 14, color: S.textMid, lineHeight: 1.75, flex: 1, marginBottom: 18 }}>{desc}</p>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderTop: "1px solid #f0e4d8", paddingTop: 14 }}>
-          <span style={{ fontSize: 14, color: "#b37a00", fontWeight: 600 }}>⭐ {a.rating} ({a.reviews} reviews)</span>
-          <span style={{ fontSize: 13, color: S.textMuted, display: "flex", alignItems: "center", gap: 5 }}>🕐 {a.hours}</span>
+          <span style={{ fontSize: 14, color: "#b37a00", fontWeight: 600 }}>⭐ {rating} ({reviews} reviews)</span>
+          <span style={{ fontSize: 13, color: S.textMuted, display: "flex", alignItems: "center", gap: 5 }}>🕐 {hours}</span>
         </div>
       </div>
     </div>
@@ -617,6 +677,9 @@ function AttractionCard({ a }) {
 }
 
 function AttractionsSection({ city }) {
+  const attractions = city.attractions || [];
+  if (attractions.length === 0) return null;
+
   return (
     <section id="attractions" style={{ padding: "80px 0", background: "#FDF6EC" }}>
       <div style={{ maxWidth: 1180, margin: "0 auto", padding: "0 40px" }}>
@@ -626,10 +689,10 @@ function AttractionsSection({ city }) {
         </h2>
         <div style={{ width: 60, height: 3, background: S.orange, margin: "0 auto 14px", borderRadius: 2 }} />
         <p style={{ color: S.textMuted, textAlign: "center", fontSize: 15.5, maxWidth: 560, margin: "0 auto 56px", lineHeight: 1.7 }}>
-          From UNESCO World Heritage palaces to soaring hilltop forts — every landmark tells an epic story.
+          From celebrated landmarks to breathtaking scenic wonders — explore the highlights of {city.name}.
         </p>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 28 }}>
-          {(city.attractions ?? []).map(a => <AttractionCard key={a.name} a={a} />)}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 28 }}>
+          {attractions.map(a => <AttractionCard key={a.name} a={a} cityImage={city.image} />)}
         </div>
       </div>
     </section>
@@ -637,23 +700,37 @@ function AttractionsSection({ city }) {
 }
 
 function FoodSection({ city }) {
+  const food = city.foodRecommendations || city.food || [];
+  if (food.length === 0) return null;
+  const defaultFallback = city.image || PLACEHOLDER_IMAGE;
+
   return (
     <section id="food" style={{ padding: "80px 0", background: "#FDF6EC" }}>
       <div style={{ maxWidth: 1180, margin: "0 auto", padding: "0 40px" }}>
         <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: S.orange, textAlign: "center", marginBottom: 10 }}>WHERE TO EAT</p>
         <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(28px,4vw,42px)", fontWeight: 800, color: S.orange, textAlign: "center", marginBottom: 10 }}>
-          Famous Local Spots
+          Famous Local Food & Spots
         </h2>
         <div style={{ width: 60, height: 3, background: S.orange, margin: "0 auto 52px", borderRadius: 2 }} />
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
-         {(city.food ?? []).map(f => (
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 20 }}>
+          {food.map(f => (
             <div key={f.name} style={{ background: "white", borderRadius: 16, overflow: "hidden", display: "flex", alignItems: "center", gap: 0, boxShadow: "0 2px 12px rgba(90,20,0,0.06)" }}>
-              <img src={f.image} alt={f.name} style={{ width: 110, height: 110, objectFit: "cover", flexShrink: 0 }}
-                onError={e => { e.target.style.background = "#e8d5c0"; }} />
+              <img
+                src={f.image || defaultFallback}
+                alt={f.name}
+                style={{ width: 110, height: 110, objectFit: "cover", flexShrink: 0, background: "#F3E5D8" }}
+                onError={(e) => {
+                  if (e.target.src !== defaultFallback && defaultFallback) {
+                    e.target.src = defaultFallback;
+                  } else if (e.target.src !== PLACEHOLDER_IMAGE) {
+                    e.target.src = PLACEHOLDER_IMAGE;
+                  }
+                }}
+              />
               <div style={{ padding: "14px 18px" }}>
                 <h3 style={{ fontSize: 15, fontWeight: 700, color: S.darkBrown, marginBottom: 6, lineHeight: 1.3 }}>{f.name}</h3>
-                <p style={{ fontSize: 13, color: S.textMid, lineHeight: 1.6, marginBottom: 8 }}>{f.desc}</p>
-                <span style={{ fontSize: 12, color: S.orange, fontWeight: 600 }}>✦ {f.type}</span>
+                <p style={{ fontSize: 13, color: S.textMid, lineHeight: 1.6, marginBottom: 8 }}>{f.desc || f.description}</p>
+                <span style={{ fontSize: 12, color: S.orange, fontWeight: 600 }}>✦ {f.type || "Local Speciality"}</span>
               </div>
             </div>
           ))}
@@ -664,29 +741,45 @@ function FoodSection({ city }) {
 }
 
 function ExperiencesSection({ city }) {
+  const experiences = city.activities || city.experiences || [];
+  if (experiences.length === 0) return null;
+  const defaultFallback = city.image || PLACEHOLDER_IMAGE;
+
   return (
     <section id="experiences" style={{ padding: "80px 0", background: "#5c1212" }}>
       <div style={{ maxWidth: 1180, margin: "0 auto", padding: "0 40px" }}>
         <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "#FFB347", textAlign: "center", marginBottom: 10 }}>LIVE IT FULLY</p>
         <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(32px,5vw,54px)", fontWeight: 800, color: "white", textAlign: "center", marginBottom: 10 }}>
-          Must-Do Experiences
+          Must-Do Experiences in {city.name}
         </h2>
         <div style={{ width: 60, height: 3, background: "#FFB347", margin: "0 auto 14px", borderRadius: 2 }} />
         <p style={{ color: "rgba(255,255,255,0.6)", textAlign: "center", fontSize: 15.5, maxWidth: 580, margin: "0 auto 56px", lineHeight: 1.7 }}>
-          Beyond sightseeing — these are the moments that turn a trip into a lifelong memory.
+          Beyond sightseeing — unforgettable activities that turn a trip into a lifelong memory.
         </p>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 22 }}>
-          {(city.experiences ?? []).map(exp => (
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 22 }}>
+          {experiences.map(exp => (
             <div key={exp.name} style={{ background: "rgba(255,255,255,0.07)", borderRadius: 18, overflow: "hidden", border: "1px solid rgba(255,255,255,0.1)" }}>
-              <img src={exp.image} alt={exp.name} style={{ width: "100%", height: 200, objectFit: "cover", display: "block" }}
-                onError={e => { e.target.style.background = "#8b2500"; }} />
+              <img
+                src={exp.image || defaultFallback}
+                alt={exp.name}
+                style={{ width: "100%", height: 200, objectFit: "cover", display: "block", background: "#8b2500" }}
+                onError={(e) => {
+                  if (e.target.src !== defaultFallback && defaultFallback) {
+                    e.target.src = defaultFallback;
+                  } else if (e.target.src !== PLACEHOLDER_IMAGE) {
+                    e.target.src = PLACEHOLDER_IMAGE;
+                  }
+                }}
+              />
               <div style={{ padding: "18px 18px 20px" }}>
-                <div style={{ fontSize: 26, marginBottom: 10 }}>{exp.icon}</div>
+                <div style={{ fontSize: 26, marginBottom: 10 }}>{exp.icon || "✨"}</div>
                 <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 17, fontWeight: 700, color: "white", marginBottom: 8, lineHeight: 1.3 }}>{exp.name}</h3>
-                <p style={{ fontSize: 13, color: "rgba(255,255,255,0.65)", lineHeight: 1.7, marginBottom: 16 }}>{exp.desc}</p>
-                <span style={{ background: "rgba(255,255,255,0.12)", color: "rgba(255,255,255,0.85)", fontSize: 12, fontWeight: 500, borderRadius: 50, padding: "5px 14px", display: "inline-flex", alignItems: "center", gap: 5 }}>
-                  🕐 {exp.time}
-                </span>
+                <p style={{ fontSize: 13, color: "rgba(255,255,255,0.65)", lineHeight: 1.7, marginBottom: 16 }}>{exp.desc || exp.description}</p>
+                {exp.time && (
+                  <span style={{ background: "rgba(255,255,255,0.12)", color: "rgba(255,255,255,0.85)", fontSize: 12, fontWeight: 500, borderRadius: 50, padding: "5px 14px", display: "inline-flex", alignItems: "center", gap: 5 }}>
+                    🕐 {exp.time}
+                  </span>
+                )}
               </div>
             </div>
           ))}
@@ -697,6 +790,10 @@ function ExperiencesSection({ city }) {
 }
 
 function HiddenGemsSection({ city }) {
+  const hiddenGems = city.hiddenGems || [];
+  if (hiddenGems.length === 0) return null;
+  const defaultFallback = city.image || PLACEHOLDER_IMAGE;
+
   return (
     <section style={{ padding: "80px 0", background: "#FDF6EC" }}>
       <div style={{ maxWidth: 1180, margin: "0 auto", padding: "0 40px" }}>
@@ -706,20 +803,32 @@ function HiddenGemsSection({ city }) {
         </h2>
         <div style={{ width: 60, height: 3, background: S.orange, margin: "0 auto 14px", borderRadius: 2 }} />
         <p style={{ color: S.textMuted, textAlign: "center", fontSize: 15.5, maxWidth: 560, margin: "0 auto 56px", lineHeight: 1.7 }}>
-          Skip the crowds. These lesser-known treasures reveal a quieter, more magical side of the Pink City.
+          Skip the crowds. These lesser-known treasures reveal a quieter, more magical side of {city.name}.
         </p>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 22 }}>
-          {(city.hiddenGems ?? []).map(gem => (
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 22 }}>
+          {hiddenGems.map(gem => (
             <div key={gem.name} style={{ background: "white", borderRadius: 16, overflow: "hidden", boxShadow: "0 2px 16px rgba(90,20,0,0.07)" }}>
-              <img src={gem.image} alt={gem.name} style={{ width: "100%", height: 190, objectFit: "cover", display: "block" }}
-                onError={e => { e.target.style.background = "#e8d5c0"; }} />
+              <img
+                src={gem.image || defaultFallback}
+                alt={gem.name}
+                style={{ width: "100%", height: 190, objectFit: "cover", display: "block", background: "#F3E5D8" }}
+                onError={(e) => {
+                  if (e.target.src !== defaultFallback && defaultFallback) {
+                    e.target.src = defaultFallback;
+                  } else if (e.target.src !== PLACEHOLDER_IMAGE) {
+                    e.target.src = PLACEHOLDER_IMAGE;
+                  }
+                }}
+              />
               <div style={{ padding: "18px 18px 20px" }}>
-                <div style={{ fontSize: 26, marginBottom: 10 }}>{gem.icon}</div>
+                <div style={{ fontSize: 26, marginBottom: 10 }}>{gem.icon || "💎"}</div>
                 <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 17, fontWeight: 700, color: S.midBrown, marginBottom: 8, lineHeight: 1.3 }}>{gem.name}</h3>
-                <p style={{ fontSize: 13, color: S.textMid, lineHeight: 1.7, marginBottom: 16 }}>{gem.desc}</p>
-                <span style={{ background: "#fde8e8", color: "#c0392b", fontSize: 12, fontWeight: 500, borderRadius: 50, padding: "4px 12px", display: "inline-flex", alignItems: "center", gap: 4 }}>
-                  📍 {gem.location}
-                </span>
+                <p style={{ fontSize: 13, color: S.textMid, lineHeight: 1.7, marginBottom: 16 }}>{gem.desc || gem.description}</p>
+                {gem.location && (
+                  <span style={{ background: "#fde8e8", color: "#c0392b", fontSize: 12, fontWeight: 500, borderRadius: 50, padding: "4px 12px", display: "inline-flex", alignItems: "center", gap: 4 }}>
+                    📍 {gem.location}
+                  </span>
+                )}
               </div>
             </div>
           ))}
@@ -730,6 +839,10 @@ function HiddenGemsSection({ city }) {
 }
 
 function NearbySection({ city }) {
+  const nearby = city.nearby || [];
+  if (nearby.length === 0) return null;
+  const defaultFallback = city.image || PLACEHOLDER_IMAGE;
+
   return (
     <section style={{ padding: "80px 0", background: "#FDF6EC" }}>
       <div style={{ maxWidth: 1180, margin: "0 auto", padding: "0 40px" }}>
@@ -738,23 +851,35 @@ function NearbySection({ city }) {
         </h2>
         <div style={{ width: 60, height: 3, background: S.orange, margin: "0 auto 14px", borderRadius: 2 }} />
         <p style={{ color: S.textMuted, textAlign: "center", fontSize: 15.5, maxWidth: 560, margin: "0 auto 56px", lineHeight: 1.7 }}>
-          Extend your journey — Rajasthan's magic doesn't stop at {city.name}'s borders.
+          Extend your journey — explore scenic getaways near {city.name}.
         </p>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 28 }}>
-          {(city.nearby ?? []).map(n => (
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 28 }}>
+          {nearby.map(n => (
             <div key={n.name} style={{ background: "white", borderRadius: 18, overflow: "hidden", boxShadow: "0 2px 20px rgba(90,20,0,0.07)" }}>
-              <div style={{ position: "relative", height: 220 }}>
-                <img src={n.image} alt={n.name} style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                  onError={e => { e.target.style.background = "#e8d5c0"; }} />
+              <div style={{ position: "relative", height: 220, background: "#F3E5D8" }}>
+                <img
+                  src={n.image || defaultFallback}
+                  alt={n.name}
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                  onError={(e) => {
+                    if (e.target.src !== defaultFallback && defaultFallback) {
+                      e.target.src = defaultFallback;
+                    } else if (e.target.src !== PLACEHOLDER_IMAGE) {
+                      e.target.src = PLACEHOLDER_IMAGE;
+                    }
+                  }}
+                />
               </div>
               <div style={{ padding: "22px 24px" }}>
                 <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 22, fontWeight: 700, color: S.darkBrown, marginBottom: 10, display: "flex", alignItems: "center", gap: 8 }}>
-                  {n.emoji} {n.name}
+                  {n.emoji || "📍"} {n.name}
                 </h3>
-                <p style={{ fontSize: 14, color: S.textMid, lineHeight: 1.75, marginBottom: 16 }}>{n.desc}</p>
-                <span style={{ fontSize: 13.5, color: S.orange, fontWeight: 600, display: "flex", alignItems: "center", gap: 5 }}>
-                  📍 {n.distance}
-                </span>
+                <p style={{ fontSize: 14, color: S.textMid, lineHeight: 1.75, marginBottom: 16 }}>{n.desc || n.description}</p>
+                {n.distance && (
+                  <span style={{ fontSize: 13.5, color: S.orange, fontWeight: 600, display: "flex", alignItems: "center", gap: 5 }}>
+                    📍 {n.distance}
+                  </span>
+                )}
               </div>
             </div>
           ))}
@@ -763,6 +888,7 @@ function NearbySection({ city }) {
     </section>
   );
 }
+
 
 function BestTimeSection({ city }) {
   const [weather, setWeather] = useState(null);
@@ -792,6 +918,9 @@ function BestTimeSection({ city }) {
     warn: { bg: "#fff8e1", text: "#b37a00", icon: "⚠️" },
     bad:  { bg: "#fdecea", text: "#b71c1c", icon: "🌧" },
   };
+
+  const months = city.months || [];
+  const tips = city.tips || [];
 
   return (
     <section id="best-time" style={{ padding: "80px 0", background: "#FDF6EC" }}>
@@ -877,83 +1006,95 @@ function BestTimeSection({ city }) {
         </h2>
         <div style={{ width: 60, height: 3, background: S.orange, margin: "0 auto 14px", borderRadius: 2 }} />
         <p style={{ color: S.textMuted, textAlign: "center", fontSize: 15.5, maxWidth: 540, margin: "0 auto 52px", lineHeight: 1.7 }}>
-          Timing matters. Here's a month-by-month guide to help you plan the perfect trip.
+          Recommended season: <strong style={{ color: S.orange }}>{city.bestSeason || "October to March"}</strong>
         </p>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 14, marginBottom: 52 }}>
-          {(city.months ?? []).map(m =>  {
-            const st = typeStyles[m.type];
-            return (
-              <div key={m.m} style={{ background: st.bg, borderRadius: 12, padding: "18px 16px", textAlign: "center" }}>
-                <div style={{ fontSize: 16, fontWeight: 700, color: st.text, marginBottom: 4 }}>{m.m}</div>
-                <div style={{ fontSize: 13, color: S.textMid, marginBottom: 8 }}>{m.range}</div>
-                <div style={{ fontSize: 12, fontWeight: 600, color: st.text, display: "flex", alignItems: "center", justifyContent: "center", gap: 4 }}>
-                  {st.icon} {m.label}
+
+        {months.length > 0 && (
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: 14, marginBottom: 52 }}>
+            {months.map(m => {
+              const st = typeStyles[m.type] || typeStyles.good;
+              return (
+                <div key={m.m} style={{ background: st.bg, borderRadius: 12, padding: "18px 16px", textAlign: "center" }}>
+                  <div style={{ fontSize: 16, fontWeight: 700, color: st.text, marginBottom: 4 }}>{m.m}</div>
+                  <div style={{ fontSize: 13, color: S.textMid, marginBottom: 8 }}>{m.range}</div>
+                  <div style={{ fontSize: 12, fontWeight: 600, color: st.text, display: "flex", alignItems: "center", justifyContent: "center", gap: 4 }}>
+                    {st.icon} {m.label}
+                  </div>
                 </div>
+              );
+            })}
+          </div>
+        )}
+
+        {tips.length > 0 && (
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 20 }}>
+            {tips.map(tip => (
+              <div key={tip.title} style={{ background: "white", borderRadius: 14, padding: "20px 18px", boxShadow: "0 2px 12px rgba(90,20,0,0.06)" }}>
+                <div style={{ fontSize: 28, marginBottom: 10 }}>{tip.icon || "💡"}</div>
+                <h4 style={{ fontSize: 15, fontWeight: 700, color: S.darkBrown, marginBottom: 8 }}>{tip.title}</h4>
+                <p style={{ fontSize: 13, color: S.textMid, lineHeight: 1.7 }}>{tip.desc}</p>
               </div>
-            );
-          })}
-        </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 20 }}>
-          {(city.tips ?? []).map(tip => (
-            <div key={tip.title} style={{ background: "white", borderRadius: 14, padding: "20px 18px", boxShadow: "0 2px 12px rgba(90,20,0,0.06)" }}>
-              <div style={{ fontSize: 28, marginBottom: 10 }}>{tip.icon}</div>
-              <h4 style={{ fontSize: 15, fontWeight: 700, color: S.darkBrown, marginBottom: 8 }}>{tip.title}</h4>
-              <p style={{ fontSize: 13, color: S.textMid, lineHeight: 1.7 }}>{tip.desc}</p>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
 }
 
 function ChecklistSection({ city }) {
-  const tabs =Object.keys(city.checklist ?? {});
+  const checklistObj = city.checklist && Object.keys(city.checklist).length > 0 ? city.checklist : null;
+  if (!checklistObj) return null;
+
+  const tabs = Object.keys(checklistObj);
   const [activeTab, setActiveTab] = useState(tabs[0]);
   const [checked, setChecked] = useState({});
   const toggle = item => setChecked(p => ({ ...p, [item]: !p[item] }));
- const items = city.checklist?.[activeTab] ?? [];
+  const items = checklistObj[activeTab] || [];
+
   return (
-    <section style={{ padding: "80px 0", background: "#FDF6EC" }}>
+    <section style={{ padding: "80px 0 100px", background: "#FDF6EC" }}>
       <div style={{ maxWidth: 1180, margin: "0 auto", padding: "0 40px" }}>
         <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: S.orange, textAlign: "center", marginBottom: 10 }}>PACK SMART</p>
         <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(28px,4vw,46px)", fontWeight: 800, color: S.darkBrown, textAlign: "center", marginBottom: 10 }}>
-          Travel Checklist
+          Travel Checklist for {city.name}
         </h2>
         <div style={{ width: 60, height: 3, background: S.orange, margin: "0 auto 14px", borderRadius: 2 }} />
         <p style={{ color: S.textMuted, textAlign: "center", fontSize: 15.5, maxWidth: 540, margin: "0 auto 40px", lineHeight: 1.7 }}>
           Don't leave home without ticking these off. Customised by season.
         </p>
-        <div style={{ display: "flex", justifyContent: "center", gap: 10, marginBottom: 44 }}>
+        <div style={{ display: "flex", justifyContent: "center", gap: 12, marginBottom: 44, flexWrap: "wrap" }}>
           {tabs.map(tab => (
             <button key={tab} onClick={() => setActiveTab(tab)} style={{
-              padding: "10px 26px", borderRadius: 50, fontSize: 14.5, fontWeight: 600, cursor: "pointer",
-              border: "none",
-              background: activeTab === tab ? S.orange : "transparent",
+              padding: "11px 28px", borderRadius: 50, fontSize: 14, fontWeight: 700, cursor: "pointer",
+              border: activeTab === tab ? "none" : "1.5px solid #E8DCC4",
+              background: activeTab === tab ? S.orange : "white",
               color: activeTab === tab ? "white" : S.textMid,
-              transition: "all 0.2s",
+              boxShadow: activeTab === tab ? "0 4px 14px rgba(255,107,26,0.3)" : "none",
+              transition: "all 0.25s ease",
             }}>
               {tab === "Summer" ? "☀️" : tab === "Winter" ? "❄️" : "👜"} {tab}
             </button>
           ))}
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 14 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 16 }}>
           {items.map(item => (
             <label key={item} onClick={() => toggle(item)} style={{
-              display: "flex", alignItems: "flex-start", gap: 12, cursor: "pointer",
-              background: checked[item] ? "#fff0e8" : "white",
-              border: checked[item] ? `1.5px solid ${S.orange}` : "1.5px solid #f0e4d8",
-              borderRadius: 12, padding: "14px 16px",
-              transition: "all 0.2s",
+              display: "flex", alignItems: "flex-start", gap: 14, cursor: "pointer",
+              background: checked[item] ? "#FFF3EB" : "white",
+              border: checked[item] ? `1.5px solid ${S.orange}` : "1.5px solid #EDE2D4",
+              borderRadius: 14, padding: "16px 20px",
+              boxShadow: "0 2px 8px rgba(90,20,0,0.03)",
+              transition: "all 0.2s ease",
             }}>
               <div style={{
-                width: 20, height: 20, border: `2px solid ${checked[item] ? S.orange : "#ccc"}`,
-                borderRadius: 4, flexShrink: 0, marginTop: 1,
+                width: 22, height: 22, border: `2px solid ${checked[item] ? S.orange : "#CBD5E1"}`,
+                borderRadius: 6, flexShrink: 0, marginTop: 1,
                 background: checked[item] ? S.orange : "white",
                 display: "flex", alignItems: "center", justifyContent: "center",
-                fontSize: 12, color: "white", fontWeight: 700,
+                fontSize: 13, color: "white", fontWeight: 800,
               }}>{checked[item] ? "✓" : ""}</div>
-              <span style={{ fontSize: 14, color: S.textMid, lineHeight: 1.5 }}>{item}</span>
+              <span style={{ fontSize: 14, color: checked[item] ? S.darkBrown : S.textMid, lineHeight: 1.5, fontWeight: checked[item] ? 600 : 500 }}>{item}</span>
             </label>
           ))}
         </div>
@@ -962,69 +1103,78 @@ function ChecklistSection({ city }) {
   );
 }
 
-function Footer() {
+function ComingSoonGuideBanner({ city }) {
+  if (city.isEnriched || (city.attractions && city.attractions.length > 0)) {
+    return null;
+  }
+
   return (
-    <footer style={{ background: "#5c1212", padding: "50px 40px", textAlign: "center" }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 12 }}>
-       <img 
-         src="/logo.jpg" 
-         alt="logo" 
-         style={{ 
-         width: 40, height: 40, 
-         transition: "transform 0.5s ease",
-         border: "none",
-        outline: "none",
-         borderRadius: 10,
-  }}
-  onMouseEnter={e => e.target.style.transform = "rotate(360deg)"}
-  onMouseLeave={e => e.target.style.transform = "rotate(0deg)"}
-/>
-        <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 22, fontWeight: 700, color: "white" }}>
-          Travel in <span style={{ color: "#FFB347" }}>Depth</span>
-        </span>
+    <div style={{ maxWidth: 1180, margin: "20px auto 40px", padding: "0 40px" }}>
+      <div style={{
+        background: "#FFF8F0",
+        border: "1.5px dashed #E8DCC4",
+        borderRadius: 16,
+        padding: "32px",
+        textAlign: "center",
+      }}>
+        <div style={{ fontSize: 36, marginBottom: 12 }}>🗺️✨</div>
+        <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 22, color: S.darkBrown, marginBottom: 8 }}>
+          In-Depth Guide for {city.name} Coming Soon!
+        </h3>
+        <p style={{ color: S.textMid, fontSize: 14, maxWidth: 600, margin: "0 auto 16px", lineHeight: 1.6 }}>
+          Our travel editors and community contributors are currently curating the top attractions, foodie spots, hidden stepwells, and local secrets for {city.name}.
+        </p>
+        <p style={{ fontSize: 13, color: S.orange, fontWeight: 600, margin: 0 }}>
+          💡 In the meantime, you can use our AI Trip Planner above to generate a custom day-by-day itinerary!
+        </p>
       </div>
-      <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 13 }}>Crafted with ❤️ for wanderers who seek the extraordinary in every corner of India.</p>
-    </footer>
+    </div>
   );
 }
-
 /* ─── MAIN PAGE ─── */
 export default function CityPage() {
   const { slug } = useParams();
   const { cities } = useContext(CityContext);
   const contextCity = cities?.find(c => c.slug === slug);
-const city = contextCity ? { ...JAIPUR, ...contextCity } : JAIPUR;
+  const city = contextCity || (slug === "jaipur" ? JAIPUR : null);
 
   useEffect(() => {
     const style = document.createElement("style");
     style.textContent = globalStyles;
     document.head.appendChild(style);
-    return () => document.head.removeChild(style);
+    return () => {
+      if (document.head.contains(style)) {
+        document.head.removeChild(style);
+      }
+    };
   }, []);
 
   if (!city) {
     return (
       <div style={{ height: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "#FDF6EC" }}>
-        <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, color: "#5c1a00" }}>City not found, bhai!</h2>
-        <Link to="/destinations" style={{ marginTop: 16, color: "#FF6B1A", fontWeight: 700 }}>Back to Map</Link>
+        <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, color: "#5c1a00" }}>Destination not found</h2>
+        <Link to="/destinations" style={{ marginTop: 16, color: "#FF6B1A", fontWeight: 700 }}>Back to Destinations Map</Link>
       </div>
     );
   }
 
+  const months = city.months || (JAIPUR.months);
+  const tips = city.tips || (JAIPUR.tips);
+  const checklist = city.checklist || (JAIPUR.checklist);
+
   return (
     <div style={{ fontFamily: "'DM Sans', sans-serif", background: "#FDF6EC" }}>
       <Navbar />
-      <FloatingNav />
       <Hero city={city} />
       <PlannerSection city={city} />
+      <ComingSoonGuideBanner city={city} />
       <AttractionsSection city={city} />
       <FoodSection city={city} />
       <ExperiencesSection city={city} />
       <HiddenGemsSection city={city} />
       <NearbySection city={city} />
-      <BestTimeSection city={city} />
-      <ChecklistSection city={city} />
-      <Footer />
+      <BestTimeSection city={{ ...city, months, tips }} />
+      <ChecklistSection city={{ ...city, checklist }} />
     </div>
   );
 }

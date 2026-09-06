@@ -1,9 +1,21 @@
 import React, { useEffect, useState, useRef } from 'react'
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../features/auth/useAuth';
 
 function HeroSection() {
+    const { user } = useAuth();
+    const navigate = useNavigate();
     const vid = ['/videos/v1.mp4', '/videos/v2.mp4', '/videos/v3.mp4', '/videos/v4.mp4'];
     const [currentIndex, setCurrentIndex] = useState(0);
     const videoRefs = useRef([]); // Saare videos ka reference store karne ke liye
+
+    const handleExploreClick = () => {
+        if (user) {
+            navigate('/destinations');
+        } else {
+            navigate('/login', { state: { from: '/destinations' } });
+        }
+    };
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -54,7 +66,10 @@ function HeroSection() {
                     <p className="mt-6 text-sm font-medium text-white/70 tracking-[0.3em] uppercase md:text-lg">
                         Find Yourself in the World
                     </p>
-                    <button className='tracking-[0.2em] mt-10 px-10 py-4 rounded-full font-black uppercase text-sm md:text-lg text-black bg-white/65 hover:bg-amber-400/45 hover:scale-105 hover:text-white transition-all duration-300 active:scale-95'>
+                    <button
+                        onClick={handleExploreClick}
+                        className='tracking-[0.2em] mt-10 px-10 py-4 rounded-full font-black uppercase text-sm md:text-lg text-black bg-white/65 hover:bg-amber-400/45 hover:scale-105 hover:text-white transition-all duration-300 active:scale-95 cursor-pointer'
+                    >
                         Explore Now
                     </button>
                 </div>

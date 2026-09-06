@@ -9,8 +9,10 @@ function Navbar() {
     const { user, logout } = useAuth();
     const location = useLocation();
 
-    // Do not show public fixed navbar on dashboard or admin pages to avoid overlap
-    const isDashboardOrAdmin = location.pathname.startsWith('/dashboard') || location.pathname.startsWith('/admin');
+    // Do not show public fixed navbar on dashboard, admin, or individual city detail pages (which has its own dedicated in-page navigation)
+    const isExcludedPage = location.pathname.startsWith('/dashboard') || 
+                           location.pathname.startsWith('/admin') ||
+                           (/^\/destinations\/[^/]+$/.test(location.pathname));
 
     useEffect(() => {
         const handleScroll = () => {
@@ -20,67 +22,76 @@ function Navbar() {
         return () => { window.removeEventListener('scroll', handleScroll); };
     }, []);
 
-    if (isDashboardOrAdmin) {
+    if (isExcludedPage) {
         return null;
     }
     return (
       <nav className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 px-6 py-4 md:px-12 ${
   isScrolled 
-    ? 'bg-orange-600/90 backdrop-blur-md py-3 border-b border-white/10 shadow-lg' 
-    : 'bg-transparent'
+    ? 'bg-orange-600/90 backdrop-blur-md py-3 border-b border-white/10 shadow-lg text-white' 
+    : 'bg-transparent text-black'
 }`}>
       <div className="max-w-8xl mx-auto p-2 flex justify-between items-center h-12">
         
         {/* plane logo */}
-        <div className="flex items-center gap-2 cursor-pointer group">
+        <Link to="/" className="flex items-center gap-2 cursor-pointer group text-decoration-none">
           <div className="bg-amber-500 p-2 rounded-lg group-hover:rotate-[360deg] transition-all duration-700 shadow-md">
-    <Plane size={20} className="text-black" />
-  </div>
-          <span className="text-2xl font-black tracking-tighter text-white uppercase">
-            Travel <span className={`transition-all duration-300 ${
-  isScrolled ? 'tracking-[0.1em] text-green-900/90' : 'text-amber-500'
-}`}>
-  In Depth
-</span></span>
-        </div>
+            <Plane size={20} className="text-black" />
+          </div>
+          <span className={`text-2xl font-black tracking-tighter uppercase transition-colors duration-300 ${
+            isScrolled ? 'text-white' : 'text-black'
+          }`}>
+            Travel <span className={isScrolled ? 'text-amber-300 tracking-[0.05em]' : 'text-amber-600'}>In Depth</span>
+          </span>
+        </Link>
 
         {/* navlinks */}
-        <ul className="hidden md:flex items-center gap-8 text-[13px] font-bold tracking-[0.2em] text-white/80 uppercase">
-          <li className="hover:text-[#8B1A1A] cursor-pointer transition-colors"><Link to='/'>Home</Link></li>
-          <li className="hover:text-[#8B1A1A] cursor-pointer transition-colors"><Link to='/destinations'>Destinations</Link></li>
-          <li className="hover:text-[#8B1A1A] cursor-pointer transition-colors"><Link to='/experience'>Experience</Link></li>
-          <li className="hover:text-[#8B1A1A] cursor-pointer transition-colors"><Link to='/about'>About</Link></li>
+        <ul className={`hidden md:flex items-center gap-8 text-[13px] font-bold tracking-[0.2em] uppercase transition-colors duration-300 ${
+          isScrolled ? 'text-white/90' : 'text-black'
+        }`}>
+          <li className="hover:text-amber-500 cursor-pointer transition-colors"><Link to='/'>Home</Link></li>
+          <li className="hover:text-amber-500 cursor-pointer transition-colors"><Link to='/destinations'>Destinations</Link></li>
+          <li className="hover:text-amber-500 cursor-pointer transition-colors"><Link to='/experience'>Experience</Link></li>
+          <li className="hover:text-amber-500 cursor-pointer transition-colors"><Link to='/about'>About</Link></li>
         </ul>
 
         {/* ACTIONS */}
-        <div className="flex items-center gap-6 text-white">
+        <div className={`flex items-center gap-6 transition-colors duration-300 ${
+          isScrolled ? 'text-white' : 'text-black'
+        }`}>
           <Search size={18} className="cursor-pointer hover:text-amber-500 transition-colors hidden sm:block" />
           {/* Login User rendering section */}
           {user ? (
             <div className="flex items-center gap-3">
               <Link to="/dashboard" className="flex items-center gap-2 cursor-pointer hover:text-amber-500 transition-colors">
-                <User size={18} className='text-green-400'/>
-                <span className="text-sm font-bold hidden md:block text-green-400">
+                <User size={18} className={isScrolled ? 'text-green-400' : 'text-amber-600'}/>
+                <span className={`text-sm font-bold hidden md:block ${isScrolled ? 'text-green-400' : 'text-black'}`}>
                   {user.name?.split(" ")[0] || "Dashboard"}
                 </span>
               </Link>
               <button
                 onClick={logout}
                 title="Logout"
-                className="hidden md:flex items-center text-white/70 hover:text-red-400 transition-colors"
+                className={`hidden md:flex items-center transition-colors ${
+                  isScrolled ? 'text-white/70 hover:text-red-400' : 'text-black/70 hover:text-red-600'
+                }`}
               >
                 <LogOut size={16} />
               </button>
             </div>
           ) : (
             <Link to='/login'>
-              <button className="bg-transparent border border-white text-white px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-white hover:text-black transition-all">
+              <button className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${
+                isScrolled
+                  ? 'bg-transparent border border-white text-white hover:bg-white hover:text-black'
+                  : 'bg-transparent border border-black text-black hover:bg-black hover:text-white'
+              }`}>
                 Login
               </button>
             </Link>
           )}
           <Link to="/book-trip">
-            <button className="hidden md:block bg-amber-500 hover:bg-amber-600 text-black px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all active:scale-95">
+            <button className="hidden md:block bg-amber-500 hover:bg-amber-600 text-black px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all active:scale-95 shadow-sm">
               Book Trip
             </button>
           </Link>
@@ -93,41 +104,45 @@ function Navbar() {
 
       </div>
       {isOpened && (
-  <div className={`fixed top-0 right-0 w-full h-screen ${isScrolled ? 'bg-orange-500/90 backdrop-blur-xl' : 'bg-gray-900'} z-[-1] transition-all duration-300`}>
-    <div className='flex flex-col items-center justify-center gap-10 h-full w-full px-6 py-20 text-white text-sm font-bold uppercase tracking-widest'>
+  <div className={`fixed top-0 right-0 w-full h-screen ${isScrolled ? 'bg-orange-600/95 backdrop-blur-xl text-white' : 'bg-white/95 backdrop-blur-xl text-black'} z-[-1] transition-all duration-300`}>
+    <div className='flex flex-col items-center justify-center gap-10 h-full w-full px-6 py-20 text-sm font-bold uppercase tracking-widest'>
       
       <Link 
         to='/' 
         onClick={() => setIsOpened(false)} 
-        className={`pb-2 ${isScrolled ? 'text-transparent bg-clip-text bg-gradient-to-r from-red-600/65 to-amber-600/65' : 'text-white'}`}
+        className={isScrolled ? 'text-white hover:text-amber-300' : 'text-black hover:text-amber-600'}
       >
         Home
       </Link>
       
-      <Link to='/destinations' onClick={() => setIsOpened(false)} className={isScrolled ? 'text-white/80' : 'text-white'}>
+      <Link to='/destinations' onClick={() => setIsOpened(false)} className={isScrolled ? 'text-white hover:text-amber-300' : 'text-black hover:text-amber-600'}>
         Destinations
       </Link>
       
-      <Link to='/experience' onClick={() => setIsOpened(false)} className={isScrolled ? 'text-white/80' : 'text-white'}>
+      <Link to='/experience' onClick={() => setIsOpened(false)} className={isScrolled ? 'text-white hover:text-amber-300' : 'text-black hover:text-amber-600'}>
         Experience
       </Link>
       
-      <Link to='/about' onClick={() => setIsOpened(false)} className={isScrolled ? 'text-white/80' : 'text-white'}>
+      <Link to='/about' onClick={() => setIsOpened(false)} className={isScrolled ? 'text-white hover:text-amber-300' : 'text-black hover:text-amber-600'}>
         About
       </Link>
       {user ? (
         <div className="flex flex-col items-center gap-4">
-          <Link to="/dashboard" onClick={() => setIsOpened(false)} className="flex items-center gap-2 cursor-pointer text-green-400">
+          <Link to="/dashboard" onClick={() => setIsOpened(false)} className={`flex items-center gap-2 cursor-pointer ${isScrolled ? 'text-green-400' : 'text-amber-600'}`}>
             <User size={18} />
             <span>{user.name}</span>
           </Link>
-          <button onClick={() => { logout(); setIsOpened(false); }} className="text-red-400 text-xs uppercase tracking-widest">
+          <button onClick={() => { logout(); setIsOpened(false); }} className="text-red-500 text-xs uppercase tracking-widest">
             Logout
           </button>
         </div>
       ) : (
         <Link to='/login' onClick={() => setIsOpened(false)}>
-          <button className="bg-transparent border border-white text-white px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-white hover:text-black transition-all w-fit">
+          <button className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest transition-all w-fit ${
+            isScrolled
+              ? 'bg-transparent border border-white text-white hover:bg-white hover:text-black'
+              : 'bg-transparent border border-black text-black hover:bg-black hover:text-white'
+          }`}>
             Login
           </button>
         </Link>
