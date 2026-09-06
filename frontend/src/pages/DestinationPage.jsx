@@ -206,6 +206,7 @@ function CityCard({ city, isHighlighted }) {
           <img
             src={city.image}
             alt={city.name}
+            loading="lazy"
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
           />
 
@@ -855,6 +856,7 @@ function SuggestDestinationModal({ isOpen, onClose, user }) {
                                 <img
                                   src={sub.image}
                                   alt={sub.name}
+                                  loading="lazy"
                                   className="w-14 h-14 rounded-xl object-cover border border-[#F5A623]/20 flex-shrink-0"
                                 />
                               )}

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { getMediaUrl } from '../../utils/media';
 
 const css = `
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap');
@@ -431,28 +432,28 @@ const css = `
 const REELS = [
   { id:1, tag:'Monsoon Magic', title:'Backwaters of Kerala at Dawn', location:'Alleppey, Kerala', views:'128K', duration:'2:34', trending:true,  size:'tall',
     img:'https://plus.unsplash.com/premium_photo-1697729438401-fcb4ff66d9a8?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8YmFja3dhdGVycyUyMG9mJTIwa2VyZWxhfGVufDB8fDB8fHww',
-    video:'/videos/KerelaBackwaters.mp4' },
+    video: getMediaUrl('videos/KerelaBackwaters.mp4') },
   { id:2, tag:'Desert Dreams', title:'Camel Trails of the Thar Desert', location:'Jaisalmer, Rajasthan', trending:false, size:'short',
     img:'https://media-cdn.tripadvisor.com/media/attractions-splice-spp-720x480/11/d7/cf/f4.jpg',
-    video:'/videos/CamelTrails.mp4' },
+    video: getMediaUrl('videos/CamelTrails.mp4') },
   { id:3, tag:'Mountain High', title:'First Light over Pangong Lake', location:'Ladakh, J&K', views:'213K', duration:'3:12', trending:true,  size:'wide',
     img:'https://thumbs.dreamstime.com/b/sunrise-pangong-ladakh-1574884.jpg',
-    video:'/videos/PangongLake.mp4' },
+    video: getMediaUrl('videos/PangongLake.mp4') },
   { id:4, tag:'Sacred Waters', title:'Ganga Aarti at Dashashwamedh Ghat', location:'Varanasi, UP', views:'175K', duration:'4:05', trending:true,  size:'tall',
     img:'https://wanderershahi.com/wp-content/uploads/2024/04/Varanasi-Gnaga-Aarti.jpg',
-    video:'/videos/varanasi-ganga-aarti.mp4' },
+    video: getMediaUrl('videos/varanasi-ganga-aarti.mp4') },
   { id:5, tag:'Coastal Bliss', title:'Hidden Coves of Gokarna', location:'Gokarna, Karnataka', views:'67K', duration:'2:20', trending:false, size:'short',
     img:'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/03/53/5e/7f/om-beach.jpg?w=500&h=500&s=1',
-    video:'/videos/Hidden-Coves-Gokarna.mp4' },
+    video: getMediaUrl('videos/Hidden-Coves-Gokarna.mp4') },
   { id:6, tag:'Living Roots', title:'Meghalaya\'s Root Bridges in Rain', location:'Cherrapunji, Meghalaya', views:'88K', duration:'2:47', trending:true,  size:'tall',
     img:'https://res.cloudinary.com/roundglass/image/upload/f_auto/v1649765953/rg/collective/media/meghalaya-nongriat-double-decker-living-root-bridge-greenery-people-ashwin-ezhumalai_mmdvms.jpg',
-    video:'/videos/Meghalaya-Bridges-Rain.mp4' },
+    video: getMediaUrl('videos/Meghalaya-Bridges-Rain.mp4') },
   { id:7, tag:'Heritage Trail', title:'Hampi\'s Ruins at Golden Hour', location:'Hampi, Karnataka', views:'102K', duration:'3:30', trending:false, size:'short',
     img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2We8NGMJoXW477Z__WckIVhMnyHb6eIR6sA&s',
-    video:'/videos/Hampi-Golden-Hour.mp4' },
+    video: getMediaUrl('videos/Hampi-Golden-Hour.mp4') },
   { id:8, tag:'Snow Peaks', title:'Spiti Valley\'s Last Village', location:'Hikkim, Himachal', views:'59K', duration:'2:10', trending:false, size:'wide',
     img:'https://himachaltourism.gov.in/wp-content/uploads/2018/01/Dhankar-Monestry-Lahaul-Spiti-min.jpg',
-    video:'/videos/SpitiValley.mp4' },
+    video: getMediaUrl('videos/SpitiValley.mp4') },
 ];
 
 export default function VisualDiscovery() {
@@ -601,6 +602,7 @@ export default function VisualDiscovery() {
               autoPlay
               controls
               playsInline
+              preload="metadata"
             />
             <div className="vd-modal-info">
               <div className="vd-card-tag">{activeReel.tag}</div>

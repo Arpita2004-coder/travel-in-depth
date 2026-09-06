@@ -1,11 +1,17 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../features/auth/useAuth';
+import { getMediaUrl } from '../../utils/media';
 
 function HeroSection() {
     const { user } = useAuth();
     const navigate = useNavigate();
-    const vid = ['/videos/v1.mp4', '/videos/v2.mp4', '/videos/v3.mp4', '/videos/v4.mp4'];
+    const vid = [
+        getMediaUrl('videos/v1.mp4'),
+        getMediaUrl('videos/v2.mp4'),
+        getMediaUrl('videos/v3.mp4'),
+        getMediaUrl('videos/v4.mp4')
+    ];
     const [currentIndex, setCurrentIndex] = useState(0);
     const videoRefs = useRef([]); // Saare videos ka reference store karne ke liye
 
@@ -48,6 +54,7 @@ function HeroSection() {
                     loop
                     muted
                     playsInline
+                    preload="metadata"
                     className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${
                         index === currentIndex ? 'opacity-100' : 'opacity-0'
                     }`}

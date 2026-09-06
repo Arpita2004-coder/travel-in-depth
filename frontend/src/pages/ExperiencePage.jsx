@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { getMediaUrl } from "../utils/media";
 /* ====================================================================
    TRAVEL IN DEPTH — EXPERIENCE PAGE (JSX)
    Direct 1:1 conversion from the original static HTML/CSS/JS.
@@ -977,43 +978,43 @@ const REELS = [
   {
     id: "mathura",
     label: "Prem Mandir in Mathura",
-    src: "/videos/mathura-krishna-janmabhoomi.mp4",
+    src: getMediaUrl("videos/Krishna Janmabhoomi, Mathura.mp4"),
     poster: "https://images.unsplash.com/photo-1662376107358-21296a9234f1?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cHJlbSUyMG1hbmRpcnxlbnwwfHwwfHx8MA%3D%3D",
   },
   {
     id: "varanasi",
     label: "Ganga Aarti in Varanasi",
-    src: "/videos/varanasi-ganga-aarti.mp4",
+    src: getMediaUrl("videos/varanasi-ganga-aarti.mp4"),
     poster: "https://images.unsplash.com/photo-1612779774202-68e4305b849b?w=700&auto=format&fit=crop&q=60",
   },
   {
     id: "goa",
     label: "Beaches of Goa",
-    src: "/videos/goa-beach.mp4",
+    src: getMediaUrl("videos/Hidden-Coves-Gokarna.mp4"),
     poster: "https://plus.unsplash.com/premium_photo-1697729701846-e34563b06d47?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
   {
     id: "jaipur",
     label: "Hawa Mahal, Jaipur",
-    src: "/videos/jaipur-hawa-mahal.mp4",
+    src: getMediaUrl("videos/CamelTrails.mp4"),
     poster: "https://images.unsplash.com/photo-1599661046289-e31897846e41?q=80&w=700&auto=format&fit=crop",
   },
   {
     id: "jammu-kashmir",
     label: "Dal Lake, Jammu & Kashmir",
-    src: "/videos/jammu-kashmir-dal-lake.mp4",
+    src: getMediaUrl("videos/PangongLake.mp4"),
     poster: "https://images.unsplash.com/photo-1566837497312-7be4ebb33b54?q=80&w=700&auto=format&fit=crop",
   },
   {
     id: "manali",
     label: "Snow Valleys of Manali",
-    src: "/videos/manali-snow-valley.mp4",
+    src: getMediaUrl("videos/SpitiValley.mp4"),
     poster: "https://images.unsplash.com/photo-1715457573748-8e8a70b2c1be?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZGFsJTIwbGFrZXxlbnwwfHwwfHx8MA%3D%3D",
   },
   {
     id: "agra",
     label: "Taj Mahal, Agra",
-    src: "/videos/agra-taj-mahal.mp4",
+    src: getMediaUrl("videos/agra-taj-mahal.mp4"),
     poster: "https://images.unsplash.com/photo-1564507592333-c60657eea523?q=80&w=700&auto=format&fit=crop",
   },
 ];

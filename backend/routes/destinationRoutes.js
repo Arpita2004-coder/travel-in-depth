@@ -8,6 +8,7 @@ import {
   generateDestinationContent,
 } from "../controllers/destinationController.js";
 import { requireAuth, requireAdmin } from "../middleware/authMiddleware.js";
+import { plannerRateLimit } from "../middleware/rateLimiter.js";
 
 const router = express.Router();
 
@@ -17,7 +18,7 @@ router.get("/:slug", getDestinationBySlug);
 
 // Admin-only — must be logged in AND have role "admin"
 router.post("/", requireAuth, requireAdmin, createDestination);
-router.post("/:slug/generate-content", requireAuth, requireAdmin, generateDestinationContent);
+router.post("/:slug/generate-content", requireAuth, requireAdmin, plannerRateLimit, generateDestinationContent);
 router.put("/:slug", requireAuth, requireAdmin, updateDestination);
 router.delete("/:slug", requireAuth, requireAdmin, deleteDestination);
 

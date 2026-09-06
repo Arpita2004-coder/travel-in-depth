@@ -1,12 +1,10 @@
 import { useState } from "react";
-import heroImg from "../assets/hawamahal.jpg";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useAuth } from "../features/auth/useAuth";
-// Replace these with your own image sources (the base64 data URIs from the
-// original HTML, or paths/URLs to your logo and hero image).
-//const LOGO_SRC = "logo.jpg";
+import { getMediaUrl } from "../utils/media";
 
-const HERO_BG_SRC = heroImg;
+const HERO_BG_SRC = getMediaUrl("assets/hawamahal.jpg");
+const LOGO_SRC = getMediaUrl("logo.jpg");
 
 const styles = `
   :root {
@@ -363,7 +361,6 @@ function EyeIcon({ open }) {
     </svg>
   );
 }
-const LOGO_SRC = "logo.jpg";
 export default function TravelLoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -403,7 +400,7 @@ export default function TravelLoginPage() {
           <div className="geo-border"></div>
           <div className="left-content">
             <div className="brand">
-              <img className="brand-logo-img" src="/logo.jpg" alt="Travel in Depth Logo" />
+              <img className="brand-logo-img" src={LOGO_SRC} alt="Travel in Depth Logo" loading="lazy" />
               <div className="brand-name">
                 Travel in Depth
                 <span>Discover Incredible India</span>
@@ -419,7 +416,7 @@ export default function TravelLoginPage() {
         <div className="right-panel">
           <div className="form-card">
             <div className="form-logo-row">
-              <img className="form-logo-img" src="/logo.jpg" alt="Travel in Depth" />
+              <img className="form-logo-img" src={LOGO_SRC} alt="Travel in Depth" loading="lazy" />
               <span className="form-logo-text">Travel in Depth</span>
             </div>
 

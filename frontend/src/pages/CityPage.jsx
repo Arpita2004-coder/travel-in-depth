@@ -4,6 +4,7 @@ import { CityContext } from "../context/CityContext";
 import * as plannerApi from "../api/plannerApi";
 import { fetchWeather } from "../api/weatherApi";
 import { useAuth } from "../features/auth/useAuth";
+import { getMediaUrl } from "../utils/media";
 
 /* ─── JAIPUR DATA (swap via CityContext for other cities) ─── */
 const JAIPUR = {
@@ -251,8 +252,9 @@ function Navbar() {
     }}>
       <a href="/" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none" }}>
         <img 
-          src="/logo.jpg" 
+          src={getMediaUrl("logo.jpg")} 
           alt="logo" 
+          loading="lazy"
           style={{ 
            width: 40, height: 40, 
            transition: "transform 0.5s ease",
@@ -307,7 +309,10 @@ function Navbar() {
   );
 }
 
-const PLACEHOLDER_IMAGE = "/photo-placeholder.jpg";
+const PLACEHOLDER_IMAGE = getMediaUrl("photo-placeholder.jpg");
+const PLACEHOLDER_ATTRACTION = getMediaUrl("placeholder-attraction.jpg");
+const PLACEHOLDER_FOOD = getMediaUrl("placeholder-food.jpg");
+const PLACEHOLDER_EXPERIENCE = getMediaUrl("placeholder-experience.jpg");
 
 function Hero({ city }) {
   const subtitle = city.subtitle || `Discover the best of ${city.name}, ${city.state || city.region}`;
@@ -635,26 +640,26 @@ function PlannerSection({ city }) {
   );
 }
 
-function AttractionCard({ a, cityImage }) {
+function AttractionCard({ a }) {
   const desc = a.desc || a.description || "";
   const tags = a.tags || [{ label: "Popular", color: "#FF6B1A" }];
+
   const rating = a.rating || "4.7";
   const reviews = a.reviews || "1K+";
   const hours = a.hours || "9AM – 5PM";
-  const defaultFallback = cityImage || PLACEHOLDER_IMAGE;
+  const fallback = PLACEHOLDER_ATTRACTION;
 
   return (
     <div style={{ background: "white", borderRadius: 16, overflow: "hidden", boxShadow: "0 2px 20px rgba(90,20,0,0.06)", display: "flex", flexDirection: "column" }}>
       <div style={{ position: "relative", height: 220, background: "#F3E5D8" }}>
         <img
-          src={a.image || defaultFallback}
+          src={a.image || fallback}
           alt={a.name}
+          loading="lazy"
           style={{ width: "100%", height: "100%", objectFit: "cover" }}
           onError={(e) => {
-            if (e.target.src !== defaultFallback && defaultFallback) {
-              e.target.src = defaultFallback;
-            } else if (e.target.src !== PLACEHOLDER_IMAGE) {
-              e.target.src = PLACEHOLDER_IMAGE;
+            if (e.target.src !== fallback) {
+              e.target.src = fallback;
             }
           }}
         />
@@ -692,7 +697,7 @@ function AttractionsSection({ city }) {
           From celebrated landmarks to breathtaking scenic wonders — explore the highlights of {city.name}.
         </p>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 28 }}>
-          {attractions.map(a => <AttractionCard key={a.name} a={a} cityImage={city.image} />)}
+          {attractions.map(a => <AttractionCard key={a.name} a={a} />)}
         </div>
       </div>
     </section>
@@ -702,7 +707,7 @@ function AttractionsSection({ city }) {
 function FoodSection({ city }) {
   const food = city.foodRecommendations || city.food || [];
   if (food.length === 0) return null;
-  const defaultFallback = city.image || PLACEHOLDER_IMAGE;
+  const fallback = PLACEHOLDER_FOOD;
 
   return (
     <section id="food" style={{ padding: "80px 0", background: "#FDF6EC" }}>
@@ -716,14 +721,13 @@ function FoodSection({ city }) {
           {food.map(f => (
             <div key={f.name} style={{ background: "white", borderRadius: 16, overflow: "hidden", display: "flex", alignItems: "center", gap: 0, boxShadow: "0 2px 12px rgba(90,20,0,0.06)" }}>
               <img
-                src={f.image || defaultFallback}
+                src={f.image || fallback}
                 alt={f.name}
+                loading="lazy"
                 style={{ width: 110, height: 110, objectFit: "cover", flexShrink: 0, background: "#F3E5D8" }}
                 onError={(e) => {
-                  if (e.target.src !== defaultFallback && defaultFallback) {
-                    e.target.src = defaultFallback;
-                  } else if (e.target.src !== PLACEHOLDER_IMAGE) {
-                    e.target.src = PLACEHOLDER_IMAGE;
+                  if (e.target.src !== fallback) {
+                    e.target.src = fallback;
                   }
                 }}
               />
@@ -743,7 +747,7 @@ function FoodSection({ city }) {
 function ExperiencesSection({ city }) {
   const experiences = city.activities || city.experiences || [];
   if (experiences.length === 0) return null;
-  const defaultFallback = city.image || PLACEHOLDER_IMAGE;
+  const fallback = PLACEHOLDER_EXPERIENCE;
 
   return (
     <section id="experiences" style={{ padding: "80px 0", background: "#5c1212" }}>
@@ -760,14 +764,13 @@ function ExperiencesSection({ city }) {
           {experiences.map(exp => (
             <div key={exp.name} style={{ background: "rgba(255,255,255,0.07)", borderRadius: 18, overflow: "hidden", border: "1px solid rgba(255,255,255,0.1)" }}>
               <img
-                src={exp.image || defaultFallback}
+                src={exp.image || fallback}
                 alt={exp.name}
+                loading="lazy"
                 style={{ width: "100%", height: 200, objectFit: "cover", display: "block", background: "#8b2500" }}
                 onError={(e) => {
-                  if (e.target.src !== defaultFallback && defaultFallback) {
-                    e.target.src = defaultFallback;
-                  } else if (e.target.src !== PLACEHOLDER_IMAGE) {
-                    e.target.src = PLACEHOLDER_IMAGE;
+                  if (e.target.src !== fallback) {
+                    e.target.src = fallback;
                   }
                 }}
               />
@@ -792,7 +795,7 @@ function ExperiencesSection({ city }) {
 function HiddenGemsSection({ city }) {
   const hiddenGems = city.hiddenGems || [];
   if (hiddenGems.length === 0) return null;
-  const defaultFallback = city.image || PLACEHOLDER_IMAGE;
+  const fallback = PLACEHOLDER_ATTRACTION;
 
   return (
     <section style={{ padding: "80px 0", background: "#FDF6EC" }}>
@@ -809,14 +812,13 @@ function HiddenGemsSection({ city }) {
           {hiddenGems.map(gem => (
             <div key={gem.name} style={{ background: "white", borderRadius: 16, overflow: "hidden", boxShadow: "0 2px 16px rgba(90,20,0,0.07)" }}>
               <img
-                src={gem.image || defaultFallback}
+                src={gem.image || fallback}
                 alt={gem.name}
+                loading="lazy"
                 style={{ width: "100%", height: 190, objectFit: "cover", display: "block", background: "#F3E5D8" }}
                 onError={(e) => {
-                  if (e.target.src !== defaultFallback && defaultFallback) {
-                    e.target.src = defaultFallback;
-                  } else if (e.target.src !== PLACEHOLDER_IMAGE) {
-                    e.target.src = PLACEHOLDER_IMAGE;
+                  if (e.target.src !== fallback) {
+                    e.target.src = fallback;
                   }
                 }}
               />
@@ -841,7 +843,7 @@ function HiddenGemsSection({ city }) {
 function NearbySection({ city }) {
   const nearby = city.nearby || [];
   if (nearby.length === 0) return null;
-  const defaultFallback = city.image || PLACEHOLDER_IMAGE;
+  const fallback = PLACEHOLDER_ATTRACTION;
 
   return (
     <section style={{ padding: "80px 0", background: "#FDF6EC" }}>
@@ -858,14 +860,13 @@ function NearbySection({ city }) {
             <div key={n.name} style={{ background: "white", borderRadius: 18, overflow: "hidden", boxShadow: "0 2px 20px rgba(90,20,0,0.07)" }}>
               <div style={{ position: "relative", height: 220, background: "#F3E5D8" }}>
                 <img
-                  src={n.image || defaultFallback}
+                  src={n.image || fallback}
                   alt={n.name}
+                  loading="lazy"
                   style={{ width: "100%", height: "100%", objectFit: "cover" }}
                   onError={(e) => {
-                    if (e.target.src !== defaultFallback && defaultFallback) {
-                      e.target.src = defaultFallback;
-                    } else if (e.target.src !== PLACEHOLDER_IMAGE) {
-                      e.target.src = PLACEHOLDER_IMAGE;
+                    if (e.target.src !== fallback) {
+                      e.target.src = fallback;
                     }
                   }}
                 />
@@ -888,6 +889,7 @@ function NearbySection({ city }) {
     </section>
   );
 }
+
 
 
 function BestTimeSection({ city }) {

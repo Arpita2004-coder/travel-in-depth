@@ -364,10 +364,11 @@ export default function TrendingExperiences() {
                 </div>
                 <div className="te-scrim" />
                 <img
-  src={exp.image}
-  alt={exp.title}
-  className="te-image"
-/>
+                  src={exp.image}
+                  alt={exp.title}
+                  loading="lazy"
+                  className="te-image"
+                />
 
                 <div className="te-badge">{exp.badge}</div>
                 <div className="te-glass">

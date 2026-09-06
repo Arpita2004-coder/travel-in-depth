@@ -5,6 +5,7 @@ import * as plannerApi from "../api/plannerApi";
 import { updateInterests } from "../api/authApi";
 import { fetchRecommendations } from "../api/recommendationsApi";
 import { fetchWeather } from "../api/weatherApi";
+import { getMediaUrl } from "../utils/media";
 import {
   Routes,
   Route,
@@ -227,6 +228,7 @@ const Dashboard = () => {
                   <img
                     src={d.image}
                     alt={d.name}
+                    loading="lazy"
                     onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1564507592333-c60657eea523?w=600&q=80"; }}
                     className="w-full h-full object-cover group-hover:scale-110 transition duration-500"
                   />
@@ -578,6 +580,7 @@ const MyTrips = ({ savedTrips = [], setSavedTrips }) => {
                     <img
                       src={trip.image}
                       alt={trip.destination}
+                      loading="lazy"
                       onError={(e) => { e.target.src = DESTINATION_IMAGES.default; }}
                       className="w-full h-full object-cover group-hover:scale-110 transition duration-500"
                     />
@@ -796,6 +799,7 @@ const Wishlist = () => {
                 <img
                   src={item.image}
                   alt={item.name}
+                  loading="lazy"
                   className="w-full h-full object-cover group-hover:scale-110 transition duration-500"
                 />
 
@@ -2033,8 +2037,9 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
   className={`flex items-center ${ collapsed ? "justify-center w-full" : "gap-3" }`}>
     <div className="w-12 h-12 rounded-2xl overflow-hidden shadow-md flex-shrink-0">
       <img
-        src="/logo.jpg"
+        src={getMediaUrl("logo.jpg")}
         alt="Travel In Depth"
+        loading="lazy"
         className="w-full h-full object-cover scale-[1.35]"
       />
     </div>

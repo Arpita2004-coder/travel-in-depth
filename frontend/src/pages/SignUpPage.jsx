@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../features/auth/useAuth";
+import { getMediaUrl } from "../utils/media";
 
 const INTERESTS = [
   { id: "himalayan", label: "Himalayan Treks", icon: "🏔️" },
@@ -318,7 +319,7 @@ export default function TravelSignup() {
           <div className="brand">
            
            <div className="brand-logo">
-  <img src="logo.jpg" alt="Travel in Depth logo" style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "14px" }} />
+  <img src={getMediaUrl("logo.jpg")} alt="Travel in Depth logo" loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "14px" }} />
 </div>
             <div className="brand-name">
               Travel in Depth
